@@ -117,6 +117,10 @@
               "devServerTarget": "kunal26das:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {}
         }
       }
     }
