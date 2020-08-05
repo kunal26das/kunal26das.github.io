@@ -1,0 +1,16 @@
+<mat-drawer-container class="example-container" autosize>
+    <mat-drawer #drawer class="example-sidenav" mode="over">
+        <p>Auto-resizing sidenav</p>
+    </mat-drawer>
+
+    <div>
+        <mat-toolbar color="primary">
+            <button type="button" mat-button (click)="drawer.toggle()" mat-icon-button class="example-icon"
+                aria-label="Example icon-button with menu icon">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <span>{{title}}</span>
+        </mat-toolbar>
+    </div>
+
+</mat-drawer-container>
