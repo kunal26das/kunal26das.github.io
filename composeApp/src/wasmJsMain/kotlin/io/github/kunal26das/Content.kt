@@ -6,9 +6,9 @@ import kotlinx.browser.window
 
 object Profile {
     const val NAME = "Kunal Das"
-    const val ROLE = "Android Engineer"
-    const val TAGLINE = "I build polished Android apps with Kotlin & Jetpack Compose — " +
-        "and ship them to the Play Store."
+    const val ROLE = "Mobile Engineer"
+    const val TAGLINE = "I build cross-platform mobile apps across Android, iOS, React Native " +
+        "and Kotlin Multiplatform — and ship them to real users."
     const val LOCATION = "Bengaluru, India"
     const val GITHUB = "https://github.com/kunal26das"
     const val EMAIL = "kunal26das@gmail.com"
@@ -18,9 +18,10 @@ object Profile {
 // ---- Skills ----
 
 val skills: List<SkillGroup> = listOf(
-    SkillGroup("Languages", listOf("Kotlin", "Java")),
+    SkillGroup("Languages", listOf("Kotlin", "Swift", "TypeScript", "Java")),
     SkillGroup("Android", listOf("Jetpack Compose", "Coroutines & Flow", "Hilt / DI", "Room", "Material 3")),
-    SkillGroup("Multiplatform", listOf("Compose Multiplatform", "Kotlin/Wasm", "KMP")),
+    SkillGroup("iOS & React Native", listOf("SwiftUI", "UIKit", "React Native", "Expo")),
+    SkillGroup("Multiplatform", listOf("Kotlin Multiplatform", "Compose Multiplatform", "Kotlin/Wasm")),
     SkillGroup("Tooling", listOf("Gradle", "Git", "CI / GitHub Actions", "Firebase")),
 )
 
@@ -41,18 +42,18 @@ data class Project(
 val projects: List<Project> = listOf(
     Project(
         name = "YIFY",
-        blurb = "A clean Android client for browsing and discovering YTS movies, " +
-            "built with Jetpack Compose. Published on the Google Play Store.",
-        tags = listOf("Kotlin", "Jetpack Compose", "Android"),
+        blurb = "A cross-platform movie-browsing app for YTS, built with React Native so it runs " +
+            "natively on both iOS and Android. Published on the Google Play Store.",
+        tags = listOf("React Native", "TypeScript", "iOS & Android"),
         repo = "https://github.com/kunal26das/yify",
         live = "https://play.google.com/store/apps/details?id=io.github.kunal26das.yify",
         liveLabel = "Play Store",
         featured = true,
     ),
     Project(
-        name = "Pokédex",
-        blurb = "A modern Pokédex app with a multi-module architecture, " +
-            "rich detail screens and smooth Compose UI. Live on Google Play.",
+        name = "Pokedex",
+        blurb = "A native Android Pokedex with a multi-module architecture, rich detail screens " +
+            "and smooth Jetpack Compose UI. Live on Google Play.",
         tags = listOf("Kotlin", "Jetpack Compose", "Multi-module"),
         repo = "https://github.com/kunal26das/pokedex",
         live = "https://play.google.com/store/apps/details?id=io.github.kunal26das.multidex",
@@ -61,8 +62,8 @@ val projects: List<Project> = listOf(
     ),
     Project(
         name = "kunal26das.github.io",
-        blurb = "This very site — a portfolio built with Compose Multiplatform for Web, " +
-            "compiled to WebAssembly and deployed to GitHub Pages.",
+        blurb = "This very site — built with Compose Multiplatform for Web, compiled to " +
+            "WebAssembly and deployed to GitHub Pages.",
         tags = listOf("Compose Multiplatform", "Kotlin/Wasm", "GitHub Pages"),
         repo = "https://github.com/kunal26das/kunal26das.github.io",
         live = "https://kunal26das.github.io",

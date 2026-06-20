@@ -36,15 +36,18 @@ fun Hero(onViewWork: () -> Unit) {
             start = 24.dp, end = 24.dp, top = 120.dp, bottom = 96.dp,
         ),
     ) { compact ->
-        Box(
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .clip(RoundedCornerShape(50))
                 .background(SurfaceHi)
                 .border(BorderStroke(1.dp, Border), RoundedCornerShape(50))
                 .padding(horizontal = 14.dp, vertical = 7.dp),
         ) {
+            Box(Modifier.size(8.dp).clip(androidx.compose.foundation.shape.CircleShape).background(Cyan))
+            Spacer(Modifier.width(8.dp))
             Text(
-                "● Available for opportunities",
+                "Available for opportunities",
                 style = MaterialTheme.typography.bodyMedium,
                 color = Cyan,
             )
@@ -60,7 +63,7 @@ fun Hero(onViewWork: () -> Unit) {
             style = heroStyle,
             color = OnSurface,
         )
-        GradientText("I make Android feel effortless.", style = heroStyle)
+        GradientText("I make mobile feel effortless.", style = heroStyle)
         Spacer(Modifier.height(20.dp))
         Text(
             Profile.TAGLINE,
@@ -76,9 +79,9 @@ fun Hero(onViewWork: () -> Unit) {
         }
         Spacer(Modifier.height(40.dp))
         FlowRow(horizontalArrangement = Arrangement.spacedBy(32.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            Stat("6+", "Years in Android")
+            Stat("6+", "Years building mobile")
             Stat("2", "Apps on Play Store")
-            Stat("100%", "Kotlin-first")
+            Stat("4", "Platforms shipped")
         }
     }
 }
@@ -98,10 +101,12 @@ fun About() {
     SectionContainer { _ ->
         SectionTitle("About", "A bit about me")
         Text(
-            "I'm an Android engineer based in ${Profile.LOCATION}, building apps in Kotlin since " +
-                "${Profile.SINCE}. I care about clean architecture, smooth Compose UI, and shipping " +
-                "real products people can download. Lately I've been exploring Compose Multiplatform " +
-                "and Kotlin/Wasm — the very tech this site runs on.",
+            "I'm a mobile engineer based in ${Profile.LOCATION}. I started out in native Android " +
+                "with Kotlin back in ${Profile.SINCE}, and over the last couple of years I've gone " +
+                "fully cross-platform — shipping with React Native and native iOS (Swift), and " +
+                "sharing code across platforms with Kotlin Multiplatform. I care about clean " +
+                "architecture and UI that feels native everywhere. This site itself runs on " +
+                "Compose Multiplatform compiled to WebAssembly.",
             style = MaterialTheme.typography.bodyLarge,
             color = Muted,
             modifier = Modifier.widthIn(max = 720.dp),
@@ -211,9 +216,9 @@ private fun ProjectCard(project: Project, modifier: Modifier = Modifier) {
         }
         Spacer(Modifier.height(18.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(20.dp)) {
-            LinkText("Code →") { openUrl(project.repo) }
+            LinkText("View code") { openUrl(project.repo) }
             if (project.live != null) {
-                LinkText("${project.liveLabel} →") { openUrl(project.live) }
+                LinkText(project.liveLabel ?: "Live") { openUrl(project.live) }
             }
         }
     }
