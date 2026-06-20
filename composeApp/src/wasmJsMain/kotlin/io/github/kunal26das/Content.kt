@@ -57,16 +57,6 @@ data class Project(
 
 val projects: List<Project> = listOf(
     Project(
-        name = "YIFY",
-        blurb = "A handy little app for movie lovers to browse and discover films — running smoothly " +
-            "on both iPhone and Android. You can download it on the Play Store today.",
-        tags = listOf("🎬 Movies", "📱 iPhone & Android"),
-        repo = "https://github.com/kunal26das/yify",
-        live = "https://play.google.com/store/apps/details?id=io.github.kunal26das.yify",
-        liveLabel = "Play Store",
-        featured = true,
-    ),
-    Project(
         name = "Pokedex",
         blurb = "A playful pocket guide to the world of Pokémon — beautiful, fast, and fun to flip " +
             "through. Free to download on Google Play.",
@@ -87,9 +77,19 @@ val projects: List<Project> = listOf(
         featured = true,
     ),
     Project(
+        name = "YIFY",
+        blurb = "A handy little app for movie lovers to browse and discover films — running smoothly " +
+                "on both iPhone and Android. You can download it on the Play Store today.",
+        tags = listOf("🎬 Movies", "📱 iPhone & Android"),
+        repo = "https://github.com/kunal26das/yify",
+        live = "https://play.google.com/store/apps/details?id=io.github.kunal26das.yify",
+        liveLabel = "Play Store",
+        featured = true,
+    ),
+    Project(
         name = "Bunxdo",
         blurb = "A freelance project — an app I built to help sellers run their business right " +
-            "from their phone.",
+                "from their phone.",
         tags = listOf("🛍️ For sellers", "📱 Android"),
         repo = "https://github.com/kunal26das/bunxdo",
     ),

@@ -22,10 +22,15 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -241,32 +246,101 @@ fun Skills() {
 fun ExperienceSection() {
     SectionContainer { _ ->
         SectionTitle("Journey", "Apps I've helped build")
-        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            experience.forEachIndexed { index, exp ->
-                Reveal(delayMillis = index * 70) {
-                    ExperienceCard(exp, Modifier.fillMaxWidth().widthIn(max = 960.dp))
+        // Oldest → newest reads left to right along the rail.
+        val items = remember { experience.reversed() }
+        var selected by remember { mutableStateOf(items.lastIndex) }
+
+        Reveal {
+            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top) {
+                items.forEachIndexed { i, exp ->
+                    TimelineNode(exp = exp, selected = i == selected, onClick = { selected = i })
+                    if (i != items.lastIndex) {
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(top = 25.dp)
+                                .height(2.dp)
+                                .background(
+                                    androidx.compose.ui.graphics.Brush.horizontalGradient(
+                                        listOf(Violet.copy(alpha = 0.45f), Cyan.copy(alpha = 0.25f)),
+                                    ),
+                                ),
+                        )
+                    }
                 }
             }
+        }
+        Spacer(Modifier.height(28.dp))
+        // Re-key so the detail panel re-runs its reveal animation on each selection.
+        key(selected) {
+            Reveal { ExperienceDetail(items[selected]) }
         }
     }
 }
 
 @Composable
-private fun ExperienceCard(exp: Experience, modifier: Modifier = Modifier) {
+private fun TimelineNode(exp: Experience, selected: Boolean, onClick: () -> Unit) {
+    val source = remember { MutableInteractionSource() }
+    val hover = hoverProgress(source)
+    val sel by animateFloatAsState(targetValue = if (selected) 1f else 0f, label = "select")
+    val year = exp.period.split(" ").firstOrNull { it.length == 4 && it.all { c -> c.isDigit() } } ?: ""
+    val shortLabel = if (exp.period.contains("Present")) "Now" else year
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .hoverable(source)
+            .pointerHoverIcon(PointerIcon.Hand)
+            .clickable(onClick = onClick),
+    ) {
+        Box(
+            modifier = Modifier
+                .graphicsLayer {
+                    val s = lerpFloat(1f, 1.12f, maxOf(sel, hover * 0.6f))
+                    scaleX = s
+                    scaleY = s
+                }
+                .size(52.dp)
+                .clip(CircleShape)
+                .background(if (selected) AccentGradient else androidx.compose.ui.graphics.SolidColor(Surface))
+                .border(BorderStroke(2.dp, lerp(Border, Cyan, sel)), CircleShape),
+            contentAlignment = Alignment.Center,
+        ) {
+            Text(
+                exp.product.first().toString(),
+                color = lerp(Muted, Background, sel),
+                fontWeight = FontWeight.Bold,
+            )
+        }
+        Spacer(Modifier.height(8.dp))
+        Text(
+            shortLabel,
+            style = MaterialTheme.typography.labelLarge.copy(letterSpacing = 0.5.sp),
+            color = lerp(Muted, Cyan, sel),
+        )
+    }
+}
+
+@Composable
+private fun ExperienceDetail(exp: Experience) {
     val onClick: (() -> Unit)? = exp.link?.let { link -> { openUrl(link) } }
-    HoverCard(modifier = modifier, onClick = onClick) {
+    HoverCard(modifier = Modifier.fillMaxWidth(), onClick = onClick) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            GradientTile(exp.product.first().toString())
-            Spacer(Modifier.width(12.dp))
-            Column {
-                Text(exp.product, style = MaterialTheme.typography.titleLarge, color = OnSurface)
+            Text(exp.product, style = MaterialTheme.typography.titleLarge, color = OnSurface)
+            Spacer(Modifier.width(10.dp))
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(50))
+                    .background(Cyan.copy(alpha = 0.14f))
+                    .padding(horizontal = 10.dp, vertical = 3.dp),
+            ) {
                 Text(exp.period, style = MaterialTheme.typography.bodyMedium, color = Cyan)
             }
         }
-        Spacer(Modifier.height(14.dp))
-        Text(exp.blurb, style = MaterialTheme.typography.bodyMedium, color = Muted)
+        Spacer(Modifier.height(12.dp))
+        Text(exp.blurb, style = MaterialTheme.typography.bodyLarge, color = Muted)
         if (exp.link != null) {
-            Spacer(Modifier.height(18.dp))
+            Spacer(Modifier.height(16.dp))
             LinkText("Get it on Play Store →") { openUrl(exp.link) }
         }
     }
