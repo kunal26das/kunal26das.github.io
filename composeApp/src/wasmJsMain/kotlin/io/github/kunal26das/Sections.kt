@@ -147,6 +147,59 @@ fun Skills() {
     }
 }
 
+// ---------- Experience ----------
+
+@Composable
+fun ExperienceSection() {
+    SectionContainer { _ ->
+        SectionTitle("Journey", "Apps I've helped build")
+        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            experience.forEach { exp ->
+                ExperienceCard(exp, Modifier.fillMaxWidth().widthIn(max = 960.dp))
+            }
+        }
+    }
+}
+
+@Composable
+private fun ExperienceCard(exp: Experience, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier
+            .clip(RoundedCornerShape(18.dp))
+            .background(Surface)
+            .border(BorderStroke(1.dp, Border), RoundedCornerShape(18.dp))
+            .let { if (exp.link != null) it.clickable { openUrl(exp.link) } else it }
+            .padding(24.dp),
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(AccentGradient),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    exp.product.first().toString(),
+                    color = Background,
+                    fontWeight = FontWeight.Bold,
+                )
+            }
+            Spacer(Modifier.width(12.dp))
+            Column {
+                Text(exp.product, style = MaterialTheme.typography.titleLarge, color = OnSurface)
+                Text(exp.period, style = MaterialTheme.typography.bodyMedium, color = Cyan)
+            }
+        }
+        Spacer(Modifier.height(14.dp))
+        Text(exp.blurb, style = MaterialTheme.typography.bodyMedium, color = Muted)
+        if (exp.link != null) {
+            Spacer(Modifier.height(18.dp))
+            LinkText("Get it on Play Store") { openUrl(exp.link) }
+        }
+    }
+}
+
 // ---------- Projects ----------
 
 @Composable

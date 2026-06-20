@@ -34,6 +34,7 @@ fun App() {
                 Box(modifier = Modifier.onGloballyPositioned { workY = it.positionInParent().y }) {
                     Projects()
                 }
+                ExperienceSection()
                 Footer()
             }
         }

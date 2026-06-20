@@ -79,6 +79,50 @@ val projects: List<Project> = listOf(
     ),
 )
 
+// ---- Experience ----
+
+data class Experience(
+    val product: String,
+    val period: String,
+    val blurb: String,
+    val link: String? = null,
+)
+
+val experience: List<Experience> = listOf(
+    Experience(
+        product = "Licious",
+        period = "Present",
+        blurb = "I help build the Licious app — India's much-loved fresh meat and seafood " +
+            "delivery service — making it smooth and reliable for the millions of people who " +
+            "order their everyday groceries through it.",
+        link = "https://play.google.com/store/apps/details?id=com.licious",
+    ),
+    Experience(
+        product = "Alle",
+        period = "Dec 2023 — Mar 2024",
+        blurb = "Worked on Alle, an AI-powered fashion app that suggests outfits, lets you try " +
+            "looks on virtually and shop them in a tap. I focused on making the experience feel " +
+            "playful and effortless.",
+        link = "https://play.google.com/store/apps/details?id=com.heyalle.android",
+    ),
+    Experience(
+        product = "Koo",
+        period = "Dec 2022 — Jun 2023",
+        blurb = "Helped build Koo, a made-in-India social app where people share thoughts and " +
+            "follow the conversation in their own language. I worked on features used by a huge, " +
+            "vibrant community across many Indian languages.",
+        link = "https://play.google.com/store/apps/details?id=com.koo.app",
+    ),
+    Experience(
+        product = "Powerplay",
+        period = "Sep 2020 — Jul 2022",
+        blurb = "Built the Powerplay app, a simple tool that keeps construction teams on the same " +
+            "page — tracking site progress, sharing photos and updates, and connecting the people " +
+            "on-site with the office.",
+        link = "https://play.google.com/store/apps/details?id=in.powerplay.android.fieldapp",
+    ),
+)
+
 // ---- Web helpers ----
 
 fun openUrl(url: String) {
