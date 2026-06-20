@@ -218,10 +218,11 @@ fun Skills() {
         FlowRow(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
+            maxItemsInEachRow = if (compact) 1 else 2,
         ) {
             skills.forEachIndexed { index, group ->
-                Reveal(delayMillis = index * 80) {
-                    HoverCard(modifier = Modifier.width(if (compact) 320.dp else 460.dp)) {
+                Reveal(delayMillis = index * 80, modifier = Modifier.weight(1f)) {
+                    HoverCard(modifier = Modifier.fillMaxWidth()) {
                         Text(group.icon, style = MaterialTheme.typography.displaySmall)
                         Spacer(Modifier.height(12.dp))
                         Text(group.title, style = MaterialTheme.typography.titleLarge, color = OnSurface)
@@ -280,10 +281,11 @@ fun Projects() {
         FlowRow(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
+            maxItemsInEachRow = if (compact) 1 else 2,
         ) {
             projects.forEachIndexed { index, project ->
-                Reveal(delayMillis = index * 80) {
-                    ProjectCard(project, Modifier.width(if (compact) 340.dp else 470.dp))
+                Reveal(delayMillis = index * 80, modifier = Modifier.weight(1f)) {
+                    ProjectCard(project, Modifier.fillMaxWidth())
                 }
             }
         }
