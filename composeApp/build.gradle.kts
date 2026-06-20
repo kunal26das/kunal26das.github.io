@@ -6,6 +6,12 @@ plugins {
     alias(libs.plugins.composeCompiler)
 }
 
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "io.github.kunal26das.resources"
+    generateResClass = always
+}
+
 kotlin {
     wasmJs {
         outputModuleName.set("composeApp")
