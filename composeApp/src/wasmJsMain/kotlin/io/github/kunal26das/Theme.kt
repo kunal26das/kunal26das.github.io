@@ -15,16 +15,18 @@ import io.github.kunal26das.resources.noto_emoji
 import org.jetbrains.compose.resources.Font
 
 // Palette
-val Background = Color(0xFF0A0E16)
-val Surface = Color(0xFF121723)
+val Background = Color(0xFF080B12)
+val Surface = Color(0xFF111622)
 val SurfaceHi = Color(0xFF1B2233)
-val OnSurface = Color(0xFFE6EAF2)
+val OnSurface = Color(0xFFEDF1F8)
 val Muted = Color(0xFF8B95A7)
 val Violet = Color(0xFF7C5CFF)
 val Cyan = Color(0xFF22D3EE)
-val Border = Color(0xFF232B3B)
+val Pink = Color(0xFFFF5DA2)
+val Border = Color(0xFF222A3A)
 
 val AccentGradient = Brush.linearGradient(listOf(Violet, Cyan))
+val WarmGradient = Brush.linearGradient(listOf(Pink, Violet))
 
 private val ColorScheme = darkColorScheme(
     primary = Cyan,
@@ -39,13 +41,13 @@ private val ColorScheme = darkColorScheme(
 )
 
 private fun appTypography(family: FontFamily) = Typography(
-    displayLarge = TextStyle(fontFamily = family, fontWeight = FontWeight.Bold, fontSize = 64.sp, lineHeight = 68.sp),
-    displaySmall = TextStyle(fontFamily = family, fontWeight = FontWeight.Bold, fontSize = 40.sp, lineHeight = 46.sp),
-    headlineMedium = TextStyle(fontFamily = family, fontWeight = FontWeight.Bold, fontSize = 30.sp, lineHeight = 36.sp),
+    displayLarge = TextStyle(fontFamily = family, fontWeight = FontWeight.Bold, fontSize = 72.sp, lineHeight = 76.sp, letterSpacing = (-1.5).sp),
+    displaySmall = TextStyle(fontFamily = family, fontWeight = FontWeight.Bold, fontSize = 40.sp, lineHeight = 46.sp, letterSpacing = (-0.5).sp),
+    headlineMedium = TextStyle(fontFamily = family, fontWeight = FontWeight.Bold, fontSize = 30.sp, lineHeight = 36.sp, letterSpacing = (-0.3).sp),
     titleLarge = TextStyle(fontFamily = family, fontWeight = FontWeight.SemiBold, fontSize = 20.sp, lineHeight = 26.sp),
-    bodyLarge = TextStyle(fontFamily = family, fontWeight = FontWeight.Normal, fontSize = 17.sp, lineHeight = 27.sp),
+    bodyLarge = TextStyle(fontFamily = family, fontWeight = FontWeight.Normal, fontSize = 17.sp, lineHeight = 28.sp),
     bodyMedium = TextStyle(fontFamily = family, fontWeight = FontWeight.Normal, fontSize = 15.sp, lineHeight = 23.sp),
-    labelLarge = TextStyle(fontFamily = family, fontWeight = FontWeight.SemiBold, fontSize = 14.sp, lineHeight = 18.sp),
+    labelLarge = TextStyle(fontFamily = family, fontWeight = FontWeight.SemiBold, fontSize = 14.sp, lineHeight = 18.sp, letterSpacing = 1.5.sp),
 )
 
 @Composable
