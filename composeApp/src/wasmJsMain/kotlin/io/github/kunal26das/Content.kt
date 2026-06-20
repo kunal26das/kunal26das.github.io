@@ -6,26 +6,42 @@ import kotlinx.browser.window
 
 object Profile {
     const val NAME = "Kunal Das"
-    const val ROLE = "Mobile Engineer"
-    const val TAGLINE = "I build cross-platform mobile apps across Android, iOS, React Native " +
-        "and Kotlin Multiplatform — and ship them to real users."
+    const val ROLE = "Mobile App Maker"
+    const val TAGLINE = "I make the apps that live on your phone — the ones you tap open every day. " +
+        "From ordering dinner to staying in touch, I help build experiences that just work, " +
+        "and feel good to use."
     const val LOCATION = "Bengaluru, India"
     const val GITHUB = "https://github.com/kunal26das"
     const val EMAIL = "kunal26das@gmail.com"
     const val SINCE = 2016
 }
 
-// ---- Skills ----
+// ---- What I bring ----
 
 val skills: List<SkillGroup> = listOf(
-    SkillGroup("Languages", listOf("Kotlin", "Swift", "TypeScript", "Java")),
-    SkillGroup("Android", listOf("Jetpack Compose", "Coroutines & Flow", "Hilt / DI", "Room", "Material 3")),
-    SkillGroup("iOS & React Native", listOf("SwiftUI", "UIKit", "React Native", "Expo")),
-    SkillGroup("Multiplatform", listOf("Kotlin Multiplatform", "Compose Multiplatform", "Kotlin/Wasm")),
-    SkillGroup("Tooling", listOf("Gradle", "Git", "CI / GitHub Actions", "Firebase")),
+    SkillGroup(
+        "🚀",
+        "Apps people love",
+        "I've helped build apps used by millions — and I sweat the little details that make them a joy to use.",
+    ),
+    SkillGroup(
+        "🎨",
+        "Beautiful & simple",
+        "Clean, friendly screens that feel natural. No clutter, no confusion — just the thing you came to do.",
+    ),
+    SkillGroup(
+        "📱",
+        "Works everywhere",
+        "Android, iPhone, and beyond. Whatever phone you're holding, the app should feel right at home.",
+    ),
+    SkillGroup(
+        "⚡",
+        "Fast & reliable",
+        "Smooth, snappy, and dependable — apps that don't make you wait or let you down.",
+    ),
 )
 
-data class SkillGroup(val title: String, val items: List<String>)
+data class SkillGroup(val icon: String, val title: String, val description: String)
 
 // ---- Projects ----
 
@@ -42,9 +58,9 @@ data class Project(
 val projects: List<Project> = listOf(
     Project(
         name = "YIFY",
-        blurb = "A cross-platform movie-browsing app for YTS, built with React Native so it runs " +
-            "natively on both iOS and Android. Published on the Google Play Store.",
-        tags = listOf("React Native", "TypeScript", "iOS & Android"),
+        blurb = "A handy little app for movie lovers to browse and discover films — running smoothly " +
+            "on both iPhone and Android. You can download it on the Play Store today.",
+        tags = listOf("🎬 Movies", "📱 iPhone & Android"),
         repo = "https://github.com/kunal26das/yify",
         live = "https://play.google.com/store/apps/details?id=io.github.kunal26das.yify",
         liveLabel = "Play Store",
@@ -52,29 +68,29 @@ val projects: List<Project> = listOf(
     ),
     Project(
         name = "Pokedex",
-        blurb = "A native Android Pokedex with a multi-module architecture, rich detail screens " +
-            "and smooth Jetpack Compose UI. Live on Google Play.",
-        tags = listOf("Kotlin", "Jetpack Compose", "Multi-module"),
+        blurb = "A playful pocket guide to the world of Pokémon — beautiful, fast, and fun to flip " +
+            "through. Free to download on Google Play.",
+        tags = listOf("🎮 Fun", "📱 Android"),
         repo = "https://github.com/kunal26das/pokedex",
         live = "https://play.google.com/store/apps/details?id=io.github.kunal26das.multidex",
         liveLabel = "Play Store",
         featured = true,
     ),
     Project(
-        name = "kunal26das.github.io",
-        blurb = "This very site — built with Compose Multiplatform for Web, compiled to " +
-            "WebAssembly and deployed to GitHub Pages.",
-        tags = listOf("Compose Multiplatform", "Kotlin/Wasm", "GitHub Pages"),
+        name = "This Website",
+        blurb = "Yep — even this page is something I built myself, just for fun, to share a bit " +
+            "about my work and say hello.",
+        tags = listOf("✨ Made by me", "🌐 On the web"),
         repo = "https://github.com/kunal26das/kunal26das.github.io",
         live = "https://kunal26das.github.io",
-        liveLabel = "Live",
+        liveLabel = "You're here!",
         featured = true,
     ),
     Project(
         name = "Bunxdo",
-        blurb = "A freelance project — the seller-facing Android app for the Bunxdo platform, " +
-            "built in Kotlin.",
-        tags = listOf("Kotlin", "Android", "Freelance"),
+        blurb = "A freelance project — an app I built to help sellers run their business right " +
+            "from their phone.",
+        tags = listOf("🛍️ For sellers", "📱 Android"),
         repo = "https://github.com/kunal26das/bunxdo",
     ),
 )

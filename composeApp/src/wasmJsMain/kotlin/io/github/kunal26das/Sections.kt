@@ -47,7 +47,7 @@ fun Hero(onViewWork: () -> Unit) {
             Box(Modifier.size(8.dp).clip(androidx.compose.foundation.shape.CircleShape).background(Cyan))
             Spacer(Modifier.width(8.dp))
             Text(
-                "Available for opportunities",
+                "👋 Open to new adventures",
                 style = MaterialTheme.typography.bodyMedium,
                 color = Cyan,
             )
@@ -63,7 +63,7 @@ fun Hero(onViewWork: () -> Unit) {
             style = heroStyle,
             color = OnSurface,
         )
-        GradientText("I make mobile feel effortless.", style = heroStyle)
+        GradientText("I make apps people love.", style = heroStyle)
         Spacer(Modifier.height(20.dp))
         Text(
             Profile.TAGLINE,
@@ -73,15 +73,14 @@ fun Hero(onViewWork: () -> Unit) {
         )
         Spacer(Modifier.height(32.dp))
         FlowRow(horizontalArrangement = Arrangement.spacedBy(14.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
-            GradientButton("View my work", onClick = onViewWork)
-            OutlineButton("GitHub") { openUrl(Profile.GITHUB) }
-            OutlineButton("Email me") { openUrl("mailto:${Profile.EMAIL}") }
+            GradientButton("See what I've made", onClick = onViewWork)
+            OutlineButton("Say hello") { openUrl("mailto:${Profile.EMAIL}") }
         }
         Spacer(Modifier.height(40.dp))
         FlowRow(horizontalArrangement = Arrangement.spacedBy(32.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            Stat("6+", "Years building mobile")
-            Stat("2", "Apps on Play Store")
-            Stat("4", "Platforms shipped")
+            Stat("10+", "Years making apps")
+            Stat("Millions", "People reached")
+            Stat("Tons", "Of late-night coffee")
         }
     }
 }
@@ -99,14 +98,14 @@ private fun Stat(value: String, label: String) {
 @Composable
 fun About() {
     SectionContainer { _ ->
-        SectionTitle("About", "A bit about me")
+        SectionTitle("Hello", "A little about me")
         Text(
-            "I'm a mobile engineer based in ${Profile.LOCATION}. I started out in native Android " +
-                "with Kotlin back in ${Profile.SINCE}, and over the last couple of years I've gone " +
-                "fully cross-platform — shipping with React Native and native iOS (Swift), and " +
-                "sharing code across platforms with Kotlin Multiplatform. I care about clean " +
-                "architecture and UI that feels native everywhere. This site itself runs on " +
-                "Compose Multiplatform compiled to WebAssembly.",
+            "I'm Kunal, and I make mobile apps from ${Profile.LOCATION}. I've been at it since " +
+                "${Profile.SINCE}, and along the way I've had the joy of building apps that " +
+                "millions of people use every day — for ordering food, sharing stories, getting " +
+                "work done, and more.\n\nWhat I care about most is simple: apps should be easy, " +
+                "friendly, and a pleasure to use. The best technology is the kind you never have " +
+                "to think about — it just works. That's what I try to make, every single time.",
             style = MaterialTheme.typography.bodyLarge,
             color = Muted,
             modifier = Modifier.widthIn(max = 720.dp),
@@ -119,7 +118,7 @@ fun About() {
 @Composable
 fun Skills() {
     SectionContainer { compact ->
-        SectionTitle("Skills", "What I work with")
+        SectionTitle("What I bring", "Why people like working with me")
         FlowRow(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -127,20 +126,17 @@ fun Skills() {
             skills.forEach { group ->
                 Column(
                     modifier = Modifier
-                        .width(if (compact) 320.dp else 300.dp)
+                        .width(if (compact) 320.dp else 460.dp)
                         .clip(RoundedCornerShape(16.dp))
                         .background(Surface)
                         .border(BorderStroke(1.dp, Border), RoundedCornerShape(16.dp))
-                        .padding(20.dp),
+                        .padding(24.dp),
                 ) {
+                    Text(group.icon, style = MaterialTheme.typography.displaySmall)
+                    Spacer(Modifier.height(12.dp))
                     Text(group.title, style = MaterialTheme.typography.titleLarge, color = OnSurface)
-                    Spacer(Modifier.height(14.dp))
-                    FlowRow(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                    ) {
-                        group.items.forEach { Chip(it) }
-                    }
+                    Spacer(Modifier.height(8.dp))
+                    Text(group.description, style = MaterialTheme.typography.bodyMedium, color = Muted)
                 }
             }
         }
@@ -205,7 +201,7 @@ private fun ExperienceCard(exp: Experience, modifier: Modifier = Modifier) {
 @Composable
 fun Projects() {
     SectionContainer { compact ->
-        SectionTitle("Work", "Selected projects")
+        SectionTitle("Made for fun", "A few things I've built")
         FlowRow(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -254,7 +250,7 @@ private fun ProjectCard(project: Project, modifier: Modifier = Modifier) {
                         .background(Violet.copy(alpha = 0.18f))
                         .padding(horizontal = 9.dp, vertical = 3.dp),
                 ) {
-                    Text("Featured", style = MaterialTheme.typography.bodyMedium, color = Violet)
+                    Text("⭐ Favorite", style = MaterialTheme.typography.bodyMedium, color = Violet)
                 }
             }
         }
@@ -269,10 +265,10 @@ private fun ProjectCard(project: Project, modifier: Modifier = Modifier) {
         }
         Spacer(Modifier.height(18.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(20.dp)) {
-            LinkText("View code") { openUrl(project.repo) }
             if (project.live != null) {
-                LinkText(project.liveLabel ?: "Live") { openUrl(project.live) }
+                LinkText(project.liveLabel ?: "Take a look →") { openUrl(project.live) }
             }
+            LinkText("Peek behind the scenes") { openUrl(project.repo) }
         }
     }
 }
@@ -298,21 +294,22 @@ fun Footer() {
     ) { _ ->
         Box(Modifier.fillMaxWidth().height(1.dp).background(Border))
         Spacer(Modifier.height(40.dp))
-        GradientText("Let's build something.", style = MaterialTheme.typography.headlineMedium)
+        GradientText("Let's make something together. ✨", style = MaterialTheme.typography.headlineMedium)
         Spacer(Modifier.height(12.dp))
         Text(
-            "The fastest way to reach me is email. I'm always up for a good Android problem.",
+            "Got an idea, a project, or just want to chat? I'd love to hear from you. " +
+                "Drop me a line — I always write back.",
             style = MaterialTheme.typography.bodyLarge,
             color = Muted,
         )
         Spacer(Modifier.height(24.dp))
         FlowRow(horizontalArrangement = Arrangement.spacedBy(14.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
-            GradientButton("Say hello") { openUrl("mailto:${Profile.EMAIL}") }
-            OutlineButton("GitHub") { openUrl(Profile.GITHUB) }
+            GradientButton("Say hello 👋") { openUrl("mailto:${Profile.EMAIL}") }
+            OutlineButton("See my code") { openUrl(Profile.GITHUB) }
         }
         Spacer(Modifier.height(48.dp))
         Text(
-            "© 2026 ${Profile.NAME} · Built with Compose Multiplatform + Kotlin/Wasm",
+            "© 2026 ${Profile.NAME} · Made with ❤️ in Bengaluru",
             style = MaterialTheme.typography.bodyMedium,
             color = Muted,
         )
