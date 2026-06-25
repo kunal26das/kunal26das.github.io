@@ -21,7 +21,7 @@ ktlint {
 
 configurations.all {
     resolutionStrategy {
-        force("org.jetbrains.kotlinx:kotlinx-datetime:0.6.2")
+        force("org.jetbrains.kotlinx:kotlinx-datetime:0.8.0")
     }
 }
 
