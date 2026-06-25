@@ -1,0 +1,14 @@
+{
+  "name": "Kunal Das — Mobile App Maker",
+  "short_name": "Kunal Das",
+  "description": "I make the apps that live on your phone — apps people love, on iPhone, Android and the web.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1B1916",
+  "theme_color": "#1B1916",
+  "icons": [
+    { "src": "icon-192.png", "type": "image/png", "sizes": "192x192" },
+    { "src": "icon-512.png", "type": "image/png", "sizes": "512x512" },
+    { "src": "favicon.svg", "type": "image/svg+xml", "sizes": "any", "purpose": "any" }
+  ]
+}

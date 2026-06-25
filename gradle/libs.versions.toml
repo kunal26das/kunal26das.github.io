@@ -1,0 +1,21 @@
+[versions]
+kotlin = "2.4.0"
+compose-multiplatform = "1.11.1"
+compose-material3 = "1.9.0"
+ktlint = "12.1.1"
+haze = "1.6.0"
+
+[libraries]
+haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
+compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "compose-multiplatform" }
+compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "compose-multiplatform" }
+compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "compose-material3" }
+compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "compose-multiplatform" }
+compose-components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "compose-multiplatform" }
+compose-components-uiToolingPreview = { module = "org.jetbrains.compose.components:components-ui-tooling-preview", version.ref = "compose-multiplatform" }
+
+[plugins]
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
+composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
