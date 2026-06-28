@@ -122,8 +122,7 @@ private fun TimelineNode(
                         val s = lerpFloat(1f, 1.12f, maxOf(sel, hover * 0.6f))
                         scaleX = s
                         scaleY = s
-                    }
-                    .size(52.dp)
+                    }.size(52.dp)
                     .clip(CircleShape)
                     .background(if (selected) AccentGradient else SolidColor(Surface))
                     .border(BorderStroke(2.dp, lerp(Border, Cyan, sel)), CircleShape),

@@ -17,14 +17,13 @@ import dev.chrisbanes.haze.hazeEffect
 val LocalHazeState = compositionLocalOf<HazeState?> { null }
 
 @Composable
-fun rememberGlassStyle(tintAlpha: Float): HazeStyle {
-    return HazeStyle(
+fun rememberGlassStyle(tintAlpha: Float): HazeStyle =
+    HazeStyle(
         backgroundColor = Background,
         tints = listOf(HazeTint(Surface.copy(alpha = tintAlpha))),
         blurRadius = 24.dp,
         noiseFactor = 0.04f,
     )
-}
 
 @Composable
 fun glassSheen(): Brush {

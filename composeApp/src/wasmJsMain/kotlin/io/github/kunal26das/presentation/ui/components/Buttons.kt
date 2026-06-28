@@ -47,8 +47,7 @@ fun GradientButton(
                 .graphicsLayer {
                     scaleX = lerpFloat(1f, 1.04f, p)
                     scaleY = lerpFloat(1f, 1.04f, p)
-                }
-                .clip(RoundedCornerShape(12.dp))
+                }.clip(RoundedCornerShape(12.dp))
                 .background(AccentGradient)
                 .hoverable(source)
                 .pointerHoverIcon(PointerIcon.Hand)
@@ -81,8 +80,7 @@ fun ThemeToggle(modifier: Modifier = Modifier) {
                 .border(
                     BorderStroke(1.dp, lerp(Border, Clay.copy(alpha = 0.6f), p)),
                     RoundedCornerShape(50),
-                )
-                .hoverable(source)
+                ).hoverable(source)
                 .pointerHoverIcon(PointerIcon.Hand)
                 .clickable(onClick = themeViewModel::toggle),
         contentAlignment = Alignment.Center,
@@ -107,8 +105,7 @@ fun OutlineButton(
                 .border(
                     BorderStroke(1.dp, lerp(Border, Cyan.copy(alpha = 0.6f), p)),
                     RoundedCornerShape(12.dp),
-                )
-                .hoverable(source)
+                ).hoverable(source)
                 .pointerHoverIcon(PointerIcon.Hand)
                 .clickable(onClick = onClick)
                 .padding(horizontal = 22.dp, vertical = 13.dp),

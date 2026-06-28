@@ -50,14 +50,12 @@ fun HoverCard(
                     val s = lerpFloat(1f, 1.02f, p)
                     scaleX = s
                     scaleY = s
-                }
-                .liquidGlass(RoundedCornerShape(18.dp), tintAlpha = 0.26f + 0.10f * p)
+                }.liquidGlass(RoundedCornerShape(18.dp), tintAlpha = 0.26f + 0.10f * p)
                 .border(BorderStroke(1.dp, lerp(baseBorder, glow.copy(alpha = 0.6f), p)), RoundedCornerShape(18.dp))
                 .hoverable(source)
                 .let {
                     if (onClick != null) it.pointerHoverIcon(PointerIcon.Hand).clickable(onClick = onClick) else it
-                }
-                .padding(24.dp),
+                }.padding(24.dp),
         content = content,
     )
 }
