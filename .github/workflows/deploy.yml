@@ -35,6 +35,12 @@ jobs:
       - name: Build Wasm distribution
         run: ./gradlew :composeApp:wasmJsBrowserDistribution --no-configuration-cache
 
+      - name: Include doom (built by kunal26das/doom CI into doom-dist/)
+        run: |
+          if [ -d doom-dist ]; then
+            cp -r doom-dist composeApp/build/dist/wasmJs/productionExecutable/doom
+          fi
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5
         with:
