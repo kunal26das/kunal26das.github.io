@@ -41,6 +41,10 @@ jobs:
             cp -r doom-dist composeApp/build/dist/wasmJs/productionExecutable/doom
           fi
 
+      - name: Include .well-known (skipped by resource copy)
+        run: |
+          cp -r composeApp/src/wasmJsMain/resources/.well-known composeApp/build/dist/wasmJs/productionExecutable/.well-known
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5
         with:
