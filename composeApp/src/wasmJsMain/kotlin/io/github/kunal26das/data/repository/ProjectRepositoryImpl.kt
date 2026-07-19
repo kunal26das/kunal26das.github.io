@@ -50,6 +50,7 @@ class ProjectRepositoryImpl : ProjectRepository {
                 repo = "https://github.com/kunal26das/doom",
                 web = "https://kunal26das.github.io/doom/",
                 webLabel = "Play in browser",
+                featured = true,
             ),
         )
 }
