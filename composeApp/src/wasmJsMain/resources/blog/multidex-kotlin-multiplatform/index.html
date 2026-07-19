@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One Kotlin codebase, three platforms: building Multidex with Compose Multiplatform</title>
+    <meta name="description" content="How a single Kotlin Multiplatform codebase ships a Pokédex app to Android, iOS and Desktop — module architecture, adaptive Material 3 layouts, palette-driven theming, and lessons learned.">
+    <link rel="canonical" href="https://kunal26das.github.io/blog/multidex-kotlin-multiplatform/">
+    <meta property="og:title" content="One Kotlin codebase, three platforms: building Multidex with Compose Multiplatform">
+    <meta property="og:description" content="Module architecture, adaptive Material 3, palette-driven theming, and the sharp edges of shipping KMP to Android, iOS and Desktop.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://kunal26das.github.io/blog/multidex-kotlin-multiplatform/">
+    <meta name="theme-color" content="#1B1916">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "One Kotlin codebase, three platforms: building Multidex with Compose Multiplatform",
+      "datePublished": "2026-07-20",
+      "author": { "@type": "Person", "name": "Kunal Das", "url": "https://kunal26das.github.io/" },
+      "url": "https://kunal26das.github.io/blog/multidex-kotlin-multiplatform/",
+      "description": "How a single Kotlin Multiplatform codebase ships a Pokédex app to Android, iOS and Desktop."
+    }
+    </script>
+    <style>
+        :root {
+            --bg: #1B1916; --paper: #26221E; --ink: #E8E2D9;
+            --muted: #A89F92; --clay: #D97757; --clay-soft: #E8916F;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; background: var(--bg); color: var(--ink);
+            font-family: Georgia, 'Times New Roman', serif; line-height: 1.7;
+        }
+        main { max-width: 720px; margin: 0 auto; padding: 64px 24px 96px; }
+        h1 { font-size: 2rem; line-height: 1.25; margin: 0 0 8px; }
+        .meta { color: var(--muted); margin: 0 0 36px; }
+        h2 { color: var(--clay-soft); margin-top: 44px; }
+        a { color: var(--clay); }
+        code, pre {
+            font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+            font-size: 0.92em; background: var(--paper); border-radius: 6px;
+        }
+        code { padding: 2px 6px; }
+        pre { padding: 16px 20px; overflow-x: auto; line-height: 1.5; }
+        pre code { padding: 0; background: none; }
+        .callout {
+            background: var(--paper); border-left: 3px solid var(--clay);
+            border-radius: 0 10px 10px 0; padding: 14px 20px; color: var(--muted);
+        }
+        footer { color: var(--muted); margin-top: 56px; font-size: 0.95rem; }
+    </style>
+</head>
+<body>
+<main>
+    <article>
+        <h1>One Kotlin codebase, three platforms: building Multidex with Compose Multiplatform</h1>
+        <p class="meta">Kunal Das · July 2026 · <a href="https://github.com/kunal26das/pokedex">source on GitHub</a></p>
+
+        <p><a href="https://kunal26das.github.io/multidex/">Multidex</a> is a Pokédex app that
+            ships to Android, iOS and Desktop (JVM) from one Kotlin codebase — Kotlin 2.4, Compose
+            Multiplatform 1.9, Material 3 Expressive. It's open source (MIT), it's live on
+            <a href="https://play.google.com/store/apps/details?id=io.github.kunal26das.multidex">Google Play</a>,
+            and this post is the honest write-up I wish I'd read before starting: how the modules
+            are cut, what shared beautifully, and where the platform seams still show.</p>
+
+        <h2>The module graph</h2>
+        <p>The build is split into layered Gradle modules, with dependencies pointing strictly
+            downward. Platform apps sit at the top; everything below them is a Kotlin Multiplatform
+            library compiled for <code>android</code>, <code>desktop</code> (JVM), and
+            <code>iosArm64</code>/<code>iosSimulatorArm64</code>:</p>
+        <pre><code>:android      Android app — signing, Firebase, Play Billing, splash
+:ios          Xcode wrapper — Swift entry point, embeds the Kotlin framework
+:app          shared Compose shell, navigation graph, desktop entry point
+:pokemon      domain models, repositories, Compose screens
+:data         PokéAPI DTOs and mappers
+:preferences  DataStore-backed settings and cache
+:common       theming, UI building blocks, cross-cutting utilities</code></pre>
+        <p>Data flows PokéAPI → Ktor client (<code>:data</code>) → repositories
+            (<code>:pokemon</code>) → Compose screens (<code>:app</code>), with responses cached
+            through DataStore so previously opened entries render offline. The per-target wiring
+            lives in one <code>multiplatform()</code> convention function in
+            <code>buildSrc</code>, so adding a module doesn't mean re-declaring four targets
+            every time.</p>
+        <div class="callout">Lesson one: cut modules by <em>responsibility</em>, not by platform.
+            The only platform-specific modules are the two entry points at the very top. Everything
+            else — including nearly all UI — is shared.</div>
+
+        <h2>What shared better than expected</h2>
+        <p><strong>The UI. Basically all of it.</strong> The same Compose screens run on a phone,
+            an iPad and a desktop window. Material 3 Adaptive handles the layout jumps —
+            list-detail panes on tablets and desktop, single pane on phones — from one navigation
+            graph (Navigation 3 with the ViewModel integration). I budgeted weeks for
+            "iOS UI work" that never materialized.</p>
+        <p><strong>Theming driven by artwork.</strong> Each Pokémon's detail screen extracts a
+            palette from its official artwork (via Kolor) and re-seeds the Material color scheme,
+            so every entry gets its own accent — a Charizard page feels warm, a Squirtle page cool.
+            This is pure shared Kotlin: one implementation, three platforms, no platform branches.</p>
+        <p><strong>Networking and caching.</strong> Ktor + kotlinx.serialization + DataStore work
+            identically everywhere. The offline story — cache every opened entry, serve it when the
+            network drops — required zero platform-specific code.</p>
+
+        <h2>Where the seams show</h2>
+        <p><strong>Everything around the app, not in it.</strong> The shared code was the easy 80%.
+            The per-platform 20% is services: Firebase (Analytics, Crashlytics, Performance) is
+            wired only in <code>:android</code>; Play Billing for the Shiny Charm in-app purchase
+            is Android-only, so the paywall in <code>:common</code> talks to an
+            <code>expect</code>/<code>actual</code> billing abstraction; on-device AI rewriting of
+            dex descriptions uses Google ML Kit GenAI, which exists only on Android — so it's a
+            capability the shared UI queries, not assumes.</p>
+        <p><strong>The iOS wrapper is thin but real.</strong> <code>:app</code> exports a framework
+            that a small Xcode project embeds. It's little Swift, but it's still a second build
+            system, a second signing story, and a second set of failure modes. CI that builds both
+            is non-negotiable.</p>
+        <p><strong>Version discipline.</strong> Compose Multiplatform, Material 3 Adaptive,
+            Navigation 3, Koin with KSP annotations — the stack moves fast and the compatible-set
+            matrix is unforgiving. A single <code>libs.versions.toml</code> catalog plus
+            <code>buildSrc</code> conventions is what keeps upgrades a one-line change instead of
+            an archaeology dig.</p>
+
+        <h2>Developer experience notes</h2>
+        <p>Compose Hot Reload on the desktop target changed how I work: UI iteration happens in a
+            desktop window with sub-second reloads, and Android/iOS become verification targets
+            rather than the inner loop. If you're doing KMP UI work and not exploiting the JVM
+            target for iteration speed, you're leaving the biggest DX win on the table.</p>
+        <p>Koin with Koin Annotations (KSP) gives DI that's declared once in shared code. The
+            trade-off is KSP build-time cost across four targets — noticeable, but worth it over
+            hand-wiring.</p>
+
+        <h2>Would I choose KMP again?</h2>
+        <p>For an app like this — content-heavy, UI-driven, no deep platform integrations at its
+            core — without hesitation. The shared fraction of the codebase is far past 90%, the
+            app feels native-fast on all three targets, and the desktop build exists purely
+            because it was nearly free. The honest caveat: the moment your app's value lives in
+            platform services (billing, ML, push, health APIs), you're back to writing careful
+            <code>expect</code>/<code>actual</code> seams — KMP shrinks that work, it doesn't
+            erase it.</p>
+
+        <p>The full source, including the module conventions and the adaptive layout setup, is at
+            <a href="https://github.com/kunal26das/pokedex">github.com/kunal26das/pokedex</a>. The
+            app is free on
+            <a href="https://play.google.com/store/apps/details?id=io.github.kunal26das.multidex">Google Play</a>.
+            Questions or corrections — <a href="mailto:kunal26das@gmail.com">email me</a>.</p>
+    </article>
+
+    <footer>
+        <a href="/blog/">← All writing</a> ·
+        <a href="https://kunal26das.github.io/">Home</a> ·
+        <a href="https://github.com/kunal26das">GitHub</a>
+    </footer>
+</main>
+</body>
+</html>
