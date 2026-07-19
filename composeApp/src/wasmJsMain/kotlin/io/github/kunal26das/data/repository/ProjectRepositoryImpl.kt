@@ -42,12 +42,14 @@ class ProjectRepositoryImpl : ProjectRepository {
                 featured = true,
             ),
             Project(
-                name = "Bunxdo",
+                name = "Doom",
                 blurb =
-                    "A freelance project — an app I built to help sellers run their business right " +
-                        "from their phone.",
-                tags = listOf("🛍️ For sellers", "📱 Android"),
-                repo = "https://github.com/kunal26das/bunxdo",
+                    "The classic DOOM, running right in your browser — a fun port project " +
+                        "you can play without installing anything.",
+                tags = listOf("🎮 Game", "🌐 Web"),
+                repo = "https://github.com/kunal26das/doom",
+                web = "https://kunal26das.github.io/doom/",
+                webLabel = "Play in browser",
             ),
         )
 }
