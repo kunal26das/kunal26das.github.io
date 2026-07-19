@@ -54,7 +54,7 @@ private fun ProjectCard(
     HoverCard(
         modifier = modifier,
         featured = project.featured,
-        onClick = { onOpenUrl(project.web ?: project.live ?: project.repo) },
+        onClick = { (project.web ?: project.live ?: project.repo)?.let(onOpenUrl) },
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             GradientTile(project.name.first().toString())
@@ -93,7 +93,9 @@ private fun ProjectCard(
             if (project.web != null) {
                 LinkText(project.webLabel ?: "Open web app") { onOpenUrl(project.web) }
             }
-            LinkText("Peek behind the scenes") { onOpenUrl(project.repo) }
+            if (project.repo != null) {
+                LinkText("Peek behind the scenes") { onOpenUrl(project.repo) }
+            }
         }
     }
 }

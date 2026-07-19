@@ -12,7 +12,6 @@ class ProjectRepositoryImpl : ProjectRepository {
                     "A playful pocket guide to the world of Pokémon — beautiful, fast, and fun to flip " +
                         "through. Free to download on Google Play.",
                 tags = listOf("🎮 Fun", "📱 Android"),
-                repo = "https://github.com/kunal26das/pokedex",
                 live = "https://play.google.com/store/apps/details?id=io.github.kunal26das.multidex",
                 liveLabel = "Play Store",
                 featured = true,

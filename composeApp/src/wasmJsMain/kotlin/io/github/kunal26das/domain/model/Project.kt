@@ -4,7 +4,7 @@ data class Project(
     val name: String,
     val blurb: String,
     val tags: List<String>,
-    val repo: String,
+    val repo: String? = null,
     val live: String? = null,
     val liveLabel: String? = null,
     val web: String? = null,
