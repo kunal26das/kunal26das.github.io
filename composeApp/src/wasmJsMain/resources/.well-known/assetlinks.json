@@ -1,0 +1,22 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "io.github.kunal26das.multidex",
+      "sha256_cert_fingerprints": [
+        "16:10:D3:D8:21:21:EE:AD:F8:C2:04:EE:CC:B4:D8:DE:65:D1:33:C3:BE:C3:A6:D7:7F:82:E6:73:A4:85:47:71"
+      ]
+    }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "io.github.kunal26das.yify",
+      "sha256_cert_fingerprints": [
+        "FD:E1:90:5C:25:FA:BE:94:F3:9C:20:B6:AF:90:E2:E6:E0:27:7A:B9:57:C2:63:E8:8B:63:56:EA:ED:82:FE:BE"
+      ]
+    }
+  }
+]
