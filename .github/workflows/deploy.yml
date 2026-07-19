@@ -49,6 +49,7 @@ jobs:
         uses: actions/upload-pages-artifact@v5
         with:
           path: composeApp/build/dist/wasmJs/productionExecutable
+          include-hidden-files: true
 
   deploy:
     needs: build
