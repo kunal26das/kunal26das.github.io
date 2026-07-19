@@ -3,17 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kunal Das — Mobile App Maker</title>
-    <meta name="description" content="Kunal Das — mobile app maker in Bengaluru building apps people love, on iPhone, Android and the web.">
-    <meta property="og:title" content="Kunal Das — Mobile App Maker">
-    <meta property="og:description" content="I make the apps that live on your phone — apps people love, on iPhone, Android and the web.">
+    <title>Kunal Das — Mobile App Developer (Android, iOS, Cross-Platform) | Bengaluru</title>
+    <meta name="description" content="Kunal Das is a mobile app developer in Bengaluru, India building Android, iOS and cross-platform apps since 2016 — including Multidex (a Kotlin Multiplatform Pokédex) and apps at Licious, Koo and Powerplay.">
+    <link rel="canonical" href="https://kunal26das.github.io/">
+    <meta property="og:title" content="Kunal Das — Mobile App Developer">
+    <meta property="og:description" content="Building Android, iOS and cross-platform apps people love — Kotlin Multiplatform, Compose, React Native. Maker of Multidex and Yify.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://kunal26das.github.io">
+    <meta property="og:url" content="https://kunal26das.github.io/">
+    <meta property="og:image" content="https://kunal26das.github.io/icon-512.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Kunal Das — Mobile App Developer">
+    <meta name="twitter:description" content="Building Android, iOS and cross-platform apps people love — maker of Multidex and Yify.">
+    <meta name="twitter:image" content="https://kunal26das.github.io/icon-512.png">
     <meta name="theme-color" content="#1B1916">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="manifest" href="site.webmanifest">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Kunal Das",
+      "url": "https://kunal26das.github.io/",
+      "email": "mailto:kunal26das@gmail.com",
+      "jobTitle": "Mobile App Developer",
+      "address": { "@type": "PostalAddress", "addressLocality": "Bengaluru", "addressCountry": "IN" },
+      "sameAs": [
+        "https://github.com/kunal26das",
+        "https://linkedin.com/in/kunal26das"
+      ],
+      "knowsAbout": ["Android", "iOS", "Kotlin Multiplatform", "Jetpack Compose", "React Native", "Mobile App Development"]
+    }
+    </script>
     <style>
         html, body {
             margin: 0;
@@ -23,9 +45,72 @@
             overflow: hidden;
             background: #1B1916;
         }
+        /* Crawlable fallback content — removed once the Compose app takes over. */
+        #static-content {
+            color: #E8E2D9;
+            font-family: Georgia, 'Times New Roman', serif;
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 48px 24px;
+            line-height: 1.6;
+        }
+        #static-content a { color: #D97757; }
     </style>
 </head>
 <body>
+<div id="static-content">
+    <h1>Kunal Das — Mobile App Developer</h1>
+    <p>I make the apps that live on your phone — the ones you tap open every day. From ordering
+        dinner to staying in touch, I help build experiences that just work and feel good to use —
+        on iPhone, on Android, and everywhere in between. Based in Bengaluru, India, building
+        mobile apps since 2016.</p>
+
+    <h2>Apps &amp; Projects</h2>
+    <ul>
+        <li><a href="/multidex/">Multidex</a> — a cross-platform Pokédex built with Kotlin
+            Multiplatform and Compose, on
+            <a href="https://play.google.com/store/apps/details?id=io.github.kunal26das.multidex">Google Play</a>.
+            <a href="https://github.com/kunal26das/pokedex">Source on GitHub</a>.</li>
+        <li><a href="https://kunal26das.github.io/yify/">Yify</a> — a movie discovery app for
+            iPhone, Android and the web, built with Expo + React Native.
+            <a href="https://play.google.com/store/apps/details?id=io.github.kunal26das.yify">Google Play</a> ·
+            <a href="https://github.com/kunal26das/yify">Source on GitHub</a>.</li>
+        <li><a href="https://kunal26das.github.io/doom/">DOOM in the browser</a> — the classic
+            game ported to WebAssembly. <a href="https://github.com/kunal26das/doom">Source on GitHub</a>.</li>
+        <li><a href="https://github.com/kunal26das/kunal26das.github.io">This website</a> — built
+            entirely in Kotlin with Compose Multiplatform compiled to WebAssembly.</li>
+    </ul>
+
+    <h2>Experience</h2>
+    <ul>
+        <li><strong>Licious</strong> (present) — building India's fresh meat &amp; seafood delivery
+            app used by 10 million+ people, across iOS and Android with a 99%+ crash-free rate.</li>
+        <li><strong>Alle</strong> (2023–2024) — founding team of an AI-powered fashion stylist app,
+            shipped from blank page to Play Store in two weeks.</li>
+        <li><strong>Koo</strong> (2022–2023) — made-in-India multilingual social app; feed
+            performance and personalization.</li>
+        <li><strong>Powerplay</strong> (2020–2022) — founding team of a construction team
+            management app; grew to 50,000 users in a single month.</li>
+    </ul>
+
+    <h2>Contact</h2>
+    <p><a href="mailto:kunal26das@gmail.com">kunal26das@gmail.com</a> ·
+        <a href="https://github.com/kunal26das">GitHub</a> ·
+        <a href="https://linkedin.com/in/kunal26das">LinkedIn</a></p>
+</div>
+<script>
+    // Remove the static fallback once the Compose app takes over the viewport.
+    (function () {
+        var check = setInterval(function () {
+            if (document.querySelector('canvas')) {
+                var el = document.getElementById('static-content');
+                if (el) el.remove();
+                clearInterval(check);
+            }
+        }, 100);
+        setTimeout(function () { clearInterval(check); }, 15000);
+    })();
+</script>
 <script src="composeApp.js"></script>
 </body>
 </html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multidex — Cross-Platform Pokédex App for Android, iOS &amp; Desktop</title>
+    <meta name="description" content="Multidex is a fast, offline-friendly Pokédex app built with Kotlin Multiplatform. Browse Pokémon, moves, types and abilities with shiny artwork and multi-language support — free on Google Play.">
+    <link rel="canonical" href="https://kunal26das.github.io/multidex/">
+    <meta property="og:title" content="Multidex — Cross-Platform Pokédex App">
+    <meta property="og:description" content="A fast, offline-friendly Pokédex for Android, iOS and Desktop. Free on Google Play.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kunal26das.github.io/multidex/">
+    <meta property="og:image" content="https://kunal26das.github.io/icon-512.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="theme-color" content="#1B1916">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Multidex",
+      "operatingSystem": "ANDROID",
+      "applicationCategory": "EntertainmentApplication",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "url": "https://kunal26das.github.io/multidex/",
+      "installUrl": "https://play.google.com/store/apps/details?id=io.github.kunal26das.multidex",
+      "author": { "@type": "Person", "name": "Kunal Das", "url": "https://kunal26das.github.io/" },
+      "description": "A cross-platform Pokédex app built with Kotlin Multiplatform and Compose Multiplatform. Browse Pokémon species, moves, types and abilities — offline-friendly, with shiny artwork and multi-language names."
+    }
+    </script>
+    <style>
+        :root {
+            --bg: #1B1916; --paper: #26221E; --ink: #E8E2D9;
+            --muted: #A89F92; --clay: #D97757; --clay-soft: #E8916F;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; background: var(--bg); color: var(--ink);
+            font-family: Georgia, 'Times New Roman', serif; line-height: 1.65;
+        }
+        main { max-width: 720px; margin: 0 auto; padding: 64px 24px 96px; }
+        h1 { font-size: 2.4rem; margin: 0 0 4px; }
+        .tagline { color: var(--clay-soft); font-size: 1.15rem; margin: 0 0 24px; }
+        h2 { color: var(--clay-soft); margin-top: 40px; }
+        a { color: var(--clay); }
+        .cta {
+            display: inline-block; background: var(--clay); color: #fff; text-decoration: none;
+            padding: 12px 24px; border-radius: 10px; font-size: 1.05rem; margin: 8px 12px 8px 0;
+        }
+        .cta.secondary { background: transparent; border: 1px solid var(--clay); color: var(--clay); }
+        .card {
+            background: var(--paper); border-radius: 14px; padding: 20px 24px; margin: 16px 0;
+        }
+        .muted { color: var(--muted); }
+        footer { color: var(--muted); margin-top: 56px; font-size: 0.95rem; }
+    </style>
+</head>
+<body>
+<main>
+    <h1>Multidex</h1>
+    <p class="tagline">A beautiful, offline-friendly Pokédex — on Android, iOS and Desktop.</p>
+
+    <p>Multidex is a playful pocket guide to the world of Pokémon. Browse every species, move,
+        type and ability, with artwork-driven theming, multi-language names and flavor text, and
+        smart caching so entries you've opened keep working offline.</p>
+
+    <p>
+        <a class="cta" href="https://play.google.com/store/apps/details?id=io.github.kunal26das.multidex">Get it on Google Play</a>
+        <a class="cta secondary" href="https://github.com/kunal26das/pokedex">View source on GitHub</a>
+    </p>
+
+    <h2>Features</h2>
+    <div class="card">
+        <ul>
+            <li><strong>Complete Pokédex</strong> — species, individual Pokémon, moves, types and abilities from PokéAPI.</li>
+            <li><strong>Offline-friendly</strong> — previously opened entries are cached on-device.</li>
+            <li><strong>Multi-language</strong> — Pokémon names and flavor text in your language, where available.</li>
+            <li><strong>Shiny artwork</strong> — unlock shiny forms with the in-app Shiny Charm.</li>
+            <li><strong>Adaptive design</strong> — Material 3 Expressive theming with accents drawn from each Pokémon's artwork, scaling from phone to tablet to desktop.</li>
+            <li><strong>AI descriptions</strong> — on-device AI rewriting of descriptions on supported Android devices.</li>
+        </ul>
+    </div>
+
+    <h2>One codebase, three platforms</h2>
+    <p>Multidex is built with <a href="https://kotlinlang.org/docs/multiplatform.html">Kotlin
+        Multiplatform</a> and <a href="https://www.jetbrains.com/lp/compose-multiplatform/">Compose
+        Multiplatform</a> — a single Kotlin codebase shipping to Android, iOS and Desktop (JVM).
+        The project is open source under the MIT license; developers are welcome to explore
+        <a href="https://github.com/kunal26das/pokedex">the code on GitHub</a>.</p>
+
+    <p class="muted">Multidex is a fan-made app. Pokémon and Pokémon character names are trademarks
+        of Nintendo, Creatures Inc. and GAME FREAK inc. This app is not affiliated with or endorsed
+        by them; data comes from the community-run <a href="https://pokeapi.co/">PokéAPI</a>.</p>
+
+    <footer>
+        Made by <a href="https://kunal26das.github.io/">Kunal Das</a> ·
+        <a href="mailto:kunal26das@gmail.com">kunal26das@gmail.com</a>
+    </footer>
+</main>
+</body>
+</html>
