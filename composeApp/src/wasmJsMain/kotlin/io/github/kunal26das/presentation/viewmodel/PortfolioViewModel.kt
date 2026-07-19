@@ -1,5 +1,6 @@
 package io.github.kunal26das.presentation.viewmodel
 
+import io.github.kunal26das.domain.repository.ArticleRepository
 import io.github.kunal26das.domain.repository.ExperienceRepository
 import io.github.kunal26das.domain.repository.ProfileRepository
 import io.github.kunal26das.domain.repository.ProjectRepository
@@ -12,6 +13,7 @@ class PortfolioViewModel(
     skillRepository: SkillRepository,
     projectRepository: ProjectRepository,
     experienceRepository: ExperienceRepository,
+    articleRepository: ArticleRepository,
     private val linkOpener: LinkOpener,
 ) {
     val uiState: PortfolioUiState =
@@ -20,6 +22,7 @@ class PortfolioViewModel(
             skills = skillRepository.getSkills(),
             projects = projectRepository.getProjects(),
             experiences = experienceRepository.getExperiences(),
+            articles = articleRepository.getArticles(),
         )
 
     fun onOpenUrl(url: String) {

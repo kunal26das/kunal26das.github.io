@@ -1,5 +1,6 @@
 package io.github.kunal26das.presentation.state
 
+import io.github.kunal26das.domain.model.Article
 import io.github.kunal26das.domain.model.Experience
 import io.github.kunal26das.domain.model.Profile
 import io.github.kunal26das.domain.model.Project
@@ -10,4 +11,5 @@ data class PortfolioUiState(
     val skills: List<SkillGroup>,
     val projects: List<Project>,
     val experiences: List<Experience>,
+    val articles: List<Article>,
 )

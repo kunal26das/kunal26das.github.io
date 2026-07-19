@@ -100,6 +100,7 @@ fun TopNav(
                     ) {
                         NavLink("About") { onNavigate("about") }
                         NavLink("Work") { onNavigate("work") }
+                        NavLink("Writing") { onNavigate("writing") }
                         NavLink("Journey") { onNavigate("journey") }
                         Spacer(Modifier.width(8.dp))
                     }

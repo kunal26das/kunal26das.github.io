@@ -34,6 +34,7 @@ import io.github.kunal26das.presentation.ui.sections.FooterSection
 import io.github.kunal26das.presentation.ui.sections.HeroSection
 import io.github.kunal26das.presentation.ui.sections.ProjectsSection
 import io.github.kunal26das.presentation.ui.sections.SkillsSection
+import io.github.kunal26das.presentation.ui.sections.WritingSection
 import kotlinx.coroutines.launch
 
 @Composable
@@ -84,6 +85,7 @@ fun App() {
                     Anchor("about", anchors) { AboutSection(state.profile) }
                     Anchor("skills", anchors) { SkillsSection(state.skills) }
                     Anchor("work", anchors) { ProjectsSection(state.projects, viewModel::onOpenUrl) }
+                    Anchor("writing", anchors) { WritingSection(state.articles, viewModel::onOpenUrl) }
                     Anchor("journey", anchors) { ExperienceSection(state.experiences, viewModel::onOpenUrl) }
                     Anchor("contact", anchors) {
                         FooterSection(state.profile, viewModel::onContact, viewModel::onOpenUrl)

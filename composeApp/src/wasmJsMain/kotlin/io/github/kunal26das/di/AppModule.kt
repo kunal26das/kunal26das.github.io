@@ -1,11 +1,13 @@
 package io.github.kunal26das.di
 
+import io.github.kunal26das.data.repository.ArticleRepositoryImpl
 import io.github.kunal26das.data.repository.ExperienceRepositoryImpl
 import io.github.kunal26das.data.repository.ProfileRepositoryImpl
 import io.github.kunal26das.data.repository.ProjectRepositoryImpl
 import io.github.kunal26das.data.repository.SkillRepositoryImpl
 import io.github.kunal26das.data.service.BrowserLinkOpener
 import io.github.kunal26das.data.service.LocalStorageThemePreferenceStore
+import io.github.kunal26das.domain.repository.ArticleRepository
 import io.github.kunal26das.domain.repository.ExperienceRepository
 import io.github.kunal26das.domain.repository.ProfileRepository
 import io.github.kunal26das.domain.repository.ProjectRepository
@@ -20,6 +22,7 @@ object AppModule {
     private val skillRepository: SkillRepository = SkillRepositoryImpl()
     private val projectRepository: ProjectRepository = ProjectRepositoryImpl()
     private val experienceRepository: ExperienceRepository = ExperienceRepositoryImpl()
+    private val articleRepository: ArticleRepository = ArticleRepositoryImpl()
     private val linkOpener: LinkOpener = BrowserLinkOpener()
     private val themePreferenceStore: ThemePreferenceStore = LocalStorageThemePreferenceStore()
 
@@ -29,6 +32,7 @@ object AppModule {
             skillRepository = skillRepository,
             projectRepository = projectRepository,
             experienceRepository = experienceRepository,
+            articleRepository = articleRepository,
             linkOpener = linkOpener,
         )
 
