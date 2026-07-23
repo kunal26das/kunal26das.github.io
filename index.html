@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Calculate the radial distance to points on a circle involute."
+    />
+    <title>Involute calculator</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #1c2621;
+        --muted: #59655d;
+        --paper: #f6f3eb;
+        --panel: #fffdf8;
+        --accent: #096b50;
+        --accent-dark: #064c3a;
+        --line: #d8d7cb;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-width: 320px;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 85% 8%, #d4eadc 0, transparent 24rem),
+          var(--paper);
+        font: 16px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      main {
+        width: min(100% - 2rem, 960px);
+        margin: 0 auto;
+        padding: clamp(3rem, 9vw, 7rem) 0 4rem;
+      }
+
+      .eyebrow {
+        margin: 0 0 .7rem;
+        color: var(--accent);
+        font-weight: 750;
+        font-size: .78rem;
+        letter-spacing: .13em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        max-width: 12ch;
+        margin: 0;
+        font-family: Iowan Old Style, Palatino Linotype, Book Antiqua, Georgia, serif;
+        font-size: clamp(2.7rem, 8vw, 5.3rem);
+        font-weight: 600;
+        line-height: .94;
+        letter-spacing: -.055em;
+      }
+
+      .intro {
+        max-width: 55ch;
+        margin: 1.4rem 0 2.75rem;
+        color: var(--muted);
+        font-size: 1.06rem;
+      }
+
+      .calculator {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(260px, .85fr);
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: var(--panel);
+        box-shadow: 0 14px 35px rgb(26 42 32 / 8%);
+      }
+
+      form { padding: clamp(1.3rem, 4vw, 2.4rem); }
+      h2 { margin: 0 0 1.35rem; font-size: 1.25rem; }
+      label { display: block; margin: 1rem 0 .42rem; font-weight: 700; }
+      input {
+        width: 100%;
+        padding: .7rem .8rem;
+        border: 1px solid #b8bcb5;
+        border-radius: 8px;
+        color: var(--ink);
+        background: #fff;
+        font: inherit;
+      }
+      input:focus { outline: 3px solid #9ed7c2; border-color: var(--accent); }
+      .hint { margin: .45rem 0 1.45rem; color: var(--muted); font-size: .86rem; }
+      button {
+        width: 100%;
+        padding: .8rem 1rem;
+        border: 0;
+        border-radius: 8px;
+        color: #fff;
+        background: var(--accent);
+        cursor: pointer;
+        font: inherit;
+        font-weight: 750;
+      }
+      button:hover { background: var(--accent-dark); }
+
+      .result {
+        min-height: 100%;
+        padding: clamp(1.3rem, 4vw, 2.4rem);
+        color: #f5fbf7;
+        background: #183d31;
+      }
+      .result h2 { color: #fff; }
+      .result p { margin: 0 0 1rem; color: #c3d6ca; }
+      .error { min-height: 1.5rem; margin-top: 1rem; color: #a82525; font-weight: 650; }
+      .result .error { color: #ffb5ad; }
+      .table-wrap { max-height: 355px; overflow: auto; border-top: 1px solid rgb(255 255 255 / 20%); }
+      table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+      th, td { padding: .6rem .25rem; text-align: right; border-bottom: 1px solid rgb(255 255 255 / 14%); }
+      th { position: sticky; top: 0; color: #c3d6ca; background: #183d31; font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; }
+      th:first-child, td:first-child { text-align: left; }
+
+      .method { max-width: 70ch; margin: 3.4rem 0 0; color: var(--muted); }
+      .method strong { color: var(--ink); }
+
+      @media (max-width: 650px) {
+        .calculator { grid-template-columns: 1fr; }
+        .result { min-height: 330px; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="eyebrow">Engineering utility</p>
+      <h1>Involute calculator</h1>
+      <p class="intro">
+        Find the distance from the centre of a circle to points on its involute,
+        sampled at the angle interval you choose.
+      </p>
+
+      <section class="calculator" aria-label="Involute calculator">
+        <form id="calculator-form" novalidate>
+          <h2>Inputs</h2>
+          <label for="radius">Circle radius</label>
+          <input id="radius" name="radius" type="number" min="1" step="1" value="45" required />
+          <p class="hint">Use the same unit in which you want the distance reported.</p>
+
+          <label for="delta">Angle interval (degrees)</label>
+          <input id="delta" name="delta" type="number" min="1" max="359" step="1" value="15" required />
+          <p class="hint">For example, 15 returns results at 15°, 30°, and so on.</p>
+
+          <button type="submit">Calculate distances</button>
+          <p id="form-error" class="error" role="alert" aria-live="polite"></p>
+        </form>
+
+        <div class="result" aria-live="polite">
+          <h2>Results</h2>
+          <p id="result-summary">Enter the radius and interval, then calculate.</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th scope="col">Angle</th><th scope="col">Distance</th></tr></thead>
+              <tbody id="results"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <p class="method">
+        <strong>Method:</strong> this browser version preserves the original script’s
+        two-decimal angle sampling and degree-wise averaging, while making the
+        calculator available without installing Python.
+      </p>
+    </main>
+
+    <script>
+      (() => {
+        const form = document.querySelector('#calculator-form');
+        const radiusInput = document.querySelector('#radius');
+        const deltaInput = document.querySelector('#delta');
+        const error = document.querySelector('#form-error');
+        const summary = document.querySelector('#result-summary');
+        const results = document.querySelector('#results');
+        const dtr = (22 / 7) / 180;
+        const rtd = 180 / (22 / 7);
+
+        function calculateDistances(radius) {
+          // A map keyed by the rounded angle deliberately matches main.py:
+          // later samples replace earlier ones that round to the same angle.
+          const samples = new Map();
+          const totals = new Map();
+          const counts = new Map();
+          const precision = 0.01;
+
+          for (let t1 = 0; ; t1 += precision) {
+            const side = radius * t1 * dtr;
+            const t2 = Math.round((t1 - Math.atan(side / radius) * rtd) * 100) / 100;
+            if (t2 >= 360) break;
+
+            const distance = Math.hypot(radius, side);
+            samples.set(t2, distance);
+          }
+
+          for (const [angle, distance] of samples) {
+            const degree = Math.ceil(angle);
+            if (degree >= 360) break;
+            totals.set(degree, (totals.get(degree) || 0) + distance);
+            counts.set(degree, (counts.get(degree) || 0) + 1);
+          }
+
+          return [...totals].map(([degree, total]) => ({
+            degree,
+            distance: Math.round((total / counts.get(degree)) * 100) / 100,
+          }));
+        }
+
+        function render(radius, delta) {
+          const rows = calculateDistances(radius).filter(({ degree }) => degree % delta === 0);
+          results.replaceChildren();
+          for (const { degree, distance } of rows) {
+            const row = document.createElement('tr');
+            const angle = document.createElement('td');
+            const value = document.createElement('td');
+            angle.textContent = `${degree}\u00b0`;
+            value.textContent = distance.toFixed(2);
+            row.append(angle, value);
+            results.append(row);
+          }
+          summary.textContent = `${rows.length} distances for a radius of ${radius}, every ${delta}\u00b0.`;
+        }
+
+        form.addEventListener('submit', (event) => {
+          event.preventDefault();
+          const radius = Number(radiusInput.value);
+          const delta = Number(deltaInput.value);
+          if (!Number.isInteger(radius) || radius < 1) {
+            error.textContent = 'Enter a whole-number radius of 1 or greater.';
+            radiusInput.focus();
+            return;
+          }
+          if (!Number.isInteger(delta) || delta < 1 || delta > 359) {
+            error.textContent = 'Enter a whole-number angle interval from 1 to 359.';
+            deltaInput.focus();
+            return;
+          }
+          error.textContent = '';
+          render(radius, delta);
+        });
+
+        render(Number(radiusInput.value), Number(deltaInput.value));
+      })();
+    </script>
+  </body>
+</html>
