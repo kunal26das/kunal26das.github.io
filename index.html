@@ -30,9 +30,7 @@
         margin: 0;
         overflow: hidden;
         color: var(--ink);
-        background:
-          radial-gradient(circle at 85% 8%, #d4eadc 0, transparent 24rem),
-          var(--paper);
+        background: var(--paper);
         font: 15px/1.45 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       }
 
@@ -126,6 +124,9 @@
       .string-line { stroke: var(--muted); stroke-width: 1.3; stroke-dasharray: 5 4; }
       .radial-line { stroke: var(--ink); stroke-width: 1.3; }
       .marker-dot { fill: var(--curve); }
+      .interval-ray { stroke: var(--line); stroke-width: 1; }
+      .interval-dot { fill: var(--panel); stroke: var(--curve); stroke-width: 1.8; }
+      .interval-label { fill: var(--muted); font-size: 10px; text-anchor: middle; }
       .tangent-dot { fill: var(--circle); }
       .centre-dot { fill: var(--ink); }
       .svg-label { fill: var(--muted); font-size: 12px; }
@@ -164,7 +165,7 @@
           <div class="controls">
             <div class="field">
               <label for="radius">Circle radius <output id="radius-value">45</output></label>
-              <input id="radius" type="range" min="1" max="200" step="1" value="45" />
+              <input id="radius" type="range" min="1" max="100" step="1" value="45" />
               <p class="hint">Use the same unit in which you want the distance reported.</p>
             </div>
 
@@ -195,6 +196,7 @@
             <line class="axis" x1="0" y1="320" x2="640" y2="320"></line>
             <line class="axis" x1="320" y1="0" x2="320" y2="640"></line>
             <circle id="base-circle" class="base-circle" cx="320" cy="320"></circle>
+            <g id="interval-group"></g>
             <path id="involute-path" class="involute-path"></path>
             <line id="string-line" class="string-line"></line>
             <line id="radial-line" class="radial-line"></line>
@@ -237,6 +239,8 @@
         const tangentDot = $('tangent-dot');
         const markerDot = $('marker-dot');
         const markerLabel = $('marker-label');
+        const intervalGroup = $('interval-group');
+        const SVG_NS = 'http://www.w3.org/2000/svg';
 
         const CX = 320, CY = 320;
         const dtr = (22 / 7) / 180;
@@ -278,7 +282,10 @@
 
         function renderGraph(radius, unwindDeg) {
           const t = unwindDeg * Math.PI / 180;
-          const tMax = Math.max(t, Math.PI * 1.15);
+          // Unwrap angle at which the involute's polar angle reaches 360°,
+          // i.e. the solution of t - atan(t) = 2*pi. Drawing the curve this far
+          // means every tabulated sample point lies on the visible curve.
+          const tMax = 7.633;
           // Anchor the scale to the slider's maximum radius so changing the
           // radius visibly resizes the geometry (the involute is self-similar,
           // so a fit-to-view scale would make every radius look identical).
@@ -323,11 +330,44 @@
           statPolar.textContent = `${polar.toFixed(2)}°`;
           statDistance.textContent = (radius * Math.hypot(1, t)).toFixed(2);
           statArc.textContent = (radius * t).toFixed(2);
-          return polar;
+          return { polar, scale };
         }
 
-        function renderTable(radius, delta, polar) {
-          const rows = calculateDistances(radius).filter(({ degree }) => degree % delta === 0);
+        function renderIntervalMarks(rows, scale) {
+          intervalGroup.replaceChildren();
+          const showLabels = rows.length <= 16;
+          for (const { degree, distance } of rows) {
+            const a = degree * Math.PI / 180;
+            const x = CX + distance * Math.cos(a) * scale;
+            const y = CY - distance * Math.sin(a) * scale;
+
+            const ray = document.createElementNS(SVG_NS, 'line');
+            ray.setAttribute('class', 'interval-ray');
+            ray.setAttribute('x1', CX);
+            ray.setAttribute('y1', CY);
+            ray.setAttribute('x2', x.toFixed(2));
+            ray.setAttribute('y2', y.toFixed(2));
+            intervalGroup.append(ray);
+
+            const dot = document.createElementNS(SVG_NS, 'circle');
+            dot.setAttribute('class', 'interval-dot');
+            dot.setAttribute('r', 3.5);
+            dot.setAttribute('cx', x.toFixed(2));
+            dot.setAttribute('cy', y.toFixed(2));
+            intervalGroup.append(dot);
+
+            if (showLabels && degree > 0) {
+              const label = document.createElementNS(SVG_NS, 'text');
+              label.setAttribute('class', 'interval-label');
+              label.setAttribute('x', (CX + (distance * scale + 14) * Math.cos(a)).toFixed(2));
+              label.setAttribute('y', (CY - (distance * scale + 14) * Math.sin(a) - 4).toFixed(2));
+              label.textContent = `${degree}°`;
+              intervalGroup.append(label);
+            }
+          }
+        }
+
+        function renderTable(rows, polar) {
           const highlightDegree = Math.ceil(polar);
           results.replaceChildren();
           let highlightRow = null;
@@ -356,8 +396,10 @@
           deltaValue.textContent = `${delta}°`;
           unwindValue.textContent = `${unwind}°`;
 
-          const polar = renderGraph(radius, unwind);
-          renderTable(radius, delta, polar);
+          const { polar, scale } = renderGraph(radius, unwind);
+          const rows = calculateDistances(radius).filter(({ degree }) => degree % delta === 0);
+          renderIntervalMarks(rows, scale);
+          renderTable(rows, polar);
         }
 
         radiusRange.addEventListener('input', render);
