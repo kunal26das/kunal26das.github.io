@@ -165,7 +165,6 @@
             <div class="field">
               <label for="radius">Circle radius <output id="radius-value">45</output></label>
               <input id="radius" type="range" min="1" max="200" step="1" value="45" />
-              <input id="radius-number" type="number" min="1" max="200" step="1" value="45" aria-label="Circle radius (exact value)" />
               <p class="hint">Use the same unit in which you want the distance reported.</p>
             </div>
 
@@ -222,7 +221,6 @@
       (() => {
         const $ = (id) => document.getElementById(id);
         const radiusRange = $('radius');
-        const radiusNumber = $('radius-number');
         const deltaRange = $('delta');
         const unwindRange = $('unwind');
         const radiusValue = $('radius-value');
@@ -281,10 +279,13 @@
         function renderGraph(radius, unwindDeg) {
           const t = unwindDeg * Math.PI / 180;
           const tMax = Math.max(t, Math.PI * 1.15);
-          // Fit circle plus full drawn curve inside the viewBox.
-          let extent = radius;
+          // Anchor the scale to the slider's maximum radius so changing the
+          // radius visibly resizes the geometry (the involute is self-similar,
+          // so a fit-to-view scale would make every radius look identical).
+          const maxRadius = Number(radiusRange.max);
+          let extent = maxRadius;
           for (let i = 0; i <= 240; i++) {
-            const p = involutePoint(radius, tMax * i / 240);
+            const p = involutePoint(maxRadius, tMax * i / 240);
             extent = Math.max(extent, Math.abs(p.x), Math.abs(p.y));
           }
           const scale = 295 / extent;
@@ -347,11 +348,10 @@
         }
 
         function render() {
-          const radius = Math.min(200, Math.max(1, Math.round(Number(radiusNumber.value) || Number(radiusRange.value))));
+          const radius = Number(radiusRange.value);
           const delta = Number(deltaRange.value);
           const unwind = Number(unwindRange.value);
 
-          radiusRange.value = radius;
           radiusValue.textContent = radius;
           deltaValue.textContent = `${delta}°`;
           unwindValue.textContent = `${unwind}°`;
@@ -360,8 +360,7 @@
           renderTable(radius, delta, polar);
         }
 
-        radiusRange.addEventListener('input', () => { radiusNumber.value = radiusRange.value; render(); });
-        radiusNumber.addEventListener('input', render);
+        radiusRange.addEventListener('input', render);
         deltaRange.addEventListener('input', render);
         unwindRange.addEventListener('input', render);
         render();
