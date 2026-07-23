@@ -4,6 +4,8 @@ A browser-based calculator for finding the distance between the centre of a circ
 and a point on its involute at selected angle intervals.
 
 The site is deployed to [kunal26das.github.io/involute](https://kunal26das.github.io/involute/).
+The interactive geometry explorer is available at
+[kunal26das.github.io/involute/explorer.html](https://kunal26das.github.io/involute/explorer.html).
 
 ## Use locally
 

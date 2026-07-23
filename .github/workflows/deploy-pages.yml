@@ -28,7 +28,7 @@ jobs:
       - name: Prepare site
         run: |
           mkdir -p "$RUNNER_TEMP/involute-site"
-          cp index.html "$RUNNER_TEMP/involute-site/index.html"
+          cp index.html explorer.html "$RUNNER_TEMP/involute-site/"
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:
