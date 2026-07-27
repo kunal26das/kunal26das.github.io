@@ -1,4 +1,57 @@
+# Search engines: index everything. This is the only robots.txt for the whole
+# kunal26das.github.io origin, so it also covers the project pages under it
+# (/yify, /doom) — a robots.txt at a subpath is never read by crawlers.
 User-agent: *
 Allow: /
 
 Sitemap: https://kunal26das.github.io/sitemap.xml
+
+# Commercial SEO and backlink crawlers. They fetch every page repeatedly and
+# return nothing to anyone visiting the site.
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: DataForSeoBot
+Disallow: /
+
+User-agent: PetalBot
+Disallow: /
+
+User-agent: Barkrowler
+Disallow: /
+
+# Crawlers that harvest pages for model training. These are separate from the
+# search crawlers above: removing a block opts back in without affecting how the
+# site is indexed or ranked.
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: meta-externalagent
+Disallow: /
