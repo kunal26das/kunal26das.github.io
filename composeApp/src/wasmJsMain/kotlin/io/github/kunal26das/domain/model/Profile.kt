@@ -7,6 +7,7 @@ data class Profile(
     val location: String,
     val linkedIn: String,
     val gitHub: String,
+    val resume: String,
     val email: String,
     val since: Int,
 )

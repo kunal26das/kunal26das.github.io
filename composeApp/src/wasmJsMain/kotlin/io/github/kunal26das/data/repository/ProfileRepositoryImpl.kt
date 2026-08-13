@@ -15,7 +15,8 @@ class ProfileRepositoryImpl : ProfileRepository {
             location = "Bengaluru, India",
             linkedIn = "https://linkedin.com/in/kunal26das",
             gitHub = "https://github.com/kunal26das",
+            resume = "https://kunal26das.github.io/resume/",
             email = "kunal26das@gmail.com",
-            since = 2016,
+            since = 2019,
         )
 }

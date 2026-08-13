@@ -51,6 +51,7 @@ fun FooterSection(
                     verticalArrangement = Arrangement.spacedBy(14.dp),
                 ) {
                     SayHelloButton(onClick = onContact)
+                    OutlineButton("Read my résumé") { onOpenUrl(profile.resume) }
                     OutlineButton("See my code") { onOpenUrl(profile.gitHub) }
                     OutlineButton("Connect on LinkedIn") { onOpenUrl(profile.linkedIn) }
                 }

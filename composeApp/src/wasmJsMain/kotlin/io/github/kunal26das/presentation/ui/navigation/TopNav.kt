@@ -51,6 +51,7 @@ fun TopNav(
     scrolled: Float,
     onHome: () -> Unit,
     onNavigate: (String) -> Unit,
+    onResume: () -> Unit,
     onContact: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -102,6 +103,7 @@ fun TopNav(
                         NavLink("Work") { onNavigate("work") }
                         NavLink("Writing") { onNavigate("writing") }
                         NavLink("Journey") { onNavigate("journey") }
+                        NavLink("Résumé") { onResume() }
                         Spacer(Modifier.width(8.dp))
                     }
                 }

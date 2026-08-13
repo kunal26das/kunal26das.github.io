@@ -99,6 +99,7 @@ fun App() {
                     scrolled = scrolled,
                     onHome = { scope.launch { scroll.animateScrollTo(0) } },
                     onNavigate = { goTo(it) },
+                    onResume = { viewModel.onOpenUrl(state.profile.resume) },
                     onContact = viewModel::onContact,
                     modifier = Modifier.align(Alignment.TopCenter),
                 )

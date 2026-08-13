@@ -127,7 +127,7 @@ fun HeroSection(
                 Stat("10M+", "People reached")
                 Stat("99%+", "Crash-free & happy")
                 Stat("4 apps", "Live on the stores")
-                Stat("Since 2016", "Making apps")
+                Stat("Since ${profile.since}", "Making apps")
             }
         }
     }
