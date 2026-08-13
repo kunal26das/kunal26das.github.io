@@ -71,7 +71,8 @@ fun TopNav(
                 .background(lerp(Color.Transparent, Border, scrolled)),
         )
         BoxWithConstraints(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-            val compact = maxWidth < 720.dp
+            // Five nav links + toggle + CTA need ~752dp; below that the CTA gets squeezed and wraps.
+            val compact = maxWidth < 780.dp
             Row(
                 modifier =
                     Modifier
