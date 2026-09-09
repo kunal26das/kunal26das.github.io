@@ -23,41 +23,65 @@
       "description": "How a single Kotlin Multiplatform codebase ships a Pokédex app to Android, iOS and Desktop."
     }
     </script>
-    <style>
-        :root {
-            --bg: #1B1916; --paper: #26221E; --ink: #E8E2D9;
-            --muted: #A89F92; --clay: #D97757; --clay-soft: #E8916F;
-        }
-        * { box-sizing: border-box; }
-        body {
-            margin: 0; background: var(--bg); color: var(--ink);
-            font-family: Georgia, 'Times New Roman', serif; line-height: 1.7;
-        }
-        main { max-width: 720px; margin: 0 auto; padding: 64px 24px 96px; }
-        h1 { font-size: 2rem; line-height: 1.25; margin: 0 0 8px; }
-        .meta { color: var(--muted); margin: 0 0 36px; }
-        h2 { color: var(--clay-soft); margin-top: 44px; }
-        a { color: var(--clay); }
-        code, pre {
-            font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-            font-size: 0.92em; background: var(--paper); border-radius: 6px;
-        }
-        code { padding: 2px 6px; }
-        pre { padding: 16px 20px; overflow-x: auto; line-height: 1.5; }
-        pre code { padding: 0; background: none; }
-        .callout {
-            background: var(--paper); border-left: 3px solid var(--clay);
-            border-radius: 0 10px 10px 0; padding: 14px 20px; color: var(--muted);
-        }
-        footer { color: var(--muted); margin-top: 56px; font-size: 0.95rem; }
-    </style>
+    <link rel="stylesheet" href="/blog/blog.css">
+    <script src="/blog/blog.js" defer></script>
 </head>
 <body>
-<main>
-    <article>
-        <h1>One Kotlin codebase, three platforms: building Multidex with Compose Multiplatform</h1>
-        <p class="meta">Kunal Das · July 2026</p>
-
+<a class="skip-link" href="#main">Skip to article</a>
+<div class="reading-progress" aria-hidden="true" data-reading-progress></div>
+<header class="site-header">
+    <div class="shell header-inner">
+        <a class="brand" href="/" aria-label="Kunal Das — home">
+            <span class="brand-mark" aria-hidden="true">KD</span>
+            <span class="brand-name">Kunal Das</span>
+        </a>
+        <nav class="header-nav" aria-label="Main navigation">
+            <a href="/">Portfolio</a>
+            <a href="/blog/" aria-current="page">Writing</a>
+            <a href="/feed.xml">RSS</a>
+        </nav>
+        <button class="theme-toggle" type="button" hidden data-theme-toggle aria-label="Switch color theme">Theme</button>
+    </div>
+</header>
+<main id="main" class="shell article-page">
+    <header class="article-header">
+        <a class="back-link" href="/blog/">← All writing</a>
+        <p class="eyebrow">Engineering notes · Kotlin Multiplatform</p>
+        <h1 class="article-title" id="article-title">One Kotlin codebase.<br><em>Three platforms.</em></h1>
+        <p class="article-subtitle">Building Multidex with Compose Multiplatform</p>
+        <div class="article-meta">
+            <span>By <a href="/">Kunal Das</a></span>
+            <time datetime="2026-07-20">July 2026</time>
+            <span>4 min read</span>
+            <button type="button" class="copy-link" hidden data-copy-link>Copy article link</button>
+        </div>
+    </header>
+    <details class="toc-mobile">
+        <summary>On this page</summary>
+        <nav aria-label="On this page">
+            <ol>
+                        <li><a href="#module-graph">The module graph</a></li>
+                        <li><a href="#shared-code">What shared better than expected</a></li>
+                        <li><a href="#platform-seams">Where the seams show</a></li>
+                        <li><a href="#developer-experience">Developer experience notes</a></li>
+                        <li><a href="#verdict">Would I choose KMP again?</a></li>
+            </ol>
+        </nav>
+    </details>
+    <div class="reading-layout">
+        <aside class="toc">
+            <nav aria-label="On this page">
+                <p class="toc-title">On this page</p>
+                <ol>
+                        <li><a href="#module-graph">The module graph</a></li>
+                        <li><a href="#shared-code">What shared better than expected</a></li>
+                        <li><a href="#platform-seams">Where the seams show</a></li>
+                        <li><a href="#developer-experience">Developer experience notes</a></li>
+                        <li><a href="#verdict">Would I choose KMP again?</a></li>
+                </ol>
+            </nav>
+        </aside>
+        <article class="prose" aria-labelledby="article-title">
         <p><a href="https://kunal26das.github.io/multidex/">Multidex</a> is a Pokédex app that
             ships to Android, iOS and Desktop (JVM) from one Kotlin codebase — Kotlin 2.4, Compose
             Multiplatform 1.9, Material 3 Expressive. It's live on
@@ -65,12 +89,12 @@
             and this post is the honest write-up I wish I'd read before starting: how the modules
             are cut, what shared beautifully, and where the platform seams still show.</p>
 
-        <h2>The module graph</h2>
+        <h2 id="module-graph">The module graph</h2>
         <p>The build is split into layered Gradle modules, with dependencies pointing strictly
             downward. Platform apps sit at the top; everything below them is a Kotlin Multiplatform
             library compiled for <code>android</code>, <code>desktop</code> (JVM), and
             <code>iosArm64</code>/<code>iosSimulatorArm64</code>:</p>
-        <pre><code>:android      Android app — signing, Firebase, Play Billing, splash
+        <pre tabindex="0" role="region" aria-label="Module graph code example"><code>:android      Android app — signing, Firebase, Play Billing, splash
 :ios          Xcode wrapper — Swift entry point, embeds the Kotlin framework
 :app          shared Compose shell, navigation graph, desktop entry point
 :pokemon      domain models, repositories, Compose screens
@@ -87,7 +111,7 @@
             The only platform-specific modules are the two entry points at the very top. Everything
             else — including nearly all UI — is shared.</div>
 
-        <h2>What shared better than expected</h2>
+        <h2 id="shared-code">What shared better than expected</h2>
         <p><strong>The UI. Basically all of it.</strong> The same Compose screens run on a phone,
             an iPad and a desktop window. Material 3 Adaptive handles the layout jumps —
             list-detail panes on tablets and desktop, single pane on phones — from one navigation
@@ -101,7 +125,7 @@
             identically everywhere. The offline story — cache every opened entry, serve it when the
             network drops — required zero platform-specific code.</p>
 
-        <h2>Where the seams show</h2>
+        <h2 id="platform-seams">Where the seams show</h2>
         <p><strong>Everything around the app, not in it.</strong> The shared code was the easy 80%.
             The per-platform 20% is services: Firebase (Analytics, Crashlytics, Performance) is
             wired only in <code>:android</code>; Play Billing for the Shiny Charm in-app purchase
@@ -119,7 +143,7 @@
             <code>buildSrc</code> conventions is what keeps upgrades a one-line change instead of
             an archaeology dig.</p>
 
-        <h2>Developer experience notes</h2>
+        <h2 id="developer-experience">Developer experience notes</h2>
         <p>Compose Hot Reload on the desktop target changed how I work: UI iteration happens in a
             desktop window with sub-second reloads, and Android/iOS become verification targets
             rather than the inner loop. If you're doing KMP UI work and not exploiting the JVM
@@ -128,7 +152,7 @@
             trade-off is KSP build-time cost across four targets — noticeable, but worth it over
             hand-wiring.</p>
 
-        <h2>Would I choose KMP again?</h2>
+        <h2 id="verdict">Would I choose KMP again?</h2>
         <p>For an app like this — content-heavy, UI-driven, no deep platform integrations at its
             core — without hesitation. The shared fraction of the codebase is far past 90%, the
             app feels native-fast on all three targets, and the desktop build exists purely
@@ -140,13 +164,19 @@
         <p>The app is free on
             <a href="https://play.google.com/store/apps/details?id=io.github.kunal26das.multidex">Google Play</a>.
             Questions or corrections — <a href="mailto:kunal26das@gmail.com">email me</a>.</p>
-    </article>
-
-    <footer>
-        <a href="/blog/">← All writing</a> ·
-        <a href="https://kunal26das.github.io/">Home</a> ·
-        <a href="https://github.com/kunal26das">GitHub</a>
-    </footer>
+            <div class="article-end">
+                <a href="/blog/">← Back to writing</a>
+                <a href="/multidex/">Try Multidex ↗</a>
+            </div>
+        </article>
+    </div>
 </main>
+<footer class="site-footer shell">
+    <p>Written by <a href="/">Kunal Das</a>.</p>
+    <nav aria-label="Footer navigation">
+        <a href="/feed.xml">RSS feed ↗</a>
+        <a href="https://github.com/kunal26das">GitHub ↗</a>
+    </nav>
+</footer>
 </body>
 </html>
