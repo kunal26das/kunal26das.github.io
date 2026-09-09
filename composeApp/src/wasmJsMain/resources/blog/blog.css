@@ -244,3 +244,34 @@ em { color: var(--clay); font-style: normal; }
     .prose pre { white-space: pre-wrap; overflow-wrap: anywhere; }
     .prose pre, .callout { break-inside: avoid; }
 }
+
+/* The growing notebook shares one article-card treatment with the portfolio. */
+.essay-archive { margin-top: 58px; }
+.essay-collection { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px; }
+.essay-collection .home-article { display: flex; flex-direction: column; align-items: flex-start; padding: 22px 0 27px; border-bottom: 1px solid var(--line); }
+.essay-collection .article-card-meta { width: 100%; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 15px; font: 9px/1.6 var(--font-mono); color: var(--muted); margin-bottom: 20px; }
+.essay-collection h3 { font-size: 25px; line-height: 1.4; letter-spacing: -.025em; margin-bottom: 18px; }
+.essay-collection h3 a { text-decoration: none; }
+.essay-collection p { font-size: 13px; line-height: 1.9; color: var(--muted); margin-bottom: 15px; }
+.essay-collection .text-link { margin-top: auto; font-size: 12px; }
+.startup-map { margin: 0; padding: 26px 30px; background: var(--map-bg); color: var(--map-ink); display: flex; flex-direction: column; align-items: center; border-left: 1px solid var(--line); }
+.startup-map .map-label { margin-bottom: 26px; }
+.startup-node { border: 1px solid var(--map-ink); width: 220px; padding: 15px 24px; background: #f1d8bd; text-align: center; }
+.startup-node > span { display: block; font: 8px/1.6 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
+.startup-node strong { display: block; font: 600 29px/1.4 var(--font-serif); margin: 6px 0; }
+.startup-node small { font: 9px/1.6 var(--font-mono); }
+.startup-arrow { font-size: 30px; line-height: 1.5; }
+.startup-map figcaption { font-size: 10px; margin-top: 22px; text-align: center; }
+.site-footer nav { display: flex; flex-wrap: wrap; gap: 24px; }
+@media (max-width: 760px) {
+    .essay-archive { margin-top: 40px; }
+    .essay-collection { grid-template-columns: 1fr; gap: 0; }
+    .essay-collection .home-article { padding-block: 24px; }
+    .startup-map { border-left: 0; border-top: 1px solid var(--line); }
+    .essay-archive .section-rule { flex-wrap: wrap; }
+}
+@media (max-width: 400px) {
+    .startup-map { padding: 23px 20px; }
+    .startup-node { width: 190px; }
+    .startup-map .map-label { font-size: 8px; }
+}

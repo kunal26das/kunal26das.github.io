@@ -1,38 +1,44 @@
 # kunal26das.github.io
 
-My personal portfolio — a warm, animated single-page site built entirely in Kotlin with
-[Compose Multiplatform](https://www.jetbrains.com/lp/compose-multiplatform/) compiled to
-**Kotlin/Wasm**, and deployed to GitHub Pages at **https://kunal26das.github.io**.
+My personal portfolio and engineering notebook, published at **https://kunal26das.github.io**.
 
-The interactive interface is Kotlin and Compose, supported by a small HTML bootstrap and
-a readable HTML version that stays available while WebAssembly loads or when it cannot start.
+The default homepage and blog use semantic HTML, shared editorial styles, and small JavaScript
+enhancements. They render immediately without the Compose/Skiko runtime. The earlier Kotlin/Wasm
+interface remains available at `/?view=interactive` as a Compose playground.
 
 ## Highlights
 
-- 🎨 **Hand-built design system** — a Claude-inspired clay/terracotta palette over warm
-  paper, with light and dark moods, a serif display face (Lora), and a monochrome emoji font
-  pinned to only the emoji glyphs.
-- ✨ **Alive, not static** — a drifting aurora canvas background, shimmering gradient text,
-  staggered reveal-on-mount animations, and hover micro-interactions throughout.
-- 🌗 **Theme toggle** that remembers your choice across reloads (dark by default).
-- 🧱 **Clean architecture + MVVM** — strict domain / data / presentation layering (see below).
-- 🧹 **Linted in CI** — ktlint and the production build run on pull requests and before every deploy.
-- ♿ **Accessible alternatives** — a scrollable HTML version, descriptive controls, and reduced-motion support.
-- 🧭 **Responsive navigation** — desktop links and a compact menu on smaller screens.
-- 🛠️ **Interactive workbench** — a sorting demonstration, an authentic Yify preview, and a Startup library spotlight.
-- 📂 **Public repository directory** — all 14 public repos verified on 2026-09-09, with category browsing and links in the HTML version.
+- A shared editorial design: warm paper and terracotta, Lora headings, generous spacing, and light/dark themes.
+- A project showcase with an authentic Yify screenshot, a Startup dependency sketch, and a step-by-step sorting demonstration.
+- All 14 public repositories, checked on 2026-09-09, with accessible category filters.
+- Four engineering articles, including three new source-grounded deep dives with links pinned to the reviewed repository commits.
+- Native section links, mobile navigation, keyboard controls, and readable content without JavaScript.
+- Reading progress, section navigation, copy-link controls, and an RSS feed.
+- CI checks Kotlin formatting and the production build before publishing to GitHub Pages.
 
 ## Stack
 
 | Tool | Version |
 | --- | --- |
 | Kotlin | 2.4.10 |
-| Compose Multiplatform | 1.11.1 |
+| Compose Multiplatform | 1.12.0 |
 | ktlint (Gradle plugin) | 14.2.0 |
-| Gradle | 9.7.0 |
+| Gradle | 9.7.1 |
 | JDK | 17 |
 
-## Architecture
+## Website files
+
+`composeApp/src/wasmJsMain/resources/index.html`, `home.css`, and `home.js` are the default
+homepage. It shares its base palette, fonts, header, and theme handling with `blog/blog.css`
+and `blog/blog.js`. The homepage sorting sketch is an illustrative bubble-sort demo, not an
+embedded AlgoScope instance. No runtime GitHub API is needed.
+
+Article pages live in `resources/blog/<slug>/index.html`. When adding writing, update the blog
+index, homepage article list, `feed.xml`, `sitemap.xml`, and `ArticleRepositoryImpl.kt` so the
+optional Compose experience stays consistent. Keep project descriptions synchronized with
+`ProjectRepositoryImpl.kt` and the homepage directory.
+
+## Compose playground architecture
 
 The app follows **clean architecture** with an **MVVM** presentation layer. Dependencies point
 inward — `presentation` and `data` depend on `domain`, never the other way around — and the UI
@@ -107,9 +113,10 @@ resource sources are excluded from the check.
 
 Output lands in `composeApp/build/dist/wasmJs/productionExecutable/`.
 
-The homepage keeps readable HTML visible until Compose reports readiness. Add `?view=html`
-to open the text version without downloading the Wasm runtime. The interactive build still
-includes a substantial Compose/Skiko runtime; bundle-size warnings are expected.
+The default homepage renders directly as HTML; `?view=html` remains compatible with older links.
+Only `?view=interactive` downloads the Compose/Skiko runtime. In that mode, the readable homepage
+stays available until Compose reports readiness. Bundle-size warnings apply to the optional
+interactive build, not the default homepage download.
 
 ## Deploy
 

@@ -35,4 +35,22 @@
         <changefreq>yearly</changefreq>
         <priority>0.5</priority>
     </url>
+    <url>
+        <loc>https://kunal26das.github.io/blog/startup-dependency-graph/</loc>
+        <lastmod>2026-09-09</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://kunal26das.github.io/blog/algoscope-visualizing-algorithms/</loc>
+        <lastmod>2026-09-09</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://kunal26das.github.io/blog/doom-kotlin-port/</loc>
+        <lastmod>2026-09-09</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.7</priority>
+    </url>
 </urlset>

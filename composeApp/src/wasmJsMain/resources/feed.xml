@@ -1,11 +1,32 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<?xml version='1.0' encoding='utf-8'?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>Kunal Das — Writing</title>
         <link>https://kunal26das.github.io/blog/</link>
         <description>Notes on building cross-platform apps — Kotlin Multiplatform, Compose, React Native.</description>
         <language>en</language>
-        <atom:link href="https://kunal26das.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+        <atom:link href="https://kunal26das.github.io/feed.xml" rel="self" type="application/rss+xml" />
+        <item>
+            <title>Startup, in the right order</title>
+            <link>https://kunal26das.github.io/blog/startup-dependency-graph/</link>
+            <guid>https://kunal26das.github.io/blog/startup-dependency-graph/</guid>
+            <pubDate>Wed, 09 Sep 2026 00:00:00 GMT</pubDate>
+            <description>Explicit dependencies, graph validation, and the AndroidX boundary inside a Kotlin Multiplatform startup library.</description>
+        </item>
+        <item>
+            <title>Make the algorithm explain itself: inside AlgoScope</title>
+            <link>https://kunal26das.github.io/blog/algoscope-visualizing-algorithms/</link>
+            <guid>https://kunal26das.github.io/blog/algoscope-visualizing-algorithms/</guid>
+            <pubDate>Wed, 09 Sep 2026 00:00:00 GMT</pubDate>
+            <description>Saved frames, a shared Flutter player, and tests of intermediate state make algorithms something you can pause, inspect, and replay.</description>
+        </item>
+        <item>
+            <title>Porting DOOM means preserving its decisions</title>
+            <link>https://kunal26das.github.io/blog/doom-kotlin-port/</link>
+            <guid>https://kunal26das.github.io/blog/doom-kotlin-port/</guid>
+            <pubDate>Wed, 09 Sep 2026 00:00:00 GMT</pubDate>
+            <description>Fixed-point maths, independent worlds, and the boundary between a 35 Hz engine and Compose.</description>
+        </item>
         <item>
             <title>One Kotlin codebase, three platforms: building Multidex with Compose Multiplatform</title>
             <link>https://kunal26das.github.io/blog/multidex-kotlin-multiplatform/</link>

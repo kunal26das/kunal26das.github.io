@@ -21,7 +21,7 @@ class ProjectRepositoryImpl : ProjectRepository {
             Project(
                 name = "AlgoScope",
                 blurb =
-                    "An interactive Flutter playground for 158 algorithms and data structures. Make the invisible steps " +
+                    "An interactive Flutter playground for algorithms and data structures. Make the invisible steps " +
                         "visible, one operation at a time.",
                 tags = listOf("Flutter", "Dart"),
                 repo = "https://github.com/kunal26das/codes",
@@ -100,7 +100,7 @@ class ProjectRepositoryImpl : ProjectRepository {
             ),
             Project(
                 name = "This Website",
-                blurb = "This portfolio: Kotlin, Compose and WebAssembly, with a readable HTML companion.",
+                blurb = "An editorial portfolio and engineering notebook, with a Kotlin/Compose playground.",
                 tags = listOf("Kotlin/Wasm", "Compose"),
                 repo = "https://github.com/kunal26das/kunal26das.github.io",
                 category = "Tools",

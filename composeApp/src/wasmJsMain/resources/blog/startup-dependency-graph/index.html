@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup, in the right order: a Kotlin Multiplatform dependency graph — Kunal Das</title>
+    <meta name="description" content="Inside Startup: explicit dependencies, eager and lazy initialization, Kahn's algorithm, graph validation, and the AndroidX boundary in Kotlin Multiplatform.">
+    <link rel="canonical" href="https://kunal26das.github.io/blog/startup-dependency-graph/">
+    <meta property="og:title" content="Startup, in the right order">
+    <meta property="og:description" content="A close look at dependency graphs, validation, and platform boundaries in a Kotlin Multiplatform startup library.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://kunal26das.github.io/blog/startup-dependency-graph/">
+    <meta name="theme-color" content="#1B1916">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "Startup, in the right order: a Kotlin Multiplatform dependency graph",
+      "datePublished": "2026-09-09",
+      "dateModified": "2026-09-09",
+      "author": { "@type": "Person", "name": "Kunal Das", "url": "https://kunal26das.github.io/" },
+      "url": "https://kunal26das.github.io/blog/startup-dependency-graph/",
+      "description": "Inside Startup: explicit dependencies, eager and lazy initialization, Kahn's algorithm, graph validation, and the AndroidX boundary in Kotlin Multiplatform.",
+      "keywords": ["Kotlin Multiplatform", "Startup", "Dependency graphs", "AndroidX"],
+      "inLanguage": "en"
+    }
+    </script>
+    <link rel="stylesheet" href="/blog/blog.css">
+    <script src="/blog/blog.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to article</a>
+<div class="reading-progress" aria-hidden="true" data-reading-progress></div>
+<header class="site-header">
+    <div class="shell header-inner">
+        <a class="brand" href="/" aria-label="Kunal Das — home">
+            <span class="brand-mark" aria-hidden="true">KD</span>
+            <span class="brand-name">Kunal Das</span>
+        </a>
+        <nav class="header-nav" aria-label="Main navigation">
+            <a href="/">Portfolio</a>
+            <a href="/blog/" aria-current="page">Writing</a>
+            <a href="/feed.xml">RSS</a>
+        </nav>
+        <button class="theme-toggle" type="button" hidden data-theme-toggle aria-label="Switch color theme">Theme</button>
+    </div>
+</header>
+<main id="main" class="shell article-page">
+    <header class="article-header">
+        <a class="back-link" href="/blog/">← All writing</a>
+        <p class="eyebrow">Engineering notes · Kotlin Multiplatform</p>
+        <h1 class="article-title" id="article-title">Startup,<br><em>in the right order.</em></h1>
+        <p class="article-subtitle">Making application dependencies explicit across platforms</p>
+        <div class="article-meta">
+            <span>By <a href="/">Kunal Das</a></span>
+            <time datetime="2026-09-09">September 9, 2026</time>
+            <span>5 min read</span>
+            <button type="button" class="copy-link" hidden data-copy-link>Copy article link</button>
+        </div>
+    </header>
+    <details class="toc-mobile">
+        <summary>On this page</summary>
+        <nav aria-label="On this page">
+            <ol>
+                <li><a href="#declare-dependencies">Declare what must exist first</a></li>
+                <li><a href="#eager-and-lazy">Follow the eager roots</a></li>
+                <li><a href="#planning">Inspect the plan before execution</a></li>
+                <li><a href="#android-boundary">Keep the Android boundary visible</a></li>
+                <li><a href="#execution">Choose execution deliberately</a></li>
+                <li><a href="#sources">Source notes</a></li>
+            </ol>
+        </nav>
+    </details>
+    <div class="reading-layout">
+        <aside class="toc">
+            <nav aria-label="On this page">
+                <p class="toc-title">On this page</p>
+                <ol>
+                    <li><a href="#declare-dependencies">Declare what must exist first</a></li>
+                    <li><a href="#eager-and-lazy">Follow the eager roots</a></li>
+                    <li><a href="#planning">Inspect the plan before execution</a></li>
+                    <li><a href="#android-boundary">Keep the Android boundary visible</a></li>
+                    <li><a href="#execution">Choose execution deliberately</a></li>
+                    <li><a href="#sources">Source notes</a></li>
+                </ol>
+            </nav>
+        </aside>
+        <article class="prose" aria-labelledby="article-title">
+            <p>Before an application draws its first useful screen, several components may need to exist. Analytics might need a logger. A client might need configuration. As that list grows, an ordering requirement can disappear inside an entry point that looks like ordinary setup code. Moving a line can then change behavior without changing any component's declared contract.</p>
+            <p><a href="https://github.com/kunal26das/startup">Startup</a> makes those relationships explicit in Kotlin Multiplatform. Its shared initializer API connects to AndroidX on Android; other targets use the project's own runtime. This walkthrough follows the source snapshot linked below and focuses on how the graph is described, checked, and executed.</p>
+
+            <h2 id="declare-dependencies">Declare what must exist first</h2>
+            <p>An <code>Initializer&lt;T&gt;</code> has two jobs: describe prerequisite initializer keys through <code>dependencies()</code>, then build a value through <code>create(context)</code>. The value can be a service, or <code>Unit</code> when initialization only performs work. This separates a component's ordering contract from the code that starts it. The <a href="https://github.com/kunal26das/startup/blob/372c804cdf867c2eeac69fbc179b71ce51930c31/startup/src/commonMain/kotlin/io/github/kunal26das/startup/Initializer.kt">shared interface</a> is small enough to read in one sitting.</p>
+            <p>The README's logger and analytics example illustrates the distinction. Analytics declares the logger as a dependency and retrieves it inside <code>create</code>. The arrow below means “must finish before,” so it points from the prerequisite toward its consumer. It represents that example, rather than an additional library API.</p>
+            <pre tabindex="0" role="region" aria-label="Logger and analytics dependency order"><code>LoggerInitializer  ── must finish before ──▶  AnalyticsInitializer
+   registered lazy                              registered eager
+
+Startup order: Logger → Analytics</code></pre>
+            <p>Declaring the edge keeps the requirement visible wherever the initializer is installed. Registering analytics first in a manifest does not remove its prerequisite. The <a href="https://github.com/kunal26das/startup/blob/372c804cdf867c2eeac69fbc179b71ce51930c31/README.md#quick-start">complete quick start</a> supplies the classes, imports, registrations, and host entry point.</p>
+
+            <h2 id="eager-and-lazy">Follow the eager roots</h2>
+            <p>A <code>StartupManifest</code> registers factories under initializer keys. <code>metaData</code> marks eager roots; <code>lazyInitializer</code> makes a component available when requested. A lazy registration can still run during launch: in the example, the eager analytics component reaches the logger through its dependency. To understand launch work, follow every eager root's dependencies.</p>
+            <p>Manifests also compose. A later registration can replace an earlier one, and a removal can hide a registration. The <a href="https://github.com/kunal26das/startup/blob/372c804cdf867c2eeac69fbc179b71ce51930c31/startup/src/commonMain/kotlin/io/github/kunal26das/startup/StartupManifest.kt">manifest implementation</a> checks that a factory produces the exact initializer class named by its key. That prevents one registration from describing different components on different platforms.</p>
+            <p>There is a separate lifetime question. The non-Android engine caches completed products by key and passes those keys into later planning as already satisfied. Installing another manifest merges registrations, while an existing product remains cached. An override therefore changes a registration; it is not a mechanism for replacing a running service. This behavior is visible in <a href="https://github.com/kunal26das/startup/blob/372c804cdf867c2eeac69fbc179b71ce51930c31/startup/src/nonAndroidMain/kotlin/io/github/kunal26das/startup/StartupEngine.kt">StartupEngine</a>.</p>
+
+            <h2 id="planning">Inspect the plan before execution</h2>
+            <p><code>StartupPlanner</code> first collects the dependencies reachable from the requested roots. It counts each component's unmet prerequisites, then repeatedly takes the ready components and reduces those counts for their dependents. This is Kahn's algorithm, implemented iteratively. The resulting <code>order</code> places dependencies before consumers; <code>waves</code> groups components whose dependencies belong to earlier groups. Already satisfied keys are excluded from the pending work. See the <a href="https://github.com/kunal26das/startup/blob/372c804cdf867c2eeac69fbc179b71ce51930c31/startup/src/commonMain/kotlin/io/github/kunal26das/startup/StartupPlanner.kt">planner implementation</a>.</p>
+            <p>A useful distinction is which roots get checked. Planning eager roots checks their reachable graph. <code>StartupPlanner.validate(manifest)</code> instead starts from every registered component, including lazy ones. A broken feature should be discoverable before a user is the first person to request it.</p>
+            <p>The <a href="https://github.com/kunal26das/startup/blob/372c804cdf867c2eeac69fbc179b71ce51930c31/startup/src/commonTest/kotlin/io/github/kunal26das/startup/StartupPlannerTest.kt">planner tests</a> cover this with an entirely lazy cycle, alongside diamond dependencies, duplicate edges, and partially satisfied graphs. They assert both ordering and the component keys reported for failures. Those cases describe useful application-level tests too: shared prerequisites should appear once, and a cycle should identify the relationship that needs changing.</p>
+            <div class="callout">Planning does not call <code>create</code>, but it does construct initializers and read <code>dependencies()</code>. Keep factories and dependency declarations free of service-starting side effects so validation remains useful.</div>
+
+            <h2 id="android-boundary">Keep the Android boundary visible</h2>
+            <p>On Android, the project's <code>Initializer</code> is a <a href="https://github.com/kunal26das/startup/blob/372c804cdf867c2eeac69fbc179b71ce51930c31/startup/src/androidMain/kotlin/io/github/kunal26das/startup/Initializer.kt">type alias for AndroidX's interface</a>. AndroidX constructs initializer classes reflectively. The shared Kotlin factories are ignored during Android installation, so an initializer needs a public no-argument constructor. Platform resources and dependencies belong in <code>create</code>.</p>
+            <p>Automatic startup still needs Android manifest metadata. The Kotlin manifest does not generate that XML. An eager root can work elsewhere yet never start automatically on Android if the corresponding metadata is absent. The project's <a href="https://github.com/kunal26das/startup/blob/372c804cdf867c2eeac69fbc179b71ce51930c31/docs/android.md#keep-android-xml-and-the-shared-graph-aligned">Android guide</a> includes a parity-test approach for the registrations an application owns.</p>
+            <p>Manual startup is available too: Android's <code>Startup.install</code> asks AndroidX to initialize the Kotlin manifest's eager roots. Its runner overload delegates to the same path. These details in the <a href="https://github.com/kunal26das/startup/blob/372c804cdf867c2eeac69fbc179b71ce51930c31/startup/src/androidMain/kotlin/io/github/kunal26das/startup/Startup.kt">Android bridge</a> explain why sharing declarations still requires explicit host integration.</p>
+
+            <h2 id="execution">Choose execution deliberately</h2>
+            <p>The default runtime executes sequentially on the calling thread. A wave identifies declared independence, but thread requirements remain a separate concern. For custom runners, the documented contract requires invoking each task once and waiting for completion. During installation, tasks that read through <code>AppInitializer</code> must stay on the installing thread, even when reading a dependency from an earlier wave.</p>
+            <p>Likewise, <code>CoroutineInitializer</code> is a blocking bridge around suspending work; it does not turn installation into a suspending API. The bridge is unsupported on JavaScript and Wasm. The <a href="https://github.com/kunal26das/startup/blob/372c804cdf867c2eeac69fbc179b71ce51930c31/docs/runtime.md#custom-wave-runners">runtime guide</a> explains these execution constraints. Start by making the graph correct and keeping launch work small. A clear dependency model makes later scheduling decisions easier to inspect.</p>
+
+            <h2 id="sources">Source notes</h2>
+            <p>This article describes repository commit <a href="https://github.com/kunal26das/startup/commit/372c804cdf867c2eeac69fbc179b71ce51930c31"><code>372c804</code></a>, reviewed September 9, 2026. Implementation and documentation links above are pinned to that snapshot. The discussion is a source walkthrough; it makes no startup-time or cross-platform performance claim.</p>
+            <div class="article-end">
+                <a href="/blog/">← Back to writing</a>
+                <a href="https://github.com/kunal26das/startup">Explore Startup ↗</a>
+            </div>
+        </article>
+    </div>
+</main>
+<footer class="site-footer shell">
+    <p>Written by <a href="/">Kunal Das</a>.</p>
+    <nav aria-label="Footer navigation">
+        <a href="/feed.xml">RSS feed ↗</a>
+        <a href="https://github.com/kunal26das">GitHub ↗</a>
+    </nav>
+</footer>
+</body>
+</html>
