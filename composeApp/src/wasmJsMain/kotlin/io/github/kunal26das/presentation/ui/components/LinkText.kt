@@ -3,6 +3,8 @@ package io.github.kunal26das.presentation.ui.components
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -11,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.kunal26das.presentation.theme.Clay
 import io.github.kunal26das.presentation.theme.OnSurface
@@ -30,6 +34,8 @@ fun LinkText(
             Modifier
                 .hoverable(source)
                 .pointerHoverIcon(PointerIcon.Hand)
-                .clickable(onClick = onClick),
+                .clickable(role = Role.Button, onClick = onClick)
+                .heightIn(min = 44.dp)
+                .wrapContentHeight(),
     )
 }

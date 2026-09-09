@@ -24,6 +24,7 @@ import dev.chrisbanes.haze.hazeSource
 import io.github.kunal26das.di.AppModule
 import io.github.kunal26das.presentation.theme.Background
 import io.github.kunal26das.presentation.theme.LocalHazeState
+import io.github.kunal26das.presentation.theme.LocalMotionPreferences
 import io.github.kunal26das.presentation.theme.PortfolioTheme
 import io.github.kunal26das.presentation.ui.background.AuroraBackground
 import io.github.kunal26das.presentation.ui.navigation.NavHeight
@@ -33,6 +34,7 @@ import io.github.kunal26das.presentation.ui.sections.ExperienceSection
 import io.github.kunal26das.presentation.ui.sections.FooterSection
 import io.github.kunal26das.presentation.ui.sections.HeroSection
 import io.github.kunal26das.presentation.ui.sections.ProjectsSection
+import io.github.kunal26das.presentation.ui.sections.RepositoriesSection
 import io.github.kunal26das.presentation.ui.sections.SkillsSection
 import io.github.kunal26das.presentation.ui.sections.WritingSection
 import kotlinx.coroutines.launch
@@ -47,12 +49,23 @@ fun App() {
         val scroll = rememberScrollState()
         val scope = rememberCoroutineScope()
         val density = LocalDensity.current
+        val motionPreferences = LocalMotionPreferences.current
         val anchors = remember { mutableStateMapOf<String, Float>() }
         val navOffsetPx = with(density) { (NavHeight + 16.dp).toPx() }
 
+        fun scrollTo(y: Int) {
+            scope.launch {
+                if (motionPreferences.animationsEnabled) {
+                    scroll.animateScrollTo(y)
+                } else {
+                    scroll.scrollTo(y)
+                }
+            }
+        }
+
         fun goTo(key: String) {
             val y = anchors[key] ?: return
-            scope.launch { scroll.animateScrollTo((y - navOffsetPx).toInt().coerceAtLeast(0)) }
+            scrollTo((y - navOffsetPx).toInt().coerceAtLeast(0))
         }
 
         val scrolled = (scroll.value / 80f).coerceIn(0f, 1f)
@@ -79,14 +92,17 @@ fun App() {
                     Spacer(Modifier.height(NavHeight))
                     HeroSection(
                         profile = state.profile,
+                        projects = state.projects,
+                        onOpenUrl = viewModel::onOpenUrl,
                         onViewWork = { goTo("work") },
                         onContact = viewModel::onContact,
                     )
+                    Anchor("work", anchors) { ProjectsSection(state.projects, viewModel::onOpenUrl) }
+                    Anchor("journey", anchors) { ExperienceSection(state.experiences, viewModel::onOpenUrl) }
+                    Anchor("code", anchors) { RepositoriesSection(state.projects, viewModel::onOpenUrl) }
                     Anchor("about", anchors) { AboutSection(state.profile) }
                     Anchor("skills", anchors) { SkillsSection(state.skills) }
-                    Anchor("work", anchors) { ProjectsSection(state.projects, viewModel::onOpenUrl) }
                     Anchor("writing", anchors) { WritingSection(state.articles, viewModel::onOpenUrl) }
-                    Anchor("journey", anchors) { ExperienceSection(state.experiences, viewModel::onOpenUrl) }
                     Anchor("contact", anchors) {
                         FooterSection(state.profile, viewModel::onContact, viewModel::onOpenUrl)
                     }
@@ -97,7 +113,7 @@ fun App() {
                 TopNav(
                     name = state.profile.name,
                     scrolled = scrolled,
-                    onHome = { scope.launch { scroll.animateScrollTo(0) } },
+                    onHome = { scrollTo(0) },
                     onNavigate = { goTo(it) },
                     onResume = { viewModel.onOpenUrl(state.profile.resume) },
                     onContact = viewModel::onContact,

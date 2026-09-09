@@ -20,6 +20,11 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,6 +33,7 @@ import io.github.kunal26das.presentation.theme.Background
 import io.github.kunal26das.presentation.theme.Border
 import io.github.kunal26das.presentation.theme.Clay
 import io.github.kunal26das.presentation.theme.Cyan
+import io.github.kunal26das.presentation.theme.LocalMotionPreferences
 import io.github.kunal26das.presentation.theme.LocalThemeViewModel
 import io.github.kunal26das.presentation.theme.OnSurface
 import io.github.kunal26das.presentation.theme.liquidGlass
@@ -41,17 +47,19 @@ fun GradientButton(
 ) {
     val source = remember { MutableInteractionSource() }
     val p = hoverProgress(source)
+    val animateMotion = LocalMotionPreferences.current.animationsEnabled
     Box(
         modifier =
             modifier
                 .graphicsLayer {
-                    scaleX = lerpFloat(1f, 1.04f, p)
-                    scaleY = lerpFloat(1f, 1.04f, p)
+                    val scale = if (animateMotion) lerpFloat(1f, 1.04f, p) else 1f
+                    scaleX = scale
+                    scaleY = scale
                 }.clip(RoundedCornerShape(12.dp))
                 .background(AccentGradient)
                 .hoverable(source)
                 .pointerHoverIcon(PointerIcon.Hand)
-                .clickable(onClick = onClick)
+                .clickable(role = Role.Button, onClick = onClick)
                 .padding(horizontal = 22.dp, vertical = 13.dp),
         contentAlignment = Alignment.Center,
     ) {
@@ -70,23 +78,31 @@ fun SayHelloButton(
 @Composable
 fun ThemeToggle(modifier: Modifier = Modifier) {
     val themeViewModel = LocalThemeViewModel.current
+    val actionLabel = if (themeViewModel.isDark) "Switch to light theme" else "Switch to dark theme"
     val source = remember { MutableInteractionSource() }
     val p = hoverProgress(source)
     Box(
         modifier =
             modifier
-                .size(42.dp)
+                .size(44.dp)
                 .liquidGlass(RoundedCornerShape(50), tintAlpha = 0.14f + 0.18f * p)
                 .border(
                     BorderStroke(1.dp, lerp(Border, Clay.copy(alpha = 0.6f), p)),
                     RoundedCornerShape(50),
                 ).hoverable(source)
                 .pointerHoverIcon(PointerIcon.Hand)
-                .clickable(onClick = themeViewModel::toggle),
+                .semantics {
+                    contentDescription = actionLabel
+                    stateDescription = if (themeViewModel.isDark) "Dark theme" else "Light theme"
+                }.clickable(
+                    role = Role.Button,
+                    onClickLabel = actionLabel,
+                    onClick = themeViewModel::toggle,
+                ),
         contentAlignment = Alignment.Center,
     ) {
         val glyph = if (themeViewModel.isDark) "☀️" else "🌙"
-        Text(emoji(glyph, OnSurface), fontSize = 19.sp)
+        Text(emoji(glyph, OnSurface), modifier = Modifier.clearAndSetSemantics {}, fontSize = 19.sp)
     }
 }
 
@@ -107,7 +123,7 @@ fun OutlineButton(
                     RoundedCornerShape(12.dp),
                 ).hoverable(source)
                 .pointerHoverIcon(PointerIcon.Hand)
-                .clickable(onClick = onClick)
+                .clickable(role = Role.Button, onClick = onClick)
                 .padding(horizontal = 22.dp, vertical = 13.dp),
         contentAlignment = Alignment.Center,
     ) {

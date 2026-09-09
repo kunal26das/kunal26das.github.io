@@ -17,10 +17,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,6 +34,10 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,6 +46,7 @@ import io.github.kunal26das.presentation.theme.Background
 import io.github.kunal26das.presentation.theme.Border
 import io.github.kunal26das.presentation.theme.Muted
 import io.github.kunal26das.presentation.theme.OnSurface
+import io.github.kunal26das.presentation.theme.Surface
 import io.github.kunal26das.presentation.theme.SurfaceHi
 import io.github.kunal26das.presentation.theme.liquidGlass
 import io.github.kunal26das.presentation.ui.components.SayHelloButton
@@ -71,13 +81,13 @@ fun TopNav(
                 .background(lerp(Color.Transparent, Border, scrolled)),
         )
         BoxWithConstraints(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-            // Five nav links + toggle + CTA need ~752dp; below that the CTA gets squeezed and wraps.
-            val compact = maxWidth < 780.dp
+            // Leave space for every desktop action, including browser text enlargement.
+            val compact = maxWidth < 1000.dp
             Row(
                 modifier =
                     Modifier
+                        .widthIn(max = 1160.dp)
                         .fillMaxWidth()
-                        .widthIn(max = 1120.dp)
                         .padding(horizontal = 24.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -100,8 +110,8 @@ fun TopNav(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
-                        NavLink("About") { onNavigate("about") }
                         NavLink("Work") { onNavigate("work") }
+                        NavLink("Code") { onNavigate("code") }
                         NavLink("Writing") { onNavigate("writing") }
                         NavLink("Journey") { onNavigate("journey") }
                         NavLink("Résumé") { onResume() }
@@ -110,7 +120,11 @@ fun TopNav(
                 }
                 ThemeToggle()
                 Spacer(Modifier.width(10.dp))
-                SayHelloButton(onClick = onContact)
+                if (compact) {
+                    CompactMenu(onNavigate, onResume, onContact)
+                } else {
+                    SayHelloButton(onClick = onContact)
+                }
             }
         }
     }
@@ -121,11 +135,12 @@ private fun Monogram(onClick: () -> Unit) {
     Box(
         modifier =
             Modifier
-                .size(38.dp)
+                .size(44.dp)
                 .clip(RoundedCornerShape(11.dp))
                 .background(AccentGradient)
                 .pointerHoverIcon(PointerIcon.Hand)
-                .clickable(onClick = onClick),
+                .semantics { contentDescription = "Kunal Das, back to top" }
+                .clickable(role = Role.Button, onClick = onClick),
         contentAlignment = Alignment.Center,
     ) {
         Text("KD", color = Background, fontWeight = FontWeight.Bold)
@@ -146,13 +161,67 @@ private fun NavLink(
                 .background(lerp(Color.Transparent, SurfaceHi, p))
                 .hoverable(source)
                 .pointerHoverIcon(PointerIcon.Hand)
-                .clickable(onClick = onClick)
+                .clickable(role = Role.Button, onClick = onClick)
+                .heightIn(min = 44.dp)
                 .padding(horizontal = 12.dp, vertical = 8.dp),
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             text,
             style = MaterialTheme.typography.labelLarge.copy(letterSpacing = 0.2.sp),
             color = lerp(Muted, OnSurface, p),
         )
+    }
+}
+
+@Composable
+private fun CompactMenu(
+    onNavigate: (String) -> Unit,
+    onResume: () -> Unit,
+    onContact: () -> Unit,
+) {
+    var expanded by remember { mutableStateOf(false) }
+    Box {
+        Box(
+            modifier =
+                Modifier
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(SurfaceHi)
+                    .semantics {
+                        contentDescription = "Navigation menu"
+                        stateDescription = if (expanded) "Expanded" else "Collapsed"
+                    }.clickable(role = Role.Button) { expanded = !expanded }
+                    .heightIn(min = 44.dp)
+                    .padding(horizontal = 16.dp),
+            contentAlignment = Alignment.Center,
+        ) {
+            Text("Menu", color = OnSurface, style = MaterialTheme.typography.bodyMedium)
+        }
+        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }, containerColor = Surface) {
+            listOf(
+                "Work" to "work",
+                "Code" to "code",
+                "Journey" to "journey",
+                "About" to "about",
+                "Skills" to "skills",
+                "Writing" to "writing",
+            ).forEach { (label, anchor) ->
+                DropdownMenuItem(
+                    text = { Text(label) },
+                    onClick = {
+                        expanded = false
+                        onNavigate(anchor)
+                    },
+                )
+            }
+            DropdownMenuItem(text = { Text("Résumé") }, onClick = {
+                expanded = false
+                onResume()
+            })
+            DropdownMenuItem(text = { Text("Say hello") }, onClick = {
+                expanded = false
+                onContact()
+            })
+        }
     }
 }

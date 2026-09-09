@@ -9,11 +9,13 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import io.github.kunal26das.presentation.theme.Clay
+import io.github.kunal26das.presentation.theme.LocalMotionPreferences
 import io.github.kunal26das.presentation.theme.Ochre
 import io.github.kunal26das.presentation.theme.Slate
 import kotlin.math.PI
@@ -26,17 +28,22 @@ fun AuroraBackground(modifier: Modifier = Modifier) {
     val ochre = Ochre
     val slate = Slate
 
-    val transition = rememberInfiniteTransition(label = "aurora")
-    val drift by transition.animateFloat(
-        initialValue = 0f,
-        targetValue = (2.0 * PI).toFloat(),
-        animationSpec =
-            infiniteRepeatable(
-                animation = tween(durationMillis = 26000, easing = LinearEasing),
-                repeatMode = RepeatMode.Restart,
-            ),
-        label = "drift",
-    )
+    val drift by
+        if (LocalMotionPreferences.current.animationsEnabled) {
+            val transition = rememberInfiniteTransition(label = "aurora")
+            transition.animateFloat(
+                initialValue = 0f,
+                targetValue = (2.0 * PI).toFloat(),
+                animationSpec =
+                    infiniteRepeatable(
+                        animation = tween(durationMillis = 26000, easing = LinearEasing),
+                        repeatMode = RepeatMode.Restart,
+                    ),
+                label = "drift",
+            )
+        } else {
+            rememberUpdatedState(0f)
+        }
 
     Canvas(modifier) {
         val w = size.width

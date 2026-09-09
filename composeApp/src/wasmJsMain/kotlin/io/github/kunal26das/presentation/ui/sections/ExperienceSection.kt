@@ -1,10 +1,11 @@
 package io.github.kunal26das.presentation.ui.sections
 
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.snap
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -17,7 +18,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -37,6 +39,9 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,6 +50,7 @@ import io.github.kunal26das.presentation.theme.AccentGradient
 import io.github.kunal26das.presentation.theme.Background
 import io.github.kunal26das.presentation.theme.Border
 import io.github.kunal26das.presentation.theme.Cyan
+import io.github.kunal26das.presentation.theme.LocalMotionPreferences
 import io.github.kunal26das.presentation.theme.Muted
 import io.github.kunal26das.presentation.theme.OnSurface
 import io.github.kunal26das.presentation.theme.Surface
@@ -63,12 +69,12 @@ fun ExperienceSection(
     onOpenUrl: (String) -> Unit,
 ) {
     SectionContainer { _ ->
-        SectionTitle("Journey", "Apps I've helped build")
+        SectionTitle("02 / In good company", "Apps I've helped build")
         val items = remember(experiences) { experiences.reversed() }
         var selected by remember { mutableStateOf(items.lastIndex) }
 
         Reveal {
-            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top) {
+            Row(modifier = Modifier.fillMaxWidth().selectableGroup(), verticalAlignment = Alignment.Top) {
                 items.forEachIndexed { i, exp ->
                     TimelineNode(exp = exp, selected = i == selected, onClick = { selected = i })
                     if (i != items.lastIndex) {
@@ -103,7 +109,12 @@ private fun TimelineNode(
 ) {
     val source = remember { MutableInteractionSource() }
     val hover = hoverProgress(source)
-    val sel by animateFloatAsState(targetValue = if (selected) 1f else 0f, label = "select")
+    val animateMotion = LocalMotionPreferences.current.animationsEnabled
+    val sel by animateFloatAsState(
+        targetValue = if (selected) 1f else 0f,
+        animationSpec = if (animateMotion) spring() else snap(),
+        label = "select",
+    )
     val year = exp.period.split(" ").firstOrNull { it.length == 4 && it.all { c -> c.isDigit() } } ?: ""
     val shortLabel = if (exp.period.contains("Present")) "Now" else year
 
@@ -113,13 +124,14 @@ private fun TimelineNode(
             Modifier
                 .hoverable(source)
                 .pointerHoverIcon(PointerIcon.Hand)
-                .clickable(onClick = onClick),
+                .semantics { contentDescription = "${exp.product}, ${exp.period}" }
+                .selectable(selected = selected, role = Role.Tab, onClick = onClick),
     ) {
         Box(
             modifier =
                 Modifier
                     .graphicsLayer {
-                        val s = lerpFloat(1f, 1.12f, maxOf(sel, hover * 0.6f))
+                        val s = if (animateMotion) lerpFloat(1f, 1.12f, maxOf(sel, hover * 0.6f)) else 1f
                         scaleX = s
                         scaleY = s
                     }.size(52.dp)
@@ -151,9 +163,11 @@ private fun ExperienceDetail(
     val primaryLink = exp.playStore ?: exp.appStore
     val onClick: (() -> Unit)? = primaryLink?.let { link -> { onOpenUrl(link) } }
     HoverCard(modifier = Modifier.fillMaxWidth(), onClick = onClick) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
             Text(exp.product, style = MaterialTheme.typography.titleLarge, color = OnSurface)
-            Spacer(Modifier.width(10.dp))
             Box(
                 modifier =
                     Modifier

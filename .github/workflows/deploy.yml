@@ -1,24 +1,27 @@
-name: Deploy to GitHub Pages
+name: Validate and deploy to GitHub Pages
 
 on:
   push:
     branches: [ master ]
+  pull_request:
+    branches: [ master ]
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+permissions: {}
 
 concurrency:
-  group: "pages"
+  group: "pages-${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.ref }}"
   cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Set up JDK 17
         uses: actions/setup-java@v6
@@ -46,14 +49,19 @@ jobs:
           cp -r composeApp/src/wasmJsMain/resources/.well-known composeApp/build/dist/wasmJs/productionExecutable/.well-known
 
       - name: Upload Pages artifact
+        if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/master')
         uses: actions/upload-pages-artifact@v5
         with:
           path: composeApp/build/dist/wasmJs/productionExecutable
           include-hidden-files: true
 
   deploy:
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/master')
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

@@ -4,8 +4,8 @@ My personal portfolio — a warm, animated single-page site built entirely in Ko
 [Compose Multiplatform](https://www.jetbrains.com/lp/compose-multiplatform/) compiled to
 **Kotlin/Wasm**, and deployed to GitHub Pages at **https://kunal26das.github.io**.
 
-No HTML/CSS framework, no JavaScript app code — just Kotlin, Compose, and a WebAssembly
-binary the browser runs at near-native speed.
+The interactive interface is Kotlin and Compose, supported by a small HTML bootstrap and
+a readable HTML version that stays available while WebAssembly loads or when it cannot start.
 
 ## Highlights
 
@@ -16,17 +16,20 @@ binary the browser runs at near-native speed.
   staggered reveal-on-mount animations, and hover micro-interactions throughout.
 - 🌗 **Theme toggle** that remembers your choice across reloads (dark by default).
 - 🧱 **Clean architecture + MVVM** — strict domain / data / presentation layering (see below).
-- 🧹 **Linted in CI** — ktlint runs before every deploy.
-- ⚡ **Fast** — content and behavior are injected as plain data, so the UI stays thin.
+- 🧹 **Linted in CI** — ktlint and the production build run on pull requests and before every deploy.
+- ♿ **Accessible alternatives** — a scrollable HTML version, descriptive controls, and reduced-motion support.
+- 🧭 **Responsive navigation** — desktop links and a compact menu on smaller screens.
+- 🛠️ **Interactive workbench** — a sorting demonstration, an authentic Yify preview, and a Startup library spotlight.
+- 📂 **Public repository directory** — all 14 public repos verified on 2026-09-09, with category browsing and links in the HTML version.
 
 ## Stack
 
 | Tool | Version |
 | --- | --- |
-| Kotlin | 2.4.0 |
+| Kotlin | 2.4.10 |
 | Compose Multiplatform | 1.11.1 |
-| ktlint (Gradle plugin) | 12.1.1 |
-| Gradle | 9.6.0 |
+| ktlint (Gradle plugin) | 14.2.0 |
+| Gradle | 9.7.0 |
 | JDK | 17 |
 
 ## Architecture
@@ -60,7 +63,7 @@ presentation/               # everything Compose
 di/
   AppModule.kt              # constructs impls, hands ViewModels their dependencies
 
-Main.kt                     # Kotlin/Wasm entry point — ComposeViewport(document.body)
+Main.kt                     # Kotlin/Wasm entry point — isolated Compose viewport + readiness signal
 ```
 
 ### Why it's shaped this way
@@ -78,16 +81,19 @@ Main.kt                     # Kotlin/Wasm entry point — ComposeViewport(docume
 ## Run locally
 
 ```bash
-./gradlew :composeApp:wasmJsBrowserDevelopmentRun
+./gradlew :composeApp:wasmJsBrowserDevelopmentRun --no-configuration-cache
 ```
 
 Then open the printed `http://localhost:8080`.
 
+The commands in this README disable Gradle's configuration cache to match CI. Dependency
+and build-output caching remain enabled.
+
 ## Lint
 
 ```bash
-./gradlew :composeApp:ktlintCheck     # verify
-./gradlew :composeApp:ktlintFormat    # auto-fix
+./gradlew :composeApp:ktlintCheck --no-configuration-cache     # verify
+./gradlew :composeApp:ktlintFormat --no-configuration-cache    # auto-fix
 ```
 
 Compose `@Composable` PascalCase names are allowed via `.editorconfig`, and generated
@@ -96,14 +102,24 @@ resource sources are excluded from the check.
 ## Build the static site
 
 ```bash
-./gradlew :composeApp:wasmJsBrowserDistribution
+./gradlew :composeApp:wasmJsBrowserDistribution --no-configuration-cache
 ```
 
 Output lands in `composeApp/build/dist/wasmJs/productionExecutable/`.
 
+The homepage keeps readable HTML visible until Compose reports readiness. Add `?view=html`
+to open the text version without downloading the Wasm runtime. The interactive build still
+includes a substantial Compose/Skiko runtime; bundle-size warnings are expected.
+
 ## Deploy
 
-Pushing to `master` triggers `.github/workflows/deploy.yml`, which **lints → builds the Wasm
-distribution → publishes** to GitHub Pages.
+Pull requests targeting `master` run lint and build the production Wasm distribution.
+Pushing to `master`, or manually running `.github/workflows/deploy.yml`, also publishes the
+validated distribution to GitHub Pages. Pull requests never upload or publish a Pages artifact.
+Only the deploy job has Pages and identity-token write permissions.
 
 > **One-time setup:** in the repo **Settings → Pages**, set **Source** to **GitHub Actions**.
+
+## Project preview asset
+
+The Yify preview is an optimized copy of the [public app screenshot](https://raw.githubusercontent.com/kunal26das/yify/main/store-artifacts/screenshots/01-home.png). The workbench sorting sketch illustrates bubble sort; it is not an embedded AlgoScope instance.

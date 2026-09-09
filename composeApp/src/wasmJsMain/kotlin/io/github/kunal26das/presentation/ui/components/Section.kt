@@ -12,6 +12,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import io.github.kunal26das.presentation.theme.Clay
 import io.github.kunal26das.presentation.theme.OnSurface
@@ -24,11 +26,11 @@ fun SectionContainer(
 ) {
     Box(modifier = modifier.fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
         BoxWithConstraints {
-            val compact = maxWidth < 720.dp
+            val compact = maxWidth < 900.dp
             Column(
                 modifier =
                     Modifier
-                        .widthIn(max = 980.dp)
+                        .widthIn(max = 1160.dp)
                         .fillMaxWidth()
                         .padding(padding),
             ) {
@@ -52,6 +54,6 @@ fun SectionTitle(
         text = title,
         style = MaterialTheme.typography.displaySmall,
         color = OnSurface,
-        modifier = Modifier.padding(top = 8.dp, bottom = 32.dp),
+        modifier = Modifier.padding(top = 8.dp, bottom = 32.dp).semantics { heading() },
     )
 }

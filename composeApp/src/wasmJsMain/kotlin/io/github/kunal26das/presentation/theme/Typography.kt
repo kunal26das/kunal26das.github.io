@@ -60,8 +60,8 @@ fun appTypography(
         TextStyle(
             fontFamily = sans,
             fontWeight = FontWeight.SemiBold,
-            fontSize = 13.sp,
-            lineHeight = 18.sp,
+            fontSize = 14.sp,
+            lineHeight = 20.sp,
             letterSpacing = 1.8.sp,
         ),
 )

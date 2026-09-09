@@ -7,11 +7,10 @@ class ProfileRepositoryImpl : ProfileRepository {
     override fun getProfile(): Profile =
         Profile(
             name = "Kunal Das",
-            role = "Mobile App Maker",
+            role = "Mobile App Developer",
             tagline =
-                "I make the apps that live on your phone — the ones you tap open every day. " +
-                    "From ordering dinner to staying in touch, I help build experiences that just work, " +
-                    "and feel good to use — on iPhone, on Android, and everywhere in between.",
+                "I turn product ideas into reliable mobile experiences with Kotlin, Compose and React Native. " +
+                    "Since 2019, I've helped teams at Licious, Koo and Powerplay build apps used by millions.",
             location = "Bengaluru, India",
             linkedIn = "https://linkedin.com/in/kunal26das",
             gitHub = "https://github.com/kunal26das",

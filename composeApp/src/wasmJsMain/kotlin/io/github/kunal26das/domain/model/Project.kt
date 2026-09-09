@@ -10,4 +10,5 @@ data class Project(
     val web: String? = null,
     val webLabel: String? = null,
     val featured: Boolean = false,
+    val category: String = "Experiments",
 )

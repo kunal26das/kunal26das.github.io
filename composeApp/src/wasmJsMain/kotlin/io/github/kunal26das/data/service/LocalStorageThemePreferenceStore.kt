@@ -4,10 +4,14 @@ import io.github.kunal26das.domain.service.ThemePreferenceStore
 import kotlinx.browser.localStorage
 
 class LocalStorageThemePreferenceStore : ThemePreferenceStore {
-    override fun isDark(): Boolean = localStorage.getItem(THEME_KEY) != LIGHT
+    private var dark = runCatching { localStorage.getItem(THEME_KEY) != LIGHT }.getOrDefault(true)
+
+    override fun isDark(): Boolean = dark
 
     override fun setDark(dark: Boolean) {
-        localStorage.setItem(THEME_KEY, if (dark) DARK else LIGHT)
+        this.dark = dark
+        // Storage may be unavailable or full; the current session still keeps the preference.
+        runCatching { localStorage.setItem(THEME_KEY, if (dark) DARK else LIGHT) }
     }
 
     private companion object {

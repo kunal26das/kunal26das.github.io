@@ -5,10 +5,10 @@ import kotlinx.browser.window
 
 class BrowserLinkOpener : LinkOpener {
     override fun open(url: String) {
-        window.open(url, "_blank")
+        window.open(url, "_blank", "noopener,noreferrer")
     }
 
     override fun openEmail(email: String) {
-        open("mailto:$email")
+        window.location.href = "mailto:$email"
     }
 }

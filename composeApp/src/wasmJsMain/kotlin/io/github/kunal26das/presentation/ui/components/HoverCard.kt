@@ -28,6 +28,7 @@ import io.github.kunal26das.presentation.theme.AccentGradient
 import io.github.kunal26das.presentation.theme.Background
 import io.github.kunal26das.presentation.theme.Border
 import io.github.kunal26das.presentation.theme.Cyan
+import io.github.kunal26das.presentation.theme.LocalMotionPreferences
 import io.github.kunal26das.presentation.theme.Violet
 import io.github.kunal26das.presentation.theme.liquidGlass
 import androidx.compose.ui.util.lerp as lerpFloat
@@ -41,13 +42,14 @@ fun HoverCard(
 ) {
     val source = remember { MutableInteractionSource() }
     val p = hoverProgress(source)
+    val animateMotion = LocalMotionPreferences.current.animationsEnabled
     val baseBorder = if (featured) Violet.copy(alpha = 0.45f) else Border
     val glow = if (featured) Violet else Cyan
     Column(
         modifier =
             modifier
                 .graphicsLayer {
-                    val s = lerpFloat(1f, 1.02f, p)
+                    val s = if (animateMotion) lerpFloat(1f, 1.02f, p) else 1f
                     scaleX = s
                     scaleY = s
                 }.liquidGlass(RoundedCornerShape(18.dp), tintAlpha = 0.26f + 0.10f * p)

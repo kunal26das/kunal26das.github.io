@@ -7,6 +7,7 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
@@ -25,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import io.github.kunal26das.presentation.theme.Clay
 import io.github.kunal26das.presentation.theme.ClayLight
+import io.github.kunal26das.presentation.theme.LocalMotionPreferences
 import io.github.kunal26das.presentation.theme.Ochre
 
 @Composable
@@ -33,10 +35,16 @@ fun Reveal(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
+    val animateMotion = LocalMotionPreferences.current.animationsEnabled
     var shown by remember { mutableStateOf(false) }
     val progress by animateFloatAsState(
-        targetValue = if (shown) 1f else 0f,
-        animationSpec = tween(durationMillis = 650, delayMillis = delayMillis, easing = EaseOutCubic),
+        targetValue = if (shown || !animateMotion) 1f else 0f,
+        animationSpec =
+            if (animateMotion) {
+                tween(durationMillis = 650, delayMillis = delayMillis, easing = EaseOutCubic)
+            } else {
+                snap()
+            },
         label = "reveal",
     )
     LaunchedEffect(Unit) { shown = true }
@@ -54,9 +62,10 @@ fun Reveal(
 @Composable
 fun hoverProgress(source: MutableInteractionSource): Float {
     val hovered by source.collectIsHoveredAsState()
+    val animateMotion = LocalMotionPreferences.current.animationsEnabled
     val progress by animateFloatAsState(
         targetValue = if (hovered) 1f else 0f,
-        animationSpec = tween(durationMillis = 180),
+        animationSpec = if (animateMotion) tween(durationMillis = 180) else snap(),
         label = "hover",
     )
     return progress
@@ -64,6 +73,13 @@ fun hoverProgress(source: MutableInteractionSource): Float {
 
 @Composable
 fun rememberShimmerBrush(): Brush {
+    if (!LocalMotionPreferences.current.animationsEnabled) {
+        return Brush.linearGradient(
+            colors = listOf(Clay, ClayLight, Ochre, Clay),
+            start = Offset.Zero,
+            end = Offset(540f, 220f),
+        )
+    }
     val transition = rememberInfiniteTransition(label = "shimmer")
     val shift by transition.animateFloat(
         initialValue = 0f,

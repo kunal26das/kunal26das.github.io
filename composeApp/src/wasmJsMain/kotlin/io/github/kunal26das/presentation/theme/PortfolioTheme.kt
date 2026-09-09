@@ -57,6 +57,7 @@ fun PortfolioTheme(
     content: @Composable () -> Unit,
 ) {
     val palette = if (themeViewModel.isDark) DarkPalette else LightPalette
+    val motionPreferences = rememberMotionPreferences()
 
     val emojiFamily = FontFamily(Font(Res.font.noto_emoji))
     val serif =
@@ -70,6 +71,7 @@ fun PortfolioTheme(
         LocalEmojiFontFamily provides emojiFamily,
         LocalPalette provides palette,
         LocalThemeViewModel provides themeViewModel,
+        LocalMotionPreferences provides motionPreferences,
     ) {
         MaterialTheme(
             colorScheme = colorScheme(palette),
