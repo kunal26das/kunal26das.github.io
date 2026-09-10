@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    // The picker and drop target share one local read. A newer selection replaces it.
+
     let activeRead = null;
 
     function cancelRead(owner) {
@@ -12,7 +12,7 @@
         operation.reader.onload = null;
         operation.reader.onerror = null;
         operation.reader.onabort = null;
-        try { operation.reader.abort(); } catch (_) { /* Already finished. */ }
+        try { operation.reader.abort(); } catch (_) {  }
     }
 
     function readFile(owner, file, limit, onSelected, onError) {
@@ -88,7 +88,7 @@
             readFile(owner, files[0], limit, onSelected, onError);
         };
         return {
-            // Called synchronously in the Compose button click to keep user activation.
+
             open() { if (!owner.disposed) input.click(); },
             dispose() {
                 if (owner.disposed) return;
@@ -121,8 +121,8 @@
             depth = 0;
             setDragging(false);
         }
-        // Keep files from navigating away while the launcher is opening a selection.
-        // Plain text and URL drags retain their normal browser behavior.
+
+
         function guard(event) {
             if (!hasFiles(event)) return;
             event.preventDefault();

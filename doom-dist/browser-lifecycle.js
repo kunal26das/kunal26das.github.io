@@ -37,13 +37,13 @@
         function activatePointer(event) {
             if (disposed || pageHidden || document.visibilityState !== 'visible') return;
             if (event.pointerType !== 'touch' && event.pointerType !== 'pen') return;
-            // Mobile Safari can receive real touch input without reporting document focus.
+
             pointerActivated = true;
             update();
         }
 
-        // Read both facts on every event: focus and visibility notifications can
-        // arrive in either order when a tab or its containing window returns.
+
+
         document.addEventListener('visibilitychange', update);
         document.addEventListener('pointerdown', activatePointer, true);
         window.addEventListener('focus', update);

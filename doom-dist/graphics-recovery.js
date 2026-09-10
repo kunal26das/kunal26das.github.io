@@ -24,7 +24,7 @@
                 return;
             }
 
-            // This is ordinary DOM so a failed Compose/WebGL surface cannot hide it.
+
             overlay = document.createElement('div');
             overlay.setAttribute('role', 'alertdialog');
             overlay.setAttribute('aria-modal', 'true');
@@ -48,7 +48,7 @@
             reload.style.cssText = 'width:100%;min-height:48px;padding:12px 20px;border:0;border-radius:4px;background:#d6a15a;color:#1b1108;font:700 16px system-ui,sans-serif;cursor:pointer;outline-offset:4px;';
             const reloadGame = () => window.location.reload();
             const keepFocus = event => {
-                // Keep the single recovery action reachable without sending keys to the game.
+
                 event.stopPropagation();
                 if (event.key === 'Tab') {
                     event.preventDefault();
@@ -109,7 +109,7 @@
                 };
                 const restored = () => {
                     if (!running || !interruption || !canvases.has(canvas)) return;
-                    // Skiko cannot rebuild its lost graphics resources through a public API.
+
                     showInterruption('The graphics connection returned, but the game needs to reload before it can draw again. Unsaved progress will be lost; your remembered game file and saved games are kept.');
                 };
                 canvas.addEventListener('webglcontextlost', lost);
