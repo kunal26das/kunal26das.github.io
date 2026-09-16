@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Involute Calculator — Circle Involute Distances &amp; Interactive Graph</title>
+    <title>Involute Explorer — Kunal Das</title>
     <meta
       name="description"
       content="Free online involute calculator. Compute the radial distance from a circle's centre to points on its involute at any angle interval, with a live interactive graph of the curve, unwinding string, and sampled points."
@@ -14,18 +14,18 @@
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Involute Calculator" />
-    <meta property="og:title" content="Involute Calculator — Circle Involute Distances & Interactive Graph" />
+    <meta property="og:title" content="Involute Explorer — Kunal Das" />
     <meta property="og:description" content="Compute radial distances to points on a circle involute at any angle interval, with a live interactive graph." />
     <meta property="og:url" content="https://kunal26das.github.io/involute/" />
     <meta property="og:image" content="https://kunal26das.github.io/involute/og-image.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Involute calculator showing an interactive graph of a circle involute with sampled distance points and a results table." />
+    <meta property="og:image:alt" content="A diagram of a circle involute and its tangent string." />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Involute Calculator — Circle Involute Distances & Interactive Graph" />
+    <meta name="twitter:title" content="Involute Explorer — Kunal Das" />
     <meta name="twitter:description" content="Compute radial distances to points on a circle involute at any angle interval, with a live interactive graph." />
     <meta name="twitter:image" content="https://kunal26das.github.io/involute/og-image.jpg" />
-    <meta name="theme-color" content="#096b50" />
+    <meta name="theme-color" content="#1b1916" />
 
     <script type="application/ld+json">
     {
@@ -41,405 +41,98 @@
       "author": { "@type": "Person", "name": "Kunal Das" }
     }
     </script>
-    <style>
-      :root {
-        color-scheme: light;
-        --ink: #1c2621;
-        --muted: #59655d;
-        --paper: #f6f3eb;
-        --panel: #fffdf8;
-        --accent: #096b50;
-        --accent-dark: #064c3a;
-        --line: #d8d7cb;
-        --curve: #0b7bd6;
-        --circle: #e07b39;
-      }
-
-      * { box-sizing: border-box; }
-
-      html, body { height: 100%; }
-
-      body {
-        margin: 0;
-        overflow: hidden;
-        color: var(--ink);
-        background: var(--paper);
-        font: 15px/1.45 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      }
-
-      main {
-        display: flex;
-        flex-direction: column;
-        height: 100dvh;
-        width: min(100% - 2rem, 1200px);
-        margin: 0 auto;
-        padding: 1.1rem 0;
-        gap: .9rem;
-      }
-
-      header { flex: 0 0 auto; display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
-
-      h1 {
-        margin: 0;
-        font-family: Iowan Old Style, Palatino Linotype, Book Antiqua, Georgia, serif;
-        font-size: clamp(1.5rem, 3.4vw, 2.2rem);
-        font-weight: 600;
-        letter-spacing: -.03em;
-      }
-
-      .tagline { margin: 0; color: var(--muted); }
-
-      .layout {
-        flex: 1 1 auto;
-        min-height: 0;
-        display: grid;
-        grid-template-columns: 300px minmax(0, 1fr) 240px;
-        gap: .9rem;
-      }
-
-      .panel {
-        min-height: 0;
-        display: flex;
-        flex-direction: column;
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        background: var(--panel);
-        box-shadow: 0 8px 22px rgb(26 42 32 / 7%);
-      }
-
-      .panel h2 {
-        flex: 0 0 auto;
-        margin: 0;
-        padding: .9rem 1.1rem .5rem;
-        font-size: .8rem;
-        letter-spacing: .1em;
-        text-transform: uppercase;
-        color: var(--accent);
-      }
-
-      .controls { padding: 0 1.1rem 1rem; overflow-y: auto; }
-
-      .field { margin-bottom: 1rem; }
-      .field label {
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-        margin-bottom: .35rem;
-        font-weight: 700;
-      }
-      .field output { color: var(--accent); font-variant-numeric: tabular-nums; }
-
-      input[type="range"] { width: 100%; accent-color: var(--accent); }
-      input[type="number"] {
-        width: 100%;
-        margin-top: .3rem;
-        padding: .45rem .6rem;
-        border: 1px solid #b8bcb5;
-        border-radius: 8px;
-        color: var(--ink);
-        background: #fff;
-        font: inherit;
-      }
-      input:focus { outline: 3px solid #9ed7c2; border-color: var(--accent); }
-      .hint { margin: .3rem 0 0; color: var(--muted); font-size: .8rem; }
-
-      .stats { margin-top: .4rem; border-top: 1px solid var(--line); padding-top: .8rem; }
-      .stats dl { margin: 0; display: grid; grid-template-columns: 1fr auto; gap: .3rem .6rem; }
-      .stats dt { color: var(--muted); }
-      .stats dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; }
-
-      .graph-panel { padding: 0; }
-      .graph-panel svg { flex: 1 1 auto; min-height: 0; width: 100%; height: 100%; }
-
-      .axis { stroke: var(--line); stroke-width: 1; }
-      .base-circle { fill: rgb(224 123 57 / 12%); stroke: var(--circle); stroke-width: 2; }
-      .involute-path { fill: none; stroke: var(--curve); stroke-width: 2.5; stroke-linecap: round; }
-      .string-line { stroke: var(--muted); stroke-width: 1.3; stroke-dasharray: 5 4; }
-      .radial-line { stroke: var(--ink); stroke-width: 1.3; }
-      .marker-dot { fill: var(--curve); }
-      .interval-ray { stroke: var(--line); stroke-width: 1; }
-      .interval-dot { fill: var(--panel); stroke: var(--curve); stroke-width: 1.8; }
-      .interval-label { fill: var(--muted); font-size: 10px; text-anchor: middle; }
-      .tangent-dot { fill: var(--circle); }
-      .centre-dot { fill: var(--ink); }
-      .svg-label { fill: var(--muted); font-size: 12px; }
-
-      .table-wrap { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 0 1.1rem .6rem; }
-      table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
-      th, td { padding: .4rem .25rem; text-align: right; border-bottom: 1px solid var(--line); }
-      th {
-        position: sticky; top: 0;
-        background: var(--panel);
-        color: var(--muted);
-        font-size: .72rem; letter-spacing: .06em; text-transform: uppercase;
-      }
-      th:first-child, td:first-child { text-align: left; }
-      tr.highlight td { background: #e7f3ec; font-weight: 700; }
-
-      @media (max-width: 900px) {
-        body { overflow: auto; }
-        main { height: auto; }
-        .layout { grid-template-columns: 1fr; }
-        .graph-panel svg { min-height: 320px; }
-        .table-wrap { max-height: 300px; }
-      }
-    </style>
+    <link rel="stylesheet" href="styles.css">
+    <script src="theme.js"></script>
+    <script src="geometry.js" defer></script>
+    <script src="explorer.js" defer></script>
   </head>
   <body>
-    <main>
-      <header>
-        <h1>Involute calculator</h1>
-        <p class="tagline">Drag the sliders — everything updates live.</p>
-      </header>
-
-      <div class="layout">
-        <section class="panel" aria-label="Inputs">
-          <h2>Inputs</h2>
-          <div class="controls">
-            <div class="field">
-              <label for="radius">Circle radius <output id="radius-value">45</output></label>
-              <input id="radius" type="range" min="1" max="100" step="1" value="45" />
-              <p class="hint">Use the same unit in which you want the distance reported.</p>
-            </div>
-
-            <div class="field">
-              <label for="delta">Angle interval <output id="delta-value">15&deg;</output></label>
-              <input id="delta" type="range" min="1" max="90" step="1" value="15" />
-              <p class="hint">Table rows are sampled at this spacing.</p>
-            </div>
-
-            <div class="field">
-              <label for="unwind">Unwound angle <output id="unwind-value">90&deg;</output></label>
-              <input id="unwind" type="range" min="0" max="359" step="1" value="90" />
-              <p class="hint">Moves the highlighted point along the curve.</p>
-            </div>
-
-            <div class="stats" aria-live="polite">
-              <dl>
-                <dt>Polar angle</dt><dd id="stat-polar">&ndash;</dd>
-                <dt>Centre distance</dt><dd id="stat-distance">&ndash;</dd>
-                <dt>Unwrapped length</dt><dd id="stat-arc">&ndash;</dd>
-              </dl>
-            </div>
-          </div>
-        </section>
-
-        <section class="panel graph-panel" aria-label="Involute graph">
-          <svg id="graph" viewBox="0 0 640 640" role="img" aria-label="A circle, its involute curve, the unwinding string, and the selected point.">
-            <line class="axis" x1="0" y1="320" x2="640" y2="320"></line>
-            <line class="axis" x1="320" y1="0" x2="320" y2="640"></line>
-            <circle id="base-circle" class="base-circle" cx="320" cy="320"></circle>
-            <g id="interval-group"></g>
-            <path id="involute-path" class="involute-path"></path>
-            <line id="string-line" class="string-line"></line>
-            <line id="radial-line" class="radial-line"></line>
-            <circle class="centre-dot" cx="320" cy="320" r="3.5"></circle>
-            <circle id="tangent-dot" class="tangent-dot" r="4.5"></circle>
-            <circle id="marker-dot" class="marker-dot" r="6"></circle>
-            <text id="marker-label" class="svg-label"></text>
-          </svg>
-        </section>
-
-        <section class="panel" aria-label="Results">
-          <h2>Distances</h2>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th scope="col">Angle</th><th scope="col">Distance</th></tr></thead>
-              <tbody id="results"></tbody>
-            </table>
-          </div>
-        </section>
+    <a class="skip-link" href="#explorer">Skip to explorer</a>
+    <header class="site-header">
+      <div class="shell header-inner">
+        <a class="brand" href="https://kunal26das.github.io/" aria-label="Kunal Das — homepage"><span class="brand-mark">KD</span><span class="brand-name">Kunal Das</span></a>
+        <nav class="header-nav" aria-label="Main navigation"><a href="https://kunal26das.github.io/">Portfolio</a><a href="https://kunal26das.github.io/blog/">Writing</a></nav>
+        <button class="theme-toggle" type="button" data-theme-toggle hidden>Light</button>
       </div>
+    </header>
+    <main class="shell">
+      <section class="intro" aria-labelledby="page-title">
+        <div><p class="eyebrow"><span class="small-rule"></span>A study in motion / Geometry</p><h1 id="page-title">Involute <em>explorer.</em></h1></div>
+        <div class="intro-copy"><p>A circle. A taut string. A curve that reveals itself as you unwind.</p><a href="#how-it-works">See the mathematics <span aria-hidden="true">↘</span></a></div>
+      </section>
+      <noscript><p class="notice">Enable JavaScript to use the sliders, plot the curve and calculate distances. The mathematics below is available without it.</p></noscript>
+      <section id="explorer" class="workspace" aria-label="Interactive involute calculator">
+        <div class="control-rail">
+          <div class="rail-heading"><h2>Make it yours</h2><button class="quiet-button" id="reset" type="button" disabled>Reset</button></div>
+          <div class="field">
+            <label for="radius">Circle radius <span class="symbol">r</span></label>
+            <div class="number-field"><input id="radius" type="number" min="1" max="100" step="1" value="45" aria-describedby="radius-hint" disabled><span>units</span></div>
+            <input id="radius-range" type="range" min="1" max="100" step="1" value="45" aria-label="Circle radius slider" disabled>
+            <p class="hint" id="radius-hint">1–100. Distances use the same unit.</p>
+          </div>
+          <div class="field">
+            <label for="unwind">Unwound angle <output id="unwind-value" for="unwind">180°</output></label>
+            <input id="unwind" type="range" min="0" max="360" step="1" value="180" aria-describedby="unwind-hint" disabled>
+            <div class="range-limits" aria-hidden="true"><span>0°</span><span>360°</span></div>
+            <p class="hint" id="unwind-hint">Turn around the circle to move point P.</p>
+            <button class="play-button" id="play" type="button" disabled><span aria-hidden="true">▷</span> Animate the string</button>
+          </div>
+          <div class="field sampling-field">
+            <label for="delta">Sample interval <output id="delta-value" for="delta">15°</output></label>
+            <input id="delta" type="range" min="1" max="90" step="1" value="15" aria-describedby="delta-hint" disabled>
+            <p class="hint" id="delta-hint">Spacing of polar angles in the distance table.</p>
+          </div>
+          <label class="check-field"><input id="show-samples" type="checkbox" checked disabled> Show sampled points</label>
+          <p class="rail-note">Try the arrow keys for small, precise changes.</p>
+        </div>
+        <div class="drawing">
+          <div class="drawing-top"><span class="eyebrow">01 / Live geometry</span><span id="scale-note">Fitted to the curve</span></div>
+          <svg id="graph" viewBox="0 0 700 490" role="img" aria-labelledby="graph-title graph-description">
+            <title id="graph-title">A circle and its involute</title>
+            <desc id="graph-description">The end of a taut string traces the involute as it unwinds from the circle. Use the controls to explore the curve.</desc>
+            <defs><pattern id="grid" width="35" height="35" patternUnits="userSpaceOnUse"><path d="M 35 0 L 0 0 0 35" class="grid-line" fill="none"/></pattern></defs>
+            <rect width="700" height="490" fill="url(#grid)"/>
+            <g id="axes"></g>
+            <circle id="base-circle" class="base-circle"/>
+            <path id="full-path" class="full-path"/>
+            <g id="interval-group"></g>
+            <path id="involute-path" class="involute-path"/>
+            <line id="radial-line" class="radial-line"/>
+            <line id="string-line" class="string-line"/>
+            <circle id="centre-dot" class="centre-dot" r="3"/>
+            <circle id="tangent-dot" class="tangent-dot" r="4"/>
+            <circle id="marker-halo" class="marker-halo" r="10"/>
+            <circle id="marker-dot" class="marker-dot" r="5"/>
+            <text id="origin-label" class="svg-label">O</text>
+            <text id="tangent-label" class="svg-label">T</text>
+            <text id="marker-label" class="point-label">P</text>
+          </svg>
+          <div class="legend" aria-label="Graph legend"><span><i class="legend-curve"></i>Involute</span><span><i class="legend-circle"></i>Base circle</span><span><i class="legend-string"></i>Taut string</span><span><i class="legend-radius"></i>Centre distance</span></div>
+          <dl class="measurements"><div><dt>Centre distance <span>OP</span></dt><dd id="stat-distance">—</dd></div><div><dt>Polar angle <span>φ</span></dt><dd id="stat-polar">—</dd></div><div><dt>Unwrapped string <span>TP</span></dt><dd id="stat-arc">—</dd></div></dl>
+          <p class="sr-only" id="measurement-status" role="status"></p>
+        </div>
+      </section>
+      <section class="details-layout" id="how-it-works" aria-label="Understanding the curve and its distances">
+        <div class="explanation">
+          <p class="eyebrow">02 / Behind the curve</p>
+          <h2>One simple motion.<br><em>A beautiful result.</em></h2>
+          <p>Imagine a string wrapped around a circle. Keep it taut as you unwrap it. The free end, <strong>P</strong>, traces an involute. The string always leaves the circle at a tangent, <strong>T</strong>.</p>
+          <p>The unwound angle <strong>θ</strong> measures how far you have turned around the circle. The polar angle <strong>φ</strong> locates P as seen from the centre, O. They are different angles.</p>
+          <div class="formula"><span>Centre distance</span><strong>d = r √(1 + θ²)</strong><small>θ in radians · string length = rθ</small></div>
+          <details class="math-details"><summary>Follow the coordinates</summary><div><p>For a base circle of radius r and an unwound angle θ in radians:</p><p class="equations">x = r(cos θ + θ sin θ)<br>y = r(sin θ − θ cos θ)<br>φ = θ − arctan θ</p><p>The table solves the last equation for θ at each polar angle, then calculates the centre distance. Values are rounded only for display. The plot fits the curve to the available space as the radius changes.</p></div></details>
+          <a class="source-link" href="https://github.com/kunal26das/involute">Explore the source <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="results-section">
+          <div class="results-heading"><div><p class="eyebrow">03 / The numbers</p><h2>Along the curve.</h2></div><button class="outline-button" id="download" type="button" disabled>Export CSV <span aria-hidden="true">↓</span></button></div>
+          <p class="table-note" id="table-note">Distances from the centre, sampled every 15° of polar angle.</p>
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable sampled distances">
+            <table><caption class="sr-only">Distance from the circle centre at each sampled polar angle</caption><thead><tr><th scope="col">Polar angle φ</th><th scope="col">Centre distance</th></tr></thead><tbody id="results"></tbody></table>
+          </div>
+          <p class="table-foot"><span id="sample-count">— points</span><span>Same unit as radius · 2 decimals</span></p>
+          <p id="export-status" class="action-status" role="status"></p>
+        </div>
+      </section>
     </main>
-
-    <script>
-      (() => {
-        const $ = (id) => document.getElementById(id);
-        const radiusRange = $('radius');
-        const deltaRange = $('delta');
-        const unwindRange = $('unwind');
-        const radiusValue = $('radius-value');
-        const deltaValue = $('delta-value');
-        const unwindValue = $('unwind-value');
-        const results = $('results');
-        const statPolar = $('stat-polar');
-        const statDistance = $('stat-distance');
-        const statArc = $('stat-arc');
-        const baseCircle = $('base-circle');
-        const involutePath = $('involute-path');
-        const stringLine = $('string-line');
-        const radialLine = $('radial-line');
-        const tangentDot = $('tangent-dot');
-        const markerDot = $('marker-dot');
-        const markerLabel = $('marker-label');
-        const intervalGroup = $('interval-group');
-        const SVG_NS = 'http://www.w3.org/2000/svg';
-
-        const CX = 320, CY = 320;
-        const dtr = (22 / 7) / 180;
-        const rtd = 180 / (22 / 7);
-
-        function calculateDistances(radius) {
-          // A map keyed by the rounded angle deliberately matches main.py:
-          // later samples replace earlier ones that round to the same angle.
-          const samples = new Map();
-          const totals = new Map();
-          const counts = new Map();
-
-          for (let t1 = 0; ; t1 += 0.01) {
-            const side = radius * t1 * dtr;
-            const t2 = Math.round((t1 - Math.atan(side / radius) * rtd) * 100) / 100;
-            if (t2 >= 360) break;
-            samples.set(t2, Math.hypot(radius, side));
-          }
-
-          for (const [angle, distance] of samples) {
-            const degree = Math.ceil(angle);
-            if (degree >= 360) break;
-            totals.set(degree, (totals.get(degree) || 0) + distance);
-            counts.set(degree, (counts.get(degree) || 0) + 1);
-          }
-
-          return [...totals].map(([degree, total]) => ({
-            degree,
-            distance: Math.round((total / counts.get(degree)) * 100) / 100,
-          }));
-        }
-
-        function involutePoint(radius, t) {
-          return {
-            x: radius * (Math.cos(t) + t * Math.sin(t)),
-            y: radius * (Math.sin(t) - t * Math.cos(t)),
-          };
-        }
-
-        function renderGraph(radius, unwindDeg) {
-          const t = unwindDeg * Math.PI / 180;
-          // Unwrap angle at which the involute's polar angle reaches 360°,
-          // i.e. the solution of t - atan(t) = 2*pi. Drawing the curve this far
-          // means every tabulated sample point lies on the visible curve.
-          const tMax = 7.633;
-          // Anchor the scale to the slider's maximum radius so changing the
-          // radius visibly resizes the geometry (the involute is self-similar,
-          // so a fit-to-view scale would make every radius look identical).
-          const maxRadius = Number(radiusRange.max);
-          let extent = maxRadius;
-          for (let i = 0; i <= 240; i++) {
-            const p = involutePoint(maxRadius, tMax * i / 240);
-            extent = Math.max(extent, Math.abs(p.x), Math.abs(p.y));
-          }
-          const scale = 295 / extent;
-          const sx = (v) => (CX + v * scale).toFixed(2);
-          const sy = (v) => (CY - v * scale).toFixed(2);
-
-          let d = '';
-          for (let i = 0; i <= 240; i++) {
-            const p = involutePoint(radius, tMax * i / 240);
-            d += `${i === 0 ? 'M' : 'L'} ${sx(p.x)} ${sy(p.y)} `;
-          }
-
-          const selected = involutePoint(radius, t);
-          const tangent = { x: radius * Math.cos(t), y: radius * Math.sin(t) };
-
-          baseCircle.setAttribute('r', (radius * scale).toFixed(2));
-          involutePath.setAttribute('d', d);
-          stringLine.setAttribute('x1', sx(tangent.x));
-          stringLine.setAttribute('y1', sy(tangent.y));
-          stringLine.setAttribute('x2', sx(selected.x));
-          stringLine.setAttribute('y2', sy(selected.y));
-          radialLine.setAttribute('x1', CX);
-          radialLine.setAttribute('y1', CY);
-          radialLine.setAttribute('x2', sx(selected.x));
-          radialLine.setAttribute('y2', sy(selected.y));
-          tangentDot.setAttribute('cx', sx(tangent.x));
-          tangentDot.setAttribute('cy', sy(tangent.y));
-          markerDot.setAttribute('cx', sx(selected.x));
-          markerDot.setAttribute('cy', sy(selected.y));
-          markerLabel.setAttribute('x', Number(sx(selected.x)) + 10);
-          markerLabel.setAttribute('y', Number(sy(selected.y)) - 10);
-          markerLabel.textContent = `${unwindDeg}°`;
-
-          const polar = (t - Math.atan(t)) * 180 / Math.PI;
-          statPolar.textContent = `${polar.toFixed(2)}°`;
-          statDistance.textContent = (radius * Math.hypot(1, t)).toFixed(2);
-          statArc.textContent = (radius * t).toFixed(2);
-          return { polar, scale };
-        }
-
-        function renderIntervalMarks(rows, scale) {
-          intervalGroup.replaceChildren();
-          const showLabels = rows.length <= 16;
-          for (const { degree, distance } of rows) {
-            const a = degree * Math.PI / 180;
-            const x = CX + distance * Math.cos(a) * scale;
-            const y = CY - distance * Math.sin(a) * scale;
-
-            const ray = document.createElementNS(SVG_NS, 'line');
-            ray.setAttribute('class', 'interval-ray');
-            ray.setAttribute('x1', CX);
-            ray.setAttribute('y1', CY);
-            ray.setAttribute('x2', x.toFixed(2));
-            ray.setAttribute('y2', y.toFixed(2));
-            intervalGroup.append(ray);
-
-            const dot = document.createElementNS(SVG_NS, 'circle');
-            dot.setAttribute('class', 'interval-dot');
-            dot.setAttribute('r', 3.5);
-            dot.setAttribute('cx', x.toFixed(2));
-            dot.setAttribute('cy', y.toFixed(2));
-            intervalGroup.append(dot);
-
-            if (showLabels && degree > 0) {
-              const label = document.createElementNS(SVG_NS, 'text');
-              label.setAttribute('class', 'interval-label');
-              label.setAttribute('x', (CX + (distance * scale + 14) * Math.cos(a)).toFixed(2));
-              label.setAttribute('y', (CY - (distance * scale + 14) * Math.sin(a) - 4).toFixed(2));
-              label.textContent = `${degree}°`;
-              intervalGroup.append(label);
-            }
-          }
-        }
-
-        function renderTable(rows, polar) {
-          const highlightDegree = Math.ceil(polar);
-          results.replaceChildren();
-          let highlightRow = null;
-          for (const { degree, distance } of rows) {
-            const row = document.createElement('tr');
-            const angle = document.createElement('td');
-            const value = document.createElement('td');
-            angle.textContent = `${degree}°`;
-            value.textContent = distance.toFixed(2);
-            row.append(angle, value);
-            if (highlightRow === null && degree >= highlightDegree) {
-              row.className = 'highlight';
-              highlightRow = row;
-            }
-            results.append(row);
-          }
-          highlightRow?.scrollIntoView({ block: 'nearest' });
-        }
-
-        function render() {
-          const radius = Number(radiusRange.value);
-          const delta = Number(deltaRange.value);
-          const unwind = Number(unwindRange.value);
-
-          radiusValue.textContent = radius;
-          deltaValue.textContent = `${delta}°`;
-          unwindValue.textContent = `${unwind}°`;
-
-          const { polar, scale } = renderGraph(radius, unwind);
-          const rows = calculateDistances(radius).filter(({ degree }) => degree % delta === 0);
-          renderIntervalMarks(rows, scale);
-          renderTable(rows, polar);
-        }
-
-        radiusRange.addEventListener('input', render);
-        deltaRange.addEventListener('input', render);
-        unwindRange.addEventListener('input', render);
-        render();
-      })();
-    </script>
+    <footer class="site-footer shell"><a href="https://kunal26das.github.io/">← Back to the portfolio</a><span>A small experiment by Kunal Das.</span><a href="https://github.com/kunal26das/involute">Source on GitHub ↗</a></footer>
   </body>
 </html>
