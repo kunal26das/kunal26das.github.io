@@ -88,7 +88,7 @@
         </aside>
         <article class="prose" aria-labelledby="article-title">
             <p>Before an application draws its first useful screen, several components may need to exist. Analytics might need a logger. A client might need configuration. As that list grows, an ordering requirement can disappear inside an entry point that looks like ordinary setup code. Moving a line can then change behavior without changing any component's declared contract.</p>
-            <p><a href="https://github.com/kunal26das/startup">Startup</a> makes those relationships explicit in Kotlin Multiplatform. Its shared initializer API connects to AndroidX on Android; other targets use the project's own runtime. This walkthrough follows the source snapshot linked below and focuses on how the graph is described, checked, and executed.</p>
+            <p><a href="https://kunal26das.github.io/startup/">Startup</a> makes those relationships explicit in Kotlin Multiplatform. Its shared initializer API connects to AndroidX on Android; other targets use the project's own runtime. This walkthrough follows the source snapshot linked below and focuses on how the graph is described, checked, and executed.</p>
 
             <h2 id="declare-dependencies">Declare what must exist first</h2>
             <p>An <code>Initializer&lt;T&gt;</code> has two jobs: describe prerequisite initializer keys through <code>dependencies()</code>, then build a value through <code>create(context)</code>. The value can be a service, or <code>Unit</code> when initialization only performs work. This separates a component's ordering contract from the code that starts it. The <a href="https://github.com/kunal26das/startup/blob/372c804cdf867c2eeac69fbc179b71ce51930c31/startup/src/commonMain/kotlin/io/github/kunal26das/startup/Initializer.kt">shared interface</a> is small enough to read in one sitting.</p>
@@ -123,7 +123,7 @@ Startup order: Logger → Analytics</code></pre>
             <p>This article describes repository commit <a href="https://github.com/kunal26das/startup/commit/372c804cdf867c2eeac69fbc179b71ce51930c31"><code>372c804</code></a>, reviewed September 9, 2026. Implementation and documentation links above are pinned to that snapshot. The discussion is a source walkthrough; it makes no startup-time or cross-platform performance claim.</p>
             <div class="article-end">
                 <a href="/blog/">← Back to writing</a>
-                <a href="https://github.com/kunal26das/startup">Explore Startup ↗</a>
+                <a href="https://kunal26das.github.io/startup/">Explore Startup ↗</a>
             </div>
         </article>
     </div>
