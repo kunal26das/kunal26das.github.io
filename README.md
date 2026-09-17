@@ -1,132 +1,87 @@
 # kunal26das.github.io
 
-My personal portfolio and engineering notebook, published at **https://kunal26das.github.io**.
+My personal portfolio and engineering notebook at **https://kunal26das.github.io**.
 
-The default homepage and blog use semantic HTML, shared editorial styles, and small JavaScript
-enhancements. They render immediately without the Compose/Skiko runtime. The earlier Kotlin/Wasm
-interface remains available at `/?view=interactive` as a Compose playground.
+The website is plain HTML, CSS and JavaScript. It has no framework, package installation,
+Kotlin compiler, Gradle build or application server. The homepage and articles remain readable
+without JavaScript; small scripts handle themes, navigation, repository filters, the sorting
+demonstration and reading tools.
 
-## Highlights
+## Structure
 
-- A shared editorial design: warm paper and terracotta, Lora headings, generous spacing, and light/dark themes.
-- A project showcase with an authentic Yify screenshot, a Startup dependency sketch, and a step-by-step sorting demonstration.
-- All 14 public repositories, checked on 2026-09-09, with accessible category filters.
-- Four engineering articles, including three new source-grounded deep dives with links pinned to the reviewed repository commits.
-- Native section links, mobile navigation, keyboard controls, and readable content without JavaScript.
-- Reading progress, section navigation, copy-link controls, and an RSS feed.
-- CI checks Kotlin formatting and the production build before publishing to GitHub Pages.
-
-## Stack
-
-| Tool | Version |
-| --- | --- |
-| Kotlin | 2.4.10 |
-| Compose Multiplatform | 1.12.0 |
-| ktlint (Gradle plugin) | 14.2.0 |
-| Gradle | 9.7.1 |
-| JDK | 17 |
-
-## Website files
-
-`composeApp/src/wasmJsMain/resources/index.html`, `home.css`, and `home.js` are the default
-homepage. It shares its base palette, fonts, header, and theme handling with `blog/blog.css`
-and `blog/blog.js`. The homepage sorting sketch is an illustrative bubble-sort demo, not an
-embedded AlgoScope instance. No runtime GitHub API is needed.
-
-Article pages live in `resources/blog/<slug>/index.html`. When adding writing, update the blog
-index, homepage article list, `feed.xml`, `sitemap.xml`, and `ArticleRepositoryImpl.kt` so the
-optional Compose experience stays consistent. Keep project descriptions synchronized with
-`ProjectRepositoryImpl.kt` and the homepage directory.
-
-## Compose playground architecture
-
-The app follows **clean architecture** with an **MVVM** presentation layer. Dependencies point
-inward — `presentation` and `data` depend on `domain`, never the other way around — and the UI
-talks to abstractions (interfaces), wired together by a tiny manual DI module.
-
-```
-domain/                     # pure Kotlin, zero framework deps — the core
-  model/                    #   Profile, SkillGroup, Project, Experience
-  repository/               #   ProfileRepository, SkillRepository, ... (interfaces)
-  service/                  #   LinkOpener, ThemePreferenceStore (interfaces)
-
-data/                       # implementations of the domain contracts
-  repository/               #   *RepositoryImpl — the site's content lives here
-  service/                  #   BrowserLinkOpener (window.open),
-                            #   LocalStorageThemePreferenceStore
-
-presentation/               # everything Compose
-  state/                    #   PortfolioUiState (immutable snapshot)
-  viewmodel/                #   PortfolioViewModel, ThemeViewModel
-  theme/                    #   Palette, colors, typography, PortfolioTheme
-  ui/
-    components/             #   reusable: buttons, cards, chips, text effects, animations
-    sections/               #   Hero, About, Skills, Projects, Experience, Footer
-    navigation/             #   TopNav
-    background/             #   AuroraBackground
-  App.kt                    #   composes the sections and nav together
-
-di/
-  AppModule.kt              # constructs impls, hands ViewModels their dependencies
-
-Main.kt                     # Kotlin/Wasm entry point — isolated Compose viewport + readiness signal
+```text
+site/                    Website source, published at the domain root
+  index.html             Homepage, project directory and contact details
+  home.css, home.js      Homepage styles and interactions
+  assets/                Fonts, font license and project screenshot
+  blog/                  Blog index, shared styles/scripts and article pages
+  multidex/              Multidex landing page
+  feed.xml, sitemap.xml  RSS and search discovery
+  .well-known/           Android Digital Asset Links
+  app-ads.txt, ads.txt    Publisher verification
+scripts/
+  build.py               Assemble dist/ without compiling the website
+  check.py               Validate the assembled site
+doom-dist/              Prebuilt DOOM, updated by its own repository's CI
 ```
 
-### Why it's shaped this way
+## Preview locally
 
-- **Single responsibility** — each section, component, and repository does one thing and
-  lives in its own file.
-- **Dependency inversion** — `PortfolioViewModel` depends on `ProfileRepository` (an
-  interface), not on where the data actually comes from. Swapping static content for a network
-  source later means writing one new `data/` class and changing one line in `AppModule`.
-- **Testable core** — the `domain` and `viewmodel` layers have no Compose or browser
-  dependencies, so they're plain unit-testable Kotlin.
-- **MVVM** — `ViewModel`s expose immutable state and intent functions (`onContact`,
-  `onOpenUrl`, `toggle`); composables stay dumb and just render state + forward events.
-
-## Run locally
+Python 3 is the only requirement to build and preview:
 
 ```bash
-./gradlew :composeApp:wasmJsBrowserDevelopmentRun --no-configuration-cache
+python3 scripts/build.py
+python3 scripts/check.py
+python3 -m http.server 8080 --directory dist
 ```
 
-Then open the printed `http://localhost:8080`.
+Open **http://localhost:8080**. After editing files in `site/`, run the build again and reload
+the page. For quick work on the portfolio alone, serve `site/` directly. `/doom/` and legacy
+asset aliases are included in the assembled `dist/` preview.
 
-The commands in this README disable Gradle's configuration cache to match CI. Dependency
-and build-output caching remain enabled.
+The `/involute/`, `/resume/`, `/startup/` and `/yify/` project sites are deployed independently;
+their root-relative links resolve on the live GitHub Pages domain, not this local server.
 
-## Lint
+## Check and deploy
 
 ```bash
-./gradlew :composeApp:ktlintCheck --no-configuration-cache     # verify
-./gradlew :composeApp:ktlintFormat --no-configuration-cache    # auto-fix
+python3 scripts/build.py
+python3 scripts/check.py --check-js
 ```
 
-Compose `@Composable` PascalCase names are allowed via `.editorconfig`, and generated
-resource sources are excluded from the check.
+Python checks the assembled pages, local links and anchors, assets, discovery files and
+required deployment files. Node is used only to check JavaScript syntax; it is not a build or
+runtime dependency for the website. There are no npm packages to install.
 
-## Build the static site
+Pull requests targeting `master` run these checks. A push to `master`, or a manual run of
+`.github/workflows/deploy.yml`, also publishes `dist/` to GitHub Pages. Only the deployment job
+has Pages and identity-token write permissions. The artifact includes hidden verification
+files and only the website output, never repository configuration or local caches.
 
-```bash
-./gradlew :composeApp:wasmJsBrowserDistribution --no-configuration-cache
-```
+`doom-dist/` is copied unchanged to `/doom/`. It is produced by `kunal26das/doom` and can still
+use Kotlin independently; do not edit its generated files in this repository.
 
-Output lands in `composeApp/build/dist/wasmJs/productionExecutable/`.
+## Editing content
 
-The default homepage renders directly as HTML; `?view=html` remains compatible with older links.
-Only `?view=interactive` downloads the Compose/Skiko runtime. In that mode, the readable homepage
-stays available until Compose reports readiness. Bundle-size warnings apply to the optional
-interactive build, not the default homepage download.
+- **Articles:** add `site/blog/<slug>/index.html`, then update the blog index, homepage article
+  list, `feed.xml` and `sitemap.xml`.
+- **Projects and profile:** edit `site/index.html`. There is no second Kotlin copy to maintain.
+- **Design:** shared typography, colors, header and theme behavior live in `site/blog/blog.css`
+  and `site/blog/blog.js`; homepage-specific styles and interactions live in `home.css` and
+  `home.js`. Preserve keyboard access, mobile layouts and reduced-motion support.
 
-## Deploy
+## Compatibility
 
-Pull requests targeting `master` run lint and build the production Wasm distribution.
-Pushing to `master`, or manually running `.github/workflows/deploy.yml`, also publishes the
-validated distribution to GitHub Pages. Pull requests never upload or publish a Pages artifact.
-Only the deploy job has Pages and identity-token write permissions.
+Page URLs, article anchors and query links remain valid. Old `?view=interactive` and
+`?view=html` links now show the current portfolio. The former Compose interface was removed;
+its source remains in Git history before this migration.
 
-> **One-time setup:** in the repo **Settings → Pages**, set **Source** to **GitHub Actions**.
+The build preserves the previous Lora semibold font and Yify screenshot addresses under
+`/composeResources/io.github.kunal26das.resources/` for older cached pages. New pages use
+`/assets/` URLs. These compatibility files do not load a Compose runtime.
 
-## Project preview asset
+## Assets
 
-The Yify preview is an optimized copy of the [public app screenshot](https://raw.githubusercontent.com/kunal26das/yify/main/store-artifacts/screenshots/01-home.png). The workbench sorting sketch illustrates bubble sort; it is not an embedded AlgoScope instance.
+Lora is bundled under the SIL Open Font License in `site/assets/fonts/OFL-Lora.txt`.
+The Yify preview is an optimized copy of the [public app screenshot](https://raw.githubusercontent.com/kunal26das/yify/main/store-artifacts/screenshots/01-home.png).
+The homepage bubble-sort sketch is an illustrative JavaScript demo, not an embedded AlgoScope instance.

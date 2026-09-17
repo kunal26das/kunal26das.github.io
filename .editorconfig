@@ -1,5 +1,11 @@
 root = true
 
-[*.{kt,kts}]
-ktlint_function_naming_ignore_when_annotated_with = Composable
-ktlint_standard_property-naming = disabled
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+indent_style = space
+indent_size = 4
+
+[*.{yml,yaml}]
+indent_size = 2

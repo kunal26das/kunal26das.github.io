@@ -1,3 +1,9 @@
+# Generated static output
+/dist/
+__pycache__/
+*.pyc
+
+# Old local build caches (not part of the website)
 .gradle/
 build/
 **/build/
