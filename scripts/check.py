@@ -193,6 +193,8 @@ def check(check_js=False):
             fail(output / "feed.xml", "duplicate article links")
         if len(sitemap_links) != len(set(sitemap_links)):
             fail(output / "sitemap.xml", "duplicate URLs")
+        if ORIGIN + "/privacy/" not in sitemap_links:
+            fail(output / "sitemap.xml", "portfolio privacy page is missing")
         for article in (output / "blog").glob("*/index.html"):
             url = ORIGIN + "/" + article.parent.relative_to(output).as_posix() + "/"
             if url not in feed_links:
@@ -201,7 +203,7 @@ def check(check_js=False):
                 fail(output / "sitemap.xml", f"article missing from sitemap: {url}")
 
     for name in (".nojekyll", ".well-known/assetlinks.json", "app-ads.txt", "ads.txt",
-                 "google03573044e28217e9.html", "robots.txt", "site.webmanifest"):
+                 "google03573044e28217e9.html", "robots.txt", "site.webmanifest", "privacy/index.html"):
         destination = output / name
         if not destination.is_file():
             fail(destination, "required publishing file is missing")
