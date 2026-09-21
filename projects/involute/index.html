@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Involute Explorer — Kunal Das</title>
+    <meta
+      name="description"
+      content="Free online involute calculator. Compute the radial distance from a circle's centre to points on its involute at any angle interval, with a live interactive graph of the curve, unwinding string, and sampled points."
+    />
+    <link rel="canonical" href="https://kunal26das.github.io/involute/" />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Kunal Das" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Involute Calculator" />
+    <meta property="og:title" content="Involute Explorer — Kunal Das" />
+    <meta property="og:description" content="Compute radial distances to points on a circle involute at any angle interval, with a live interactive graph." />
+    <meta property="og:url" content="https://kunal26das.github.io/involute/" />
+    <meta property="og:image" content="https://kunal26das.github.io/involute/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A diagram of a circle involute and its tangent string." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Involute Explorer — Kunal Das" />
+    <meta name="twitter:description" content="Compute radial distances to points on a circle involute at any angle interval, with a live interactive graph." />
+    <meta name="twitter:image" content="https://kunal26das.github.io/involute/og-image.jpg" />
+    <meta name="theme-color" content="#1b1916" />
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Involute Calculator",
+      "url": "https://kunal26das.github.io/involute/",
+      "description": "Calculates the radial distance from a circle's centre to points on its involute at a chosen angle interval, with an interactive graph of the curve.",
+      "applicationCategory": "EngineeringApplication",
+      "operatingSystem": "Any",
+      "browserRequirements": "Requires JavaScript",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "author": { "@type": "Person", "name": "Kunal Das" }
+    }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="theme.js"></script>
+    <script src="geometry.js" defer></script>
+    <script src="explorer.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#explorer">Skip to explorer</a>
+    <header class="site-header">
+      <div class="shell header-inner">
+        <a class="brand" href="https://kunal26das.github.io/" aria-label="Kunal Das — homepage"><span class="brand-mark">KD</span><span class="brand-name">Kunal Das</span></a>
+        <nav class="header-nav" aria-label="Main navigation"><a href="https://kunal26das.github.io/">Portfolio</a><a href="https://kunal26das.github.io/blog/">Writing</a></nav>
+        <button class="theme-toggle" type="button" data-theme-toggle hidden>Light</button>
+      </div>
+    </header>
+    <main class="shell">
+      <section class="intro" aria-labelledby="page-title">
+        <div><p class="eyebrow"><span class="small-rule"></span>A study in motion / Geometry</p><h1 id="page-title">Involute <em>explorer.</em></h1></div>
+        <div class="intro-copy"><p>A circle. A taut string. A curve that reveals itself as you unwind.</p><a href="#how-it-works">See the mathematics <span aria-hidden="true">↘</span></a></div>
+      </section>
+      <noscript><p class="notice">Enable JavaScript to use the sliders, plot the curve and calculate distances. The mathematics below is available without it.</p></noscript>
+      <section id="explorer" class="workspace" aria-label="Interactive involute calculator">
+        <div class="control-rail">
+          <div class="rail-heading"><h2>Make it yours</h2><button class="quiet-button" id="reset" type="button" disabled>Reset</button></div>
+          <div class="field">
+            <label for="radius">Circle radius <span class="symbol">r</span></label>
+            <div class="number-field"><input id="radius" type="number" min="1" max="100" step="1" value="45" aria-describedby="radius-hint" disabled><span>units</span></div>
+            <input id="radius-range" type="range" min="1" max="100" step="1" value="45" aria-label="Circle radius slider" disabled>
+            <p class="hint" id="radius-hint">1–100. Distances use the same unit.</p>
+          </div>
+          <div class="field">
+            <label for="unwind">Unwound angle <output id="unwind-value" for="unwind">180°</output></label>
+            <input id="unwind" type="range" min="0" max="360" step="1" value="180" aria-describedby="unwind-hint" disabled>
+            <div class="range-limits" aria-hidden="true"><span>0°</span><span>360°</span></div>
+            <p class="hint" id="unwind-hint">Turn around the circle to move point P.</p>
+            <button class="play-button" id="play" type="button" disabled><span aria-hidden="true">▷</span> Animate the string</button>
+          </div>
+          <div class="field sampling-field">
+            <label for="delta">Sample interval <output id="delta-value" for="delta">15°</output></label>
+            <input id="delta" type="range" min="1" max="90" step="1" value="15" aria-describedby="delta-hint" disabled>
+            <p class="hint" id="delta-hint">Spacing of polar angles in the distance table.</p>
+          </div>
+          <label class="check-field"><input id="show-samples" type="checkbox" checked disabled> Show sampled points</label>
+          <p class="rail-note">Try the arrow keys for small, precise changes.</p>
+        </div>
+        <div class="drawing">
+          <div class="drawing-top"><span class="eyebrow">01 / Live geometry</span><span id="scale-note">Fitted to the curve</span></div>
+          <svg id="graph" viewBox="0 0 700 490" role="img" aria-labelledby="graph-title graph-description">
+            <title id="graph-title">A circle and its involute</title>
+            <desc id="graph-description">The end of a taut string traces the involute as it unwinds from the circle. Use the controls to explore the curve.</desc>
+            <defs><pattern id="grid" width="35" height="35" patternUnits="userSpaceOnUse"><path d="M 35 0 L 0 0 0 35" class="grid-line" fill="none"/></pattern></defs>
+            <rect width="700" height="490" fill="url(#grid)"/>
+            <g id="axes"></g>
+            <circle id="base-circle" class="base-circle"/>
+            <path id="full-path" class="full-path"/>
+            <g id="interval-group"></g>
+            <path id="involute-path" class="involute-path"/>
+            <line id="radial-line" class="radial-line"/>
+            <line id="string-line" class="string-line"/>
+            <circle id="centre-dot" class="centre-dot" r="3"/>
+            <circle id="tangent-dot" class="tangent-dot" r="4"/>
+            <circle id="marker-halo" class="marker-halo" r="10"/>
+            <circle id="marker-dot" class="marker-dot" r="5"/>
+            <text id="origin-label" class="svg-label">O</text>
+            <text id="tangent-label" class="svg-label">T</text>
+            <text id="marker-label" class="point-label">P</text>
+          </svg>
+          <div class="legend" aria-label="Graph legend"><span><i class="legend-curve"></i>Involute</span><span><i class="legend-circle"></i>Base circle</span><span><i class="legend-string"></i>Taut string</span><span><i class="legend-radius"></i>Centre distance</span></div>
+          <dl class="measurements"><div><dt>Centre distance <span>OP</span></dt><dd id="stat-distance">—</dd></div><div><dt>Polar angle <span>φ</span></dt><dd id="stat-polar">—</dd></div><div><dt>Unwrapped string <span>TP</span></dt><dd id="stat-arc">—</dd></div></dl>
+          <p class="sr-only" id="measurement-status" role="status"></p>
+        </div>
+      </section>
+      <section class="details-layout" id="how-it-works" aria-label="Understanding the curve and its distances">
+        <div class="explanation">
+          <p class="eyebrow">02 / Behind the curve</p>
+          <h2>One simple motion.<br><em>A beautiful result.</em></h2>
+          <p>Imagine a string wrapped around a circle. Keep it taut as you unwrap it. The free end, <strong>P</strong>, traces an involute. The string always leaves the circle at a tangent, <strong>T</strong>.</p>
+          <p>The unwound angle <strong>θ</strong> measures how far you have turned around the circle. The polar angle <strong>φ</strong> locates P as seen from the centre, O. They are different angles.</p>
+          <div class="formula"><span>Centre distance</span><strong>d = r √(1 + θ²)</strong><small>θ in radians · string length = rθ</small></div>
+          <details class="math-details"><summary>Follow the coordinates</summary><div><p>For a base circle of radius r and an unwound angle θ in radians:</p><p class="equations">x = r(cos θ + θ sin θ)<br>y = r(sin θ − θ cos θ)<br>φ = θ − arctan θ</p><p>The table solves the last equation for θ at each polar angle, then calculates the centre distance. Values are rounded only for display. The plot fits the curve to the available space as the radius changes.</p></div></details>
+          <a class="source-link" href="https://github.com/kunal26das/involute">Explore the source <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="results-section">
+          <div class="results-heading"><div><p class="eyebrow">03 / The numbers</p><h2>Along the curve.</h2></div><button class="outline-button" id="download" type="button" disabled>Export CSV <span aria-hidden="true">↓</span></button></div>
+          <p class="table-note" id="table-note">Distances from the centre, sampled every 15° of polar angle.</p>
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable sampled distances">
+            <table><caption class="sr-only">Distance from the circle centre at each sampled polar angle</caption><thead><tr><th scope="col">Polar angle φ</th><th scope="col">Centre distance</th></tr></thead><tbody id="results"></tbody></table>
+          </div>
+          <p class="table-foot"><span id="sample-count">— points</span><span>Same unit as radius · 2 decimals</span></p>
+          <p id="export-status" class="action-status" role="status"></p>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer shell"><a href="https://kunal26das.github.io/">← Back to the portfolio</a><span>A small experiment by Kunal Das.</span><a href="https://github.com/kunal26das/involute">Source on GitHub ↗</a></footer>
+  </body>
+</html>
