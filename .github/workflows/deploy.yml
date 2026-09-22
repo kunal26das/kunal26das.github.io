@@ -23,6 +23,15 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Verify résumé filtering and exports
+        working-directory: projects/resume
+        run: |
+          python3 src/selftest.py
+          node src/formats-selftest.js
+
+      - name: Verify involute geometry
+        run: node --test projects/involute/tests/geometry.test.cjs
+
       - name: Build static site
         run: python3 scripts/build.py
 

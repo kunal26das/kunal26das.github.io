@@ -35,4 +35,8 @@ else
 fi
 
 echo
-echo "commit it with:  git add -A && git commit --amend --no-edit && git push --force-with-lease origin main"
+echo "From the portfolio repository root, validate the assembled site:"
+echo "  python3 scripts/build.py"
+echo "  python3 scripts/check.py --check-js"
+echo "Commit the changed projects/resume source and index.html with a normal git commit."
+echo "A push to master publishes the resume through the shared portfolio Pages workflow."

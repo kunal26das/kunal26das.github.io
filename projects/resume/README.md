@@ -2,6 +2,11 @@
 
 Live at **<https://kunal26das.github.io/resume/>**
 
+Maintained in `projects/resume/` of the
+[portfolio repository](https://github.com/kunal26das/kunal26das.github.io/tree/master/projects/resume).
+The portfolio's build publishes this directory's `index.html` at the same `/resume/` URL.
+Source files, local archives and generated PDFs are not included in the deployed site.
+
 One hand-written source, `src/resume.html`, and one published file, `index.html`. Every other
 rendition of this document — shorter, re-laid-out, tailored to a role, as a PDF, a Word file,
 plain text, Markdown or JSON — is built in your browser at the moment you ask for it. Fonts
@@ -101,14 +106,17 @@ costs an address-harvesting crawler everything and a human one click.
 
 ## Every previous version
 
-Kept, but not published. `archive/` holds nine versions, newest first, each one a rendered
-page next to the source it was built from; `./src/snapshot.sh "what changed"` adds the current
-build to it. It is gitignored and lives only on my machine — a record of what this document
-used to claim is not something a reader needs to diff against what it claims now.
+Local snapshots are kept, but not published. `archive/` holds a rendered page next to the
+source it was built from; `./src/snapshot.sh "what changed"` adds the current build to it.
+It is gitignored and is not populated by a fresh clone. Existing local archives remain in
+the original local checkout, and the script can back up new snapshots to a separate directory.
+Committed source history is preserved in the portfolio repository.
 
 ## Build
 
 ```sh
+# From the portfolio repository root:
+cd projects/resume
 python3 src/build.py     # about 25 seconds
 
 # any one-off copy, into gitignored out/ — the same renditions without a browser
@@ -124,15 +132,23 @@ No dependencies beyond Python 3, and a local Chrome or Chromium — without one 
 time is ten headless Chrome runs — nine PDFs, and one that drives the download generators over
 five different views.
 
-Edit `src/resume.html`, rebuild, commit `index.html`.
+Edit `src/resume.html`, rebuild, and commit the changed source together with `index.html`.
+The Python and Node self-tests above do not require a browser.
 
-## One branch, one commit
+## Publish with the portfolio
 
-`main` is the whole repository, and it keeps exactly one commit. The resume is a living
-document, the generated files are megabytes per revision, and there is no history worth
-preserving in git when `/archive/` is the readable version of it — so every change is
-squashed into the single root commit and force-pushed over the remote. GitHub Pages serves
-the root as-is: no CI, no build step, no second branch.
+Return to the portfolio repository root and validate the assembled site:
+
+```sh
+cd ../..
+python3 scripts/build.py
+python3 scripts/check.py --check-js
+```
+
+The root build copies `projects/resume/index.html` to `dist/resume/index.html`; it does not
+regenerate the resume. Commit changes normally, preserving the repository's history.
+A push to `master` runs the shared GitHub Pages workflow and publishes the resume together
+with the portfolio. There is no separate resume repository, Pages deployment or force-push step.
 
 The fonts account for 147 KB; the self-contained page is about 340 KB, and that page is the site.
 

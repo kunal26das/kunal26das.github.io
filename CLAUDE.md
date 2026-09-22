@@ -13,7 +13,8 @@ python3 -m http.server 8080 --directory dist
 ```
 
 No dependencies need installing. Python assembles and checks the static output; Node checks
-JavaScript syntax. CI runs the same checks before deploying `dist/` on pushes to `master`.
+JavaScript syntax and project regression tests. CI verifies the portfolio and its merged
+projects before deploying `dist/` on pushes to `master`.
 
 ## Source and content
 
@@ -26,12 +27,22 @@ JavaScript syntax. CI runs the same checks before deploying `dist/` on pushes to
   `site/home.js`.
 - Preserve the existing visual design, keyboard controls, mobile layouts, readable HTML and
   reduced-motion behavior. Use the existing CSS variables instead of inventing another theme.
-- `/involute/`, `/resume/`, `/startup/` and `/yify/` are separate project sites. Do not generate
-  local placeholder directories that would shadow those deployments.
+- `projects/resume/` contains the résumé and its editing/export tools. Edit `src/` and run
+  `python3 projects/resume/src/build.py` to regenerate its published `index.html`.
+- `projects/involute/` contains Involute Explorer and its original calculator artifacts.
+  Run `node --test projects/involute/tests/geometry.test.cjs` after geometry changes.
+- Both projects now deploy from this repository at `/resume/` and `/involute/`. Preserve résumé
+  query links and the `/involute/explorer.html` redirect. Their original Git histories are
+  retained; use normal commits, not the résumé's former squash-and-force-push workflow.
+- `/startup/` and `/yify/` remain separate project sites. Do not generate local placeholder
+  directories that would shadow those deployments.
 
 ## Build boundaries
 
 - Edit `site/`, not generated `dist/`.
+- The build publishes only `projects/resume/index.html` and explicitly allowed Involute web
+  files. Do not copy entire project directories into `dist/`: source tools, tests, historical
+  Python/CAD/binary artifacts and nested repository configuration are not website output.
 - `doom-dist/` is an upstream artifact maintained by `kunal26das/doom` CI. Its workflow replaces
   this directory and pushes to `master`; the static build copies it unchanged to `/doom/`.
   Do not hand-edit those generated files or remove the directory.

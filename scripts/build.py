@@ -18,12 +18,35 @@ COMPATIBILITY_ASSETS = {
     "composeResources/io.github.kunal26das.resources/drawable/yify_preview.jpg":
         "assets/images/yify-preview.jpg",
 }
+PROJECT_ASSETS = {
+    "resume": ("index.html",),
+    "involute": (
+        "index.html", "explorer.html", "styles.css", "theme.js", "geometry.js",
+        "explorer.js", "og-image.jpg", "robots.txt", "sitemap.xml", "assets",
+    ),
+}
+
+
+def project_files():
+    """Return only publishable project files, excluding authoring/build tools."""
+    files = {}
+    for project, assets in PROJECT_ASSETS.items():
+        source = ROOT / "projects" / project
+        for asset in assets:
+            path = source / asset
+            if not path.exists():
+                raise SystemExit(f"Missing build input: {path.relative_to(ROOT)}")
+            for file in sorted(path.rglob("*")) if path.is_dir() else [path]:
+                if file.is_file():
+                    files[Path(project) / file.relative_to(source)] = file
+    return files
 
 
 def build():
     source = ROOT / "site"
     doom = ROOT / "doom-dist"
     output = ROOT / "dist"
+    projects = project_files()
 
     # Validate inputs before replacing the previous build.
     for required in [source / "index.html", doom / "index.html"]:
@@ -32,13 +55,18 @@ def build():
     for asset in COMPATIBILITY_ASSETS.values():
         if not (source / asset).is_file():
             raise SystemExit(f"Missing build input: site/{asset}")
-    if (source / "doom").exists():
-        raise SystemExit("site/doom must not shadow the separately built doom-dist/")
+    for route in ("doom", *PROJECT_ASSETS):
+        if (source / route).exists():
+            raise SystemExit(f"site/{route} must not shadow the separately managed /{route}/")
 
     if output.exists():
         shutil.rmtree(output)
     shutil.copytree(source, output)
     shutil.copytree(doom, output / "doom")
+    for relative, source_file in projects.items():
+        destination = output / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source_file, destination)
     (output / ".nojekyll").touch()
     # Keep published asset URLs working for existing consumers and cached CSS.
     for old_path, source_path in COMPATIBILITY_ASSETS.items():

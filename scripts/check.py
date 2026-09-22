@@ -19,12 +19,12 @@ import subprocess
 from urllib.parse import unquote, urljoin, urlsplit
 import xml.etree.ElementTree as ET
 
-from build import COMPATIBILITY_ASSETS, ROOT
+from build import COMPATIBILITY_ASSETS, PROJECT_ASSETS, ROOT, project_files
 
 
 ORIGIN = "https://kunal26das.github.io"
 # These routes belong to separate GitHub Pages repositories, not this artifact.
-SEPARATE_PROJECTS = {"involute", "resume", "startup", "yify"}
+SEPARATE_PROJECTS = {"startup", "yify"}
 CSS_URL = re.compile(r"url\(\s*(['\"]?)(.*?)\1\s*\)", re.IGNORECASE)
 
 
@@ -195,6 +195,9 @@ def check(check_js=False):
             fail(output / "sitemap.xml", "duplicate URLs")
         if ORIGIN + "/privacy/" not in sitemap_links:
             fail(output / "sitemap.xml", "portfolio privacy page is missing")
+        for project in PROJECT_ASSETS:
+            if ORIGIN + f"/{project}/" not in sitemap_links:
+                fail(output / "sitemap.xml", f"{project} page is missing")
         for article in (output / "blog").glob("*/index.html"):
             url = ORIGIN + "/" + article.parent.relative_to(output).as_posix() + "/"
             if url not in feed_links:
@@ -220,6 +223,17 @@ def check(check_js=False):
         elif digest(destination) != digest(source):
             fail(destination, "compatibility asset differs from current asset")
 
+    published_projects = project_files()
+    for project in PROJECT_ASSETS:
+        expected = {path for path in published_projects if path.parts[0] == project}
+        actual = {path.relative_to(output) for path in (output / project).rglob("*")
+                  if path.is_file()}
+        if actual != expected:
+            fail(output / project, "published files differ from project allowlist")
+        for relative in expected & actual:
+            if digest(published_projects[relative]) != digest(output / relative):
+                fail(output / relative, "project asset differs from source")
+
     doom_source = ROOT / "doom-dist"
     doom_destination = output / "doom"
     source_files = {path.relative_to(doom_source) for path in doom_source.rglob("*") if path.is_file()}
@@ -240,18 +254,20 @@ def check(check_js=False):
         if not node:
             errors.append("Node.js is required for --check-js")
         else:
-            for path in sorted((ROOT / "site").rglob("*.js")):
+            for path in sorted(output.rglob("*.js")):
+                if path.relative_to(output).parts[0] == "doom":
+                    continue
                 result = subprocess.run([node, "--check", str(path)], capture_output=True, text=True)
                 if result.returncode:
                     errors.append(f"{path.relative_to(ROOT)}: {result.stderr.strip()}")
 
     if errors:
         raise SystemExit("Static site checks failed:\n" + "\n".join(f"- {error}" for error in errors))
-    print(f"Validated {len(pages)} HTML pages and {checked_links} local references; DOOM files are unchanged.")
+    print(f"Validated {len(pages)} HTML pages and {checked_links} local references; project assets and DOOM files are unchanged.")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--check-js", action="store_true", help="also run Node.js syntax checks on site/**/*.js")
+    parser.add_argument("--check-js", action="store_true", help="also run Node.js syntax checks on published JavaScript, excluding DOOM")
     args = parser.parse_args()
     check(check_js=args.check_js)

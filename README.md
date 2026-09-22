@@ -4,7 +4,7 @@ My personal portfolio and engineering notebook at **https://kunal26das.github.io
 
 The website is plain HTML, CSS and JavaScript. It has no framework, package installation,
 Kotlin compiler, Gradle build or application server. The homepage and articles remain readable
-without JavaScript; small scripts handle themes, navigation, repository filters, the sorting
+without JavaScript; small scripts handle themes, navigation, project filters, the sorting
 demonstration and reading tools.
 
 ## Structure
@@ -19,6 +19,9 @@ site/                    Website source, published at the domain root
   feed.xml, sitemap.xml  RSS and search discovery
   .well-known/           Android Digital Asset Links
   app-ads.txt, ads.txt    Publisher verification
+projects/
+  resume/                Résumé source, export tools and generated index.html
+  involute/              Involute Explorer and original calculator files
 scripts/
   build.py               Assemble dist/ without compiling the website
   check.py               Validate the assembled site
@@ -36,10 +39,10 @@ python3 -m http.server 8080 --directory dist
 ```
 
 Open **http://localhost:8080**. After editing files in `site/`, run the build again and reload
-the page. For quick work on the portfolio alone, serve `site/` directly. `/doom/` and legacy
-asset aliases are included in the assembled `dist/` preview.
+the page. For quick work on the portfolio alone, serve `site/` directly. `/resume/`, `/involute/`,
+`/doom/` and legacy asset aliases are included in the assembled `dist/` preview.
 
-The `/involute/`, `/resume/`, `/startup/` and `/yify/` project sites are deployed independently;
+The `/startup/` and `/yify/` project sites are deployed independently;
 their root-relative links resolve on the live GitHub Pages domain, not this local server.
 
 ## Check and deploy
@@ -50,13 +53,22 @@ python3 scripts/check.py --check-js
 ```
 
 Python checks the assembled pages, local links and anchors, assets, discovery files and
-required deployment files. Node is used only to check JavaScript syntax; it is not a build or
-runtime dependency for the website. There are no npm packages to install.
+required deployment files. Node checks JavaScript syntax and runs the project regression
+tests; it is not a build or runtime dependency for the website. There are no npm packages to
+install. Project-specific checks and editing commands are documented in
+[`projects/resume/README.md`](projects/resume/README.md) and
+[`projects/involute/README.md`](projects/involute/README.md).
 
 Pull requests targeting `master` run these checks. A push to `master`, or a manual run of
 `.github/workflows/deploy.yml`, also publishes `dist/` to GitHub Pages. Only the deployment job
 has Pages and identity-token write permissions. The artifact includes hidden verification
 files and only the website output, never repository configuration or local caches.
+
+The résumé and Involute now share this deployment. The build publishes the résumé's generated
+`index.html` at `/resume/` and an explicit list of Involute web files at `/involute/`. Their
+source tools, tests, original calculator artifacts and project configuration stay out of the
+published output. Both original repositories and their Git histories were imported under
+`projects/`; use normal commits in this repository for future changes.
 
 `doom-dist/` is copied unchanged to `/doom/`. It is produced by `kunal26das/doom` and can still
 use Kotlin independently; do not edit its generated files in this repository.
@@ -66,6 +78,10 @@ use Kotlin independently; do not edit its generated files in this repository.
 - **Articles:** add `site/blog/<slug>/index.html`, then update the blog index, homepage article
   list, `feed.xml` and `sitemap.xml`.
 - **Projects and profile:** edit `site/index.html`. There is no second Kotlin copy to maintain.
+- **Résumé:** edit `projects/resume/src/`, then run `python3 projects/resume/src/build.py` to
+  regenerate `projects/resume/index.html` before building the combined site.
+- **Involute:** edit the web files in `projects/involute/`; retain the legacy `explorer.html`
+  redirect and run its geometry checks before publishing.
 - **Design:** shared typography, colors, header and theme behavior live in `site/blog/blog.css`
   and `site/blog/blog.js`; homepage-specific styles and interactions live in `home.css` and
   `home.js`. Preserve keyboard access, mobile layouts and reduced-motion support.
@@ -75,6 +91,9 @@ use Kotlin independently; do not edit its generated files in this repository.
 Page URLs, article anchors and query links remain valid. Old `?view=interactive` and
 `?view=html` links now show the current portfolio. The former Compose interface was removed;
 its source remains in Git history before this migration.
+
+The consolidated résumé retains `/resume/` and its layout, theme and filtering query links.
+Involute retains `/involute/` and the `/involute/explorer.html` redirect.
 
 The build preserves the previous Lora semibold font and Yify screenshot addresses under
 `/composeResources/io.github.kunal26das.resources/` for older cached pages. New pages use

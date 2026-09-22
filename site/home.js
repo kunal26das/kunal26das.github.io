@@ -29,7 +29,7 @@
                 if (!repository.hidden) visible++;
             });
             filters.forEach(filter => filter.setAttribute('aria-pressed', String(filter === button)));
-            count.textContent = `${visible} ${visible === 1 ? 'repository' : 'repositories'}`;
+            count.textContent = `${visible} ${visible === 1 ? 'project' : 'projects'}`;
         }));
     }
 
