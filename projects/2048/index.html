@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>2048 — A little break | Kunal Das</title>
+  <meta name="description" content="A little break for your brain. Play the classic 2048 puzzle with keyboard or touch, in the colors of Kunal Das’s portfolio.">
+  <link rel="canonical" href="https://kunal26das.github.io/2048/">
+  <meta property="og:title" content="2048 — A little break">
+  <meta property="og:description" content="Slide the tiles. Join matching numbers. Find your way to 2048.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kunal26das.github.io/2048/">
+  <meta property="og:image" content="https://kunal26das.github.io/icon-512.png">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#1B1916">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="stylesheet" href="/blog/blog.css">
+  <link rel="stylesheet" href="/home.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="/blog/blog.js" defer></script>
+  <script src="/home.js" defer></script>
+  <script src="js/tile.js" defer></script>
+  <script src="js/grid.js" defer></script>
+  <script src="js/local_storage_manager.js" defer></script>
+  <script src="js/keyboard_input_manager.js" defer></script>
+  <script src="js/html_actuator.js" defer></script>
+  <script src="js/game_manager.js" defer></script>
+  <script src="js/application.js" defer></script>
+</head>
+<body class="game-page">
+  <a class="skip-link" href="#game-board">Skip to game</a>
+  <header class="site-header portfolio-header">
+    <div class="shell header-inner">
+      <a class="brand" href="/" aria-label="Kunal Das, home"><span class="brand-mark">KD</span><span class="brand-name">Kunal Das</span></a>
+      <nav class="header-nav home-nav" aria-label="Main navigation"><a href="/#work">Work</a><a href="/blog/">Writing</a><a href="/#code">Code</a><a href="/resume/">Résumé <span aria-hidden="true">↗</span></a></nav>
+      <details class="home-menu"><summary>Menu</summary><nav aria-label="Mobile navigation"><a href="/#work">Work</a><a href="/blog/">Writing</a><a href="/#code">Code</a><a href="/involute/">Involute</a><a href="/resume/">Résumé</a><a href="/#contact">Contact</a></nav></details>
+      <button class="theme-toggle" type="button" hidden data-theme-toggle aria-label="Switch color theme">Light</button>
+    </div>
+  </header>
+  <main class="shell">
+    <nav class="game-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page">2048</span></nav>
+    <div class="playroom">
+      <div class="game-intro">
+        <p class="game-kicker">A little break.</p>
+        <h1>2048<span class="title-dot" aria-hidden="true">.</span></h1>
+        <p class="game-deck">Small moves.<br>One satisfying number.</p>
+        <p class="game-invitation">Slide the tiles. Join matching numbers. Find your way to 2048.</p>
+      </div>
+      <section class="game-area" aria-label="Play 2048">
+        <div class="game-toolbar">
+          <dl class="scores"><div><dt>Score</dt><dd class="score-container">0</dd></div><div><dt>Best</dt><dd class="best-container">0</dd></div></dl>
+          <button class="restart-button game-button" type="button">New game <span aria-hidden="true">↺</span></button>
+        </div>
+        <div class="game-container" id="game-board" tabindex="0" role="group" aria-label="2048 game board" aria-describedby="board-instructions board-description">
+          <div class="grid-container" aria-hidden="true">
+            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+          </div>
+          <div class="tile-container" aria-hidden="true"></div>
+          <div class="game-message" hidden>
+            <p class="message-title"></p>
+            <p class="message-detail"></p>
+            <div class="message-actions"><button class="keep-playing-button game-button" type="button">Keep playing</button><button class="retry-button game-button secondary" type="button">Try again</button></div>
+          </div>
+        </div>
+        <div class="board-bottom">
+          <p id="board-instructions"><span class="keyboard-hint">Click the board, then use arrow keys or WASD.</span><span class="touch-hint">Swipe the board or tap an arrow.</span></p>
+          <div class="direction-controls" role="group" aria-label="Move tiles"><button type="button" data-move="3" aria-label="Move left">←</button><button type="button" data-move="0" aria-label="Move up">↑</button><button type="button" data-move="2" aria-label="Move down">↓</button><button type="button" data-move="1" aria-label="Move right">→</button></div>
+        </div>
+        <p class="sr-only" id="board-description"></p>
+        <p class="sr-only" id="game-status" role="status" aria-live="polite" aria-atomic="true"></p>
+        <noscript><p class="game-notice">Enable JavaScript to play 2048. <a href="/">Return to the portfolio</a>.</p></noscript>
+      </section>
+      <section class="game-guide" aria-labelledby="how-to-play">
+        <h2 id="how-to-play">A simple idea. A good challenge.</h2>
+        <div class="merge-example" aria-label="Two 2 tiles combine into one 4 tile"><span>2</span><i aria-hidden="true">+</i><span>2</span><i aria-hidden="true">=</i><span class="merged-example">4</span></div>
+        <p>Every move slides the whole board. Matching tiles merge into one, and a new tile appears. Keep some room to move. Reach 2048 to win, or keep going to see how far you can get.</p>
+        <p class="game-credit">The classic puzzle by <a href="https://github.com/gabrielecirulli/2048">Gabriele Cirulli</a>, adapted for this little corner of the web.</p>
+      </section>
+    </div>
+  </main>
+  <footer class="site-footer shell"><a href="/">← Back to the portfolio</a><span>A little room for play.</span><nav aria-label="Footer navigation"><a href="https://github.com/kunal26das/kunal26das.github.io/tree/master/projects/2048">Source code ↗</a><a href="LICENSE.txt">MIT license</a></nav></footer>
+</body>
+</html>

@@ -19,6 +19,7 @@ COMPATIBILITY_ASSETS = {
         "assets/images/yify-preview.jpg",
 }
 PROJECT_ASSETS = {
+    "2048": ("index.html", "styles.css", "js", "LICENSE.txt"),
     "resume": ("index.html",),
     "involute": (
         "index.html", "explorer.html", "styles.css", "theme.js", "geometry.js",

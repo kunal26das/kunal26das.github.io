@@ -32,6 +32,9 @@ jobs:
       - name: Verify involute geometry
         run: node --test projects/involute/tests/geometry.test.cjs
 
+      - name: Verify 2048 game rules and saved games
+        run: node --test projects/2048/tests/*.test.cjs
+
       - name: Build static site
         run: python3 scripts/build.py
 

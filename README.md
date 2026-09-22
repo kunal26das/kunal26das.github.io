@@ -20,6 +20,7 @@ site/                    Website source, published at the domain root
   .well-known/           Android Digital Asset Links
   app-ads.txt, ads.txt    Publisher verification
 projects/
+  2048/                  Adapted 2048 game, browser assets and game-rule tests
   resume/                Résumé source, export tools and generated index.html
   involute/              Involute Explorer and original calculator files
 scripts/
@@ -40,7 +41,7 @@ python3 -m http.server 8080 --directory dist
 
 Open **http://localhost:8080**. After editing files in `site/`, run the build again and reload
 the page. For quick work on the portfolio alone, serve `site/` directly. `/resume/`, `/involute/`,
-`/doom/` and legacy asset aliases are included in the assembled `dist/` preview.
+`/2048/`, `/doom/` and legacy asset aliases are included in the assembled `dist/` preview.
 
 The `/startup/` and `/yify/` project sites are deployed independently;
 their root-relative links resolve on the live GitHub Pages domain, not this local server.
@@ -50,6 +51,7 @@ their root-relative links resolve on the live GitHub Pages domain, not this loca
 ```bash
 python3 scripts/build.py
 python3 scripts/check.py --check-js
+node --test projects/2048/tests/*.test.cjs
 ```
 
 Python checks the assembled pages, local links and anchors, assets, discovery files and
@@ -57,7 +59,8 @@ required deployment files. Node checks JavaScript syntax and runs the project re
 tests; it is not a build or runtime dependency for the website. There are no npm packages to
 install. Project-specific checks and editing commands are documented in
 [`projects/resume/README.md`](projects/resume/README.md) and
-[`projects/involute/README.md`](projects/involute/README.md).
+[`projects/involute/README.md`](projects/involute/README.md), plus
+[`projects/2048/README.md`](projects/2048/README.md).
 
 Pull requests targeting `master` run these checks. A push to `master`, or a manual run of
 `.github/workflows/deploy.yml`, also publishes `dist/` to GitHub Pages. Only the deployment job
@@ -69,6 +72,10 @@ The résumé and Involute now share this deployment. The build publishes the ré
 source tools, tests, original calculator artifacts and project configuration stay out of the
 published output. Both original repositories and their Git histories were imported under
 `projects/`; use normal commits in this repository for future changes.
+
+The adapted 2048 game is published at `/2048/` from `projects/2048/`. Its HTML, CSS,
+JavaScript and original MIT license are explicitly included in the build; tests and
+authoring documentation stay out of the published output.
 
 `doom-dist/` is copied unchanged to `/doom/`. It is produced by `kunal26das/doom` and can still
 use Kotlin independently; do not edit its generated files in this repository.
@@ -82,6 +89,8 @@ use Kotlin independently; do not edit its generated files in this repository.
   regenerate `projects/resume/index.html` before building the combined site.
 - **Involute:** edit the web files in `projects/involute/`; retain the legacy `explorer.html`
   redirect and run its geometry checks before publishing.
+- **2048:** edit `projects/2048/` and run its Node game-rule tests before publishing.
+  Preserve the original game's attribution and MIT license.
 - **Design:** shared typography, colors, header and theme behavior live in `site/blog/blog.css`
   and `site/blog/blog.js`; homepage-specific styles and interactions live in `home.css` and
   `home.js`. Preserve keyboard access, mobile layouts and reduced-motion support.
@@ -104,3 +113,5 @@ The build preserves the previous Lora semibold font and Yify screenshot addresse
 Lora is bundled under the SIL Open Font License in `site/assets/fonts/OFL-Lora.txt`.
 The Yify preview is an optimized copy of the [public app screenshot](https://raw.githubusercontent.com/kunal26das/yify/main/store-artifacts/screenshots/01-home.png).
 The homepage bubble-sort sketch is an illustrative JavaScript demo, not an embedded AlgoScope instance.
+2048 is adapted from [Gabriele Cirulli's original game](https://github.com/gabrielecirulli/2048),
+with its MIT license retained in `projects/2048/LICENSE.txt`.
