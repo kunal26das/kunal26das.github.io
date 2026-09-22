@@ -7,8 +7,8 @@ The original game is MIT licensed, copyright © 2014 Gabriele Cirulli. Its licen
 ## Implementation
 
 - `js/grid.js` and `js/tile.js` retain the original engine. `js/game_manager.js` preserves the traversal, single-merge-per-move, scoring, 90% 2 / 10% 4 spawning, and 2048 win rules.
-- The adapted input and renderer support focused keyboard controls, pointer/touch swipes, direction buttons, visible win/loss actions, and a text description of the board for assistive technology.
-- Arrow keys, WASD, and HJKL act only while the board is focused. Tab leaves the board normally. Select **New game** to restart or **Keep playing** after reaching 2048.
+- The adapted input and renderer support keyboard controls, pointer/touch swipes, direction buttons, visible win/loss actions, and a text description of the board for assistive technology.
+- Arrow keys, WASD, and HJKL work immediately when the page opens, without first clicking the board. Navigation, form fields, open menus, and browser shortcuts keep their normal keyboard behavior. Direction buttons return focus to the board so keyboard play can continue. Select **New game** to restart or **Keep playing** after reaching 2048.
 - Best score and the current board are saved locally under `kunal.2048.best.v1` and `kunal.2048.game.v1`. Invalid saved data starts a fresh game; blocked or full storage falls back to in-memory play. A finished board and the decision to keep playing are saved immediately.
 - Rendering, input, and local storage use browser APIs directly. There is no build dependency, account, tracking, or server-side game state.
 

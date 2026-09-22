@@ -21,13 +21,19 @@ KeyboardInputManager.prototype.listen = function () {
     ArrowUp: 0, ArrowRight: 1, ArrowDown: 2, ArrowLeft: 3,
     w: 0, d: 1, s: 2, a: 3, k: 0, l: 1, j: 2, h: 3
   };
-  var interactive = "button, a, input, select, textarea, [contenteditable], .game-message";
+  var keyboardControls = "a, summary, input, select, textarea, [contenteditable], [role='textbox'], [role='combobox'], .game-message";
+  var interactive = "button, " + keyboardControls;
   function canMove(event) {
     return board.dataset.terminated !== "true" &&
-      !event.target.closest(interactive);
+      !(event.target.closest && event.target.closest(interactive));
   }
-  board.addEventListener("keydown", function (event) {
-    if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey || !canMove(event)) return;
+  // Listen on the page so a newly opened game works before the board is clicked.
+  // Leave navigation, form controls, browser shortcuts and open menus alone.
+  document.addEventListener("keydown", function (event) {
+    if (event.defaultPrevented || event.isComposing || event.altKey || event.ctrlKey ||
+        event.metaKey || event.shiftKey || board.dataset.terminated === "true" ||
+        (event.target.closest && event.target.closest(keyboardControls)) ||
+        document.querySelector(".home-menu[open]")) return;
     var key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
     var direction = keyMap[key];
     if (direction !== undefined) {
@@ -50,6 +56,7 @@ KeyboardInputManager.prototype.listen = function () {
   document.querySelectorAll("[data-move]").forEach(function (button) {
     button.addEventListener("click", function () {
       self.emit("move", Number(button.dataset.move));
+      board.focus({ preventScroll: true });
     });
   });
 

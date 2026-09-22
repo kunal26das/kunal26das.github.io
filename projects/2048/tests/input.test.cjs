@@ -14,7 +14,12 @@ function harness(pointerEvents = true) {
       this.focusCount = 0;
     }
     addEventListener(name, callback) { this.listeners[name] = callback; }
-    closest() { return this.interactive ? this : null; }
+    closest(selector) {
+      if (typeof this.interactive === "string") {
+        return selector.split(", ").includes(this.interactive) ? this : null;
+      }
+      return this.interactive ? this : null;
+    }
     focus() { this.focusCount++; }
     setPointerCapture(id) { this.capturedPointer = id; }
     dispatch(name, values = {}) {
@@ -23,6 +28,7 @@ function harness(pointerEvents = true) {
         preventDefault() { this.prevented = true; }, ...values
       };
       this.listeners[name]?.(event);
+      if (name === "keydown" && this !== document) document.listeners[name]?.(event);
       return event;
     }
   }
@@ -35,8 +41,13 @@ function harness(pointerEvents = true) {
     element.dataset.move = String(direction);
     return element;
   });
-  const document = {
-    querySelector: () => board,
+  const document = Object.assign(new Element(), {
+    menuOpen: false,
+    querySelector(selector) {
+      if (selector === ".game-container") return board;
+      if (selector === ".home-menu[open]") return this.menuOpen ? new Element(true) : null;
+      return null;
+    },
     querySelectorAll(selector) {
       return {
         ".restart-button, .retry-button": [restart, retry],
@@ -44,21 +55,48 @@ function harness(pointerEvents = true) {
         "[data-move]": arrows
       }[selector];
     }
-  };
+  });
   const context = vm.createContext({ document, window: { PointerEvent: pointerEvents ? function () {} : undefined } });
   vm.runInContext(fs.readFileSync(path.join(__dirname, "../js/keyboard_input_manager.js"), "utf8"), context);
   const manager = new context.KeyboardInputManager();
   const moves = [];
   manager.on("move", direction => moves.push(direction));
-  return { board, restart, retry, keepPlaying, arrows, manager, moves, Element };
+  return { document, board, restart, retry, keepPlaying, arrows, manager, moves, Element };
 }
 
-test("arrows, WASD with Caps Lock, and HJKL move the focused board", () => {
-  const { board, moves } = harness();
+test("arrows, WASD with Caps Lock, and HJKL work before the board is focused", () => {
+  const { document, board, moves, Element } = harness();
+  const body = new Element();
   for (const key of ["ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft", "W", "D", "S", "A", "k", "l", "j", "h"]) {
-    assert.equal(board.dispatch("keydown", { key }).prevented, true);
+    assert.equal(document.dispatch("keydown", { key, target: body }).prevented, true);
   }
   assert.deepEqual(moves, [0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3]);
+  assert.equal(board.focusCount, 0);
+});
+
+test("a focused board key bubbles into exactly one move", () => {
+  const { board, moves } = harness();
+  assert.equal(board.dispatch("keydown", { key: "ArrowLeft" }).prevented, true);
+  assert.deepEqual(moves, [3]);
+});
+
+test("arrow keys still play after using a theme or game button", () => {
+  const { document, moves, Element } = harness();
+  const button = new Element("button");
+  assert.equal(document.dispatch("keydown", { key: "ArrowLeft", target: button }).prevented, true);
+  assert.deepEqual(moves, [3]);
+  assert.equal(document.dispatch("keydown", { key: "Enter", target: button }).prevented, undefined);
+  assert.equal(document.dispatch("keydown", { key: " ", target: button }).prevented, undefined);
+});
+
+test("open menus, consumed events, and composition do not move the game", () => {
+  const { document, moves } = harness();
+  document.menuOpen = true;
+  assert.equal(document.dispatch("keydown", { key: "ArrowLeft" }).prevented, undefined);
+  document.menuOpen = false;
+  assert.equal(document.dispatch("keydown", { key: "ArrowLeft", defaultPrevented: true }).prevented, undefined);
+  assert.equal(document.dispatch("keydown", { key: "a", isComposing: true }).prevented, undefined);
+  assert.deepEqual(moves, []);
 });
 
 test("Tab, shortcuts, and keys on interactive descendants remain untouched", () => {
@@ -82,11 +120,11 @@ test("terminal boards ignore key and swipe input", () => {
   assert.deepEqual(moves, []);
 });
 
-test("direction buttons emit their direction without moving keyboard focus", () => {
+test("direction buttons emit once and return focus for keyboard play", () => {
   const { board, arrows, moves } = harness();
   arrows.forEach(button => button.dispatch("click"));
   assert.deepEqual(moves, [0, 1, 2, 3]);
-  assert.equal(board.focusCount, 0);
+  assert.equal(board.focusCount, 4);
 });
 
 test("New game, Try again, and Keep playing use one click action and refocus board", () => {
