@@ -17,7 +17,7 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="stylesheet" href="/blog/blog.css">
   <link rel="stylesheet" href="/home.css">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=2">
   <script src="/blog/blog.js" defer></script>
   <script src="/home.js" defer></script>
   <script src="js/tile.js" defer></script>
@@ -26,7 +26,8 @@
   <script src="js/keyboard_input_manager.js?v=2" defer></script>
   <script src="js/html_actuator.js" defer></script>
   <script src="js/game_manager.js" defer></script>
-  <script src="js/application.js" defer></script>
+  <script src="js/autoplay.js?v=1" defer></script>
+  <script src="js/application.js?v=2" defer></script>
 </head>
 <body class="game-page">
   <a class="skip-link" href="#game-board">Skip to game</a>
@@ -70,6 +71,16 @@
           <p id="board-instructions"><span class="keyboard-hint">Use arrow keys or WASD to move.</span><span class="touch-hint">Swipe the board or tap an arrow.</span></p>
           <div class="direction-controls" role="group" aria-label="Move tiles"><button type="button" data-move="3" aria-label="Move left">←</button><button type="button" data-move="0" aria-label="Move up">↑</button><button type="button" data-move="2" aria-label="Move down">↓</button><button type="button" data-move="1" aria-label="Move right">→</button></div>
         </div>
+        <section class="autoplay" aria-labelledby="autoplay-heading" hidden>
+          <div class="autoplay-heading"><h2 id="autoplay-heading">Watch it think.</h2><span id="autoplay-count">0 autoplay moves</span></div>
+          <div class="autoplay-controls">
+            <button class="game-button" id="autoplay-toggle" type="button" aria-pressed="false">Start autoplay</button>
+            <button class="game-button secondary" id="autoplay-step" type="button">Step</button>
+            <label class="autoplay-speed" for="autoplay-speed">Speed<select id="autoplay-speed"><option value="1000">Slow</option><option value="500" selected>Normal</option><option value="180">Fast</option></select></label>
+          </div>
+          <p id="autoplay-status" role="status" aria-live="polite" aria-atomic="true">Looks ahead, keeps space open, and sets up merges. Start here, or try one move with Step.</p>
+          <p class="autoplay-hint">Use an arrow key or swipe to take over. Autoplay pauses when you leave this tab.</p>
+        </section>
         <p class="sr-only" id="board-description"></p>
         <p class="sr-only" id="game-status" role="status" aria-live="polite" aria-atomic="true"></p>
         <noscript><p class="game-notice">Enable JavaScript to play 2048. <a href="/">Return to the portfolio</a>.</p></noscript>

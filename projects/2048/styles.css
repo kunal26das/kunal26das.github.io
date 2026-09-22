@@ -58,6 +58,20 @@
 .direction-controls button:hover { border-color: var(--clay); color: var(--clay); }
 .direction-controls button:active { background: var(--surface-hi); }
 .direction-controls button:disabled { opacity: .4; cursor: default; }
+.autoplay { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line); }
+.autoplay-heading { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 13px; }
+.autoplay-heading h2 { margin: 0; font: 600 20px/1.4 var(--font-serif); letter-spacing: -.03em; }
+.autoplay-heading > span { color: var(--muted); font-size: 11px; font-variant-numeric: tabular-nums; }
+.autoplay-controls { display: flex; flex-wrap: wrap; align-items: end; gap: 8px; }
+.autoplay-controls > .game-button { min-width: 138px; }
+.autoplay-controls > .secondary { min-width: 60px; }
+.autoplay-speed { display: flex; align-items: center; gap: 8px; margin-left: auto; color: var(--muted); font-size: 12px; }
+.autoplay-speed select { min-height: 44px; max-width: 100%; padding: 8px; border: 1px solid var(--line); border-radius: 2px; background: var(--bg); color: var(--ink); font: inherit; cursor: pointer; }
+.autoplay .game-button:disabled { opacity: .45; cursor: default; }
+.autoplay .game-button:disabled:hover { background: var(--clay); color: var(--bg); }
+.autoplay .secondary:disabled:hover { background: transparent; color: var(--ink); border-color: var(--line); }
+#autoplay-status { min-height: 3.4em; margin: 13px 0 8px; font-size: 13px; line-height: 1.7; }
+.autoplay-hint { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.7; }
 .game-guide { grid-area: guide; max-width: 380px; padding-top: 24px; border-top: 1px solid var(--line); }
 .game-guide h2 { margin-bottom: 18px; font-size: 17px; line-height: 1.5; letter-spacing: -.025em; }
 .merge-example { display: flex; align-items: center; gap: 12px; margin-bottom: 17px; }
@@ -110,6 +124,9 @@
   .board-bottom p { max-width: none; flex-basis: 100%; }
   .direction-controls { width: 100%; justify-content: space-between; }
   .direction-controls button { width: 56px; }
+  .autoplay-speed { flex-basis: 100%; justify-content: space-between; margin-top: 2px; }
+  .autoplay-speed select { flex-basis: 50%; }
+  .autoplay-controls > .game-button { flex: 1; }
 }
 @media (pointer: coarse) { .keyboard-hint { display: none; } .touch-hint { display: inline; } }
 @media (prefers-reduced-motion: reduce) { .score-addition { display: none; } .game-page *, .game-page *::before, .game-page *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }

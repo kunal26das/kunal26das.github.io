@@ -254,7 +254,7 @@ def check(check_js=False):
         if not node:
             errors.append("Node.js is required for --check-js")
         else:
-            for path in sorted(output.rglob("*.js")):
+            for path in sorted(path for path in output.rglob("*") if path.suffix in {".js", ".mjs"}):
                 if path.relative_to(output).parts[0] == "doom":
                     continue
                 result = subprocess.run([node, "--check", str(path)], capture_output=True, text=True)
