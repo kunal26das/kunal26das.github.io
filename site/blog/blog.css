@@ -56,7 +56,6 @@ em { color: var(--clay); font-style: normal; }
 .header-nav a { display: flex; align-items: center; min-height: 44px; color: var(--muted); font-size: 13px; text-decoration: none; }
 .header-nav a[aria-current='page'] { color: var(--ink); text-decoration: underline; text-decoration-color: var(--clay); text-underline-offset: 9px; }
 .header-nav a:hover { color: var(--clay); }
-.home-nav a[href="/2048/"], .journal-nav a[href="/2048/"] { min-width: 44px; justify-content: center; }
 .theme-toggle { min-width: 72px; min-height: 44px; padding: 8px 14px; background: none; border: 1px solid var(--line); border-radius: 4px; font-size: 12px; }
 .theme-toggle:hover { border-color: var(--clay); }
 .eyebrow, .section-rule, .map-label, .stack-label, .essay-tags, .chapter-number, .toc-title { font-family: var(--font-mono); font-weight: 400; font-size: 11px; letter-spacing: .09em; text-transform: uppercase; }
