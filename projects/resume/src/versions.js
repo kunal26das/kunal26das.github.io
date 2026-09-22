@@ -6,7 +6,7 @@
     short: { keep: 2, join: true,  sheet: "compact",      label: "Two-page" },
     one:   { keep: 0, join: true,  sheet: "compact solo", label: "One-page" }
   };
-  var LAYOUTS = { datasheet: "Datasheet", column: "Column", plain: "Plain" };
+  var LAYOUTS = { datasheet: "Editorial", column: "Column", plain: "Plain" };
   var LEADS = {
     "":       { label: "Everything",   promote: [], demote: [] },
     platform: { label: "Platform",     promote: ["platform"], demote: ["product"] },
@@ -15,7 +15,7 @@
     rn:       { label: "React Native", promote: ["rn"],       demote: ["ios", "kmp", "product"] }
   };
   var THEMES = {
-    auto:     { label: "Auto",     dark: false },
+    auto:     { label: "Website",  dark: false },
     light:    { label: "Light",    dark: false },
     dark:     { label: "Dark",     dark: true },
     paper:    { label: "Paper",    dark: false },
@@ -51,10 +51,37 @@
   var ANNOTATIONS = ["data-t", "data-td", "data-join", "data-only", "data-lead",
                      "data-tag", "data-org", "data-off"];
 
-  var MASTER = null, MOUNT = null, PANEL = null, JUMPS = [];
+  var MASTER = null, MOUNT = null, PANEL = null, TRIGGER = null, JUMPS = [];
   var ORGS = [], TOPICS = [], STEM = "resume";
   var cfg = null, sourceDefaults = null;
   var stats = { shown: 0, total: 0 }, timer = null, ticking = false;
+  var siteTheme = "dark", inertRegions = [];
+
+  function readSiteTheme() {
+    try { return localStorage.getItem("theme") === "light" ? "light" : "dark"; }
+    catch (e) { return siteTheme; }
+  }
+
+  function persistTheme(theme) {
+    if (theme !== "light" && theme !== "dark") return;
+    siteTheme = theme;
+    try { localStorage.setItem("theme", theme); } catch (e) {}
+  }
+
+  function syncTheme() {
+    var el = document.documentElement;
+    el.setAttribute("data-site-theme", siteTheme);
+    var dark = cfg.theme === "auto" ? siteTheme === "dark" : THEMES[cfg.theme].dark;
+    var button = document.querySelector("[data-theme-toggle]");
+    if (button) {
+      var next = dark ? "Light" : "Dark";
+      button.hidden = false;
+      button.textContent = next;
+      button.setAttribute("aria-label", "Switch to " + next.toLowerCase() + " theme");
+    }
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute("content", dark ? "#1B1916" : "#F3F0E9");
+  }
 
   function defaults() {
     var off = [];
@@ -205,8 +232,12 @@
   function here() {
     if (!PANEL || !JUMPS.length) return;
     var at = -1, i;
+    var header = document.querySelector(".resume-site-header");
+    var toolbar = document.querySelector(".resume-tools");
+    var threshold = header ? header.getBoundingClientRect().height + 24 : 90;
+    if (toolbar) threshold += toolbar.getBoundingClientRect().height;
     for (i = 0; i < JUMPS.length; i++) {
-      if (JUMPS[i].node.getBoundingClientRect().top <= 90) at = i;
+      if (JUMPS[i].node.getBoundingClientRect().top <= threshold) at = i;
     }
     if (window.innerHeight + window.scrollY >=
         document.documentElement.scrollHeight - 4) at = JUMPS.length - 1;
@@ -232,7 +263,40 @@
     for (i = 0; i < list.length; i++) {
       list[i].innerHTML = window.atob(list[i].getAttribute("data-real"));
       list[i].removeAttribute("data-real");
+      list[i].removeAttribute("tabindex");
+      list[i].removeAttribute("role");
+      list[i].removeAttribute("aria-label");
     }
+  }
+
+  function contactControls(root) {
+    var list = root.querySelectorAll(".contact li[data-real]");
+    for (var i = 0; i < list.length; i++) {
+      list[i].setAttribute("tabindex", "0");
+      list[i].setAttribute("role", "button");
+      list[i].setAttribute("aria-label", list[i].textContent.indexOf("@") >= 0 ?
+        "Show email address" : "Show phone number");
+    }
+  }
+
+  function focusContent(node) {
+    if (!node) return;
+    if (!node.matches("a[href], button, input, select, textarea, [tabindex]")) {
+      node.setAttribute("tabindex", "-1");
+      node.setAttribute("data-resume-focus", "");
+      node.addEventListener("blur", function () {
+        node.removeAttribute("tabindex");
+        node.removeAttribute("data-resume-focus");
+      }, { once: true });
+    }
+    node.focus({ preventScroll: true });
+  }
+
+  function showContact(item) {
+    var index = Array.from(MOUNT.querySelectorAll(".contact li")).indexOf(item);
+    apply(function () { cfg.contact = "show"; });
+    var shown = MOUNT.querySelectorAll(".contact li")[index];
+    if (shown) focusContent(shown.querySelector("a") || shown);
   }
 
   function applyFilters(root, c) {
@@ -336,6 +400,7 @@
     if (LENGTHS[c.len].join) joins(root);
     recount(root);
     if (c.contact === "show") reveal(root);
+    else contactControls(root);
     root.className = ("sheet " + LENGTHS[c.len].sheet).trim();
     return root;
   }
@@ -346,6 +411,7 @@
     el.setAttribute("data-layout", cfg.layout);
     if (cfg.theme === "auto") el.removeAttribute("data-theme");
     else el.setAttribute("data-theme", cfg.theme);
+    syncTheme();
 
     var styles = document.querySelectorAll("style[data-layout]");
     for (var i = 0; i < styles.length; i++) {
@@ -357,6 +423,7 @@
     old.parentNode.replaceChild(root, old);
     MOUNT = root;
     JUMPS = jumps(root);
+    syncPanelAccessibility();
     update();
     write();
   }
@@ -427,10 +494,10 @@
     PANEL.className = "v-ui";
     PANEL.innerHTML =
       '<button type="button" class="v-toggle" data-group="panel"' +
-      ' aria-controls="resume-versions-panel" aria-expanded="false">Filter</button>' +
-      '<aside id="resume-versions-panel" class="v-side" aria-label="Versions">' +
-      '<div class="v-head"><span class="v-title">Versions</span>' +
-      '<button type="button" class="v-btn v-hide" data-group="panel">Hide</button>' +
+      ' aria-controls="resume-versions-panel" aria-expanded="false">Customize</button>' +
+      '<aside id="resume-versions-panel" class="v-side" aria-label="Customize resume">' +
+      '<div class="v-head"><span class="v-title">Customize resume</span>' +
+      '<button type="button" class="v-btn v-hide" data-group="panel">Close</button>' +
       '<span class="v-now"></span></div>' +
       '<div class="v-body">' + panelHTML() + "</div>" +
       '<div class="v-foot">' +
@@ -442,8 +509,12 @@
       }).join("") +
       '<button type="button" class="v-btn" data-group="copy">Copy link</button>' +
       '<button type="button" class="v-btn" data-group="reset">Reset</button>' +
-      '<p class="v-note"></p></div></aside>';
+      '<p class="v-note"></p><p class="v-note v-copy-status" role="status"' +
+      ' aria-live="polite"></p></div></aside>';
     document.body.appendChild(PANEL);
+    TRIGGER = PANEL.querySelector(".v-toggle");
+    var controls = document.querySelector("[data-resume-controls]");
+    if (controls) controls.appendChild(TRIGGER);
   }
 
   function update(syncFields) {
@@ -468,7 +539,9 @@
         '">' + attribute(j.label) + "</button>";
     }).join("");
     PANEL.querySelector(".v-now").textContent = summary();
-    PANEL.querySelector(".v-note").textContent = note();
+    PANEL.querySelector(".v-note:not(.v-copy-status)").textContent = note();
+    var current = document.querySelector("[data-resume-summary]");
+    if (current) current.textContent = summary();
     here();
     if (!syncFields) return;
     var fields = PANEL.querySelectorAll("[data-field]");
@@ -514,7 +587,12 @@
 
   function standalone() {
     var sheet = MOUNT.cloneNode(true), i, j;
+    sheet.removeAttribute("inert");
     reveal(sheet);
+    sheet.querySelectorAll("[data-resume-focus]").forEach(function (node) {
+      node.removeAttribute("tabindex");
+      node.removeAttribute("data-resume-focus");
+    });
     var all = sheet.querySelectorAll("*");
     for (i = 0; i < all.length; i++) {
       for (j = 0; j < ANNOTATIONS.length; j++) all[i].removeAttribute(ANNOTATIONS[j]);
@@ -567,11 +645,50 @@
     return !window.matchMedia("(min-width:1180px)").matches;
   }
 
+  function closeMenu(restoreFocus) {
+    var menu = document.querySelector("details.resume-menu");
+    if (!menu || !menu.open) return;
+    var inside = menu.contains(document.activeElement);
+    menu.open = false;
+    if (restoreFocus && inside) menu.querySelector("summary").focus();
+  }
+
+  function copyLink(btn) {
+    var status = PANEL.querySelector(".v-copy-status");
+    status.textContent = "";
+    btn.disabled = true;
+    Promise.resolve().then(function () {
+      if (!navigator.clipboard || !navigator.clipboard.writeText) {
+        throw new Error("Clipboard unavailable");
+      }
+      return navigator.clipboard.writeText(location.href);
+    }).then(function () {
+      status.textContent = "Link copied.";
+    }, function () {
+      status.textContent = "Copy this address from your browser: " + location.href;
+    }).then(function () { btn.disabled = false; });
+  }
+
   function onClick(e) {
+    var menu = document.querySelector("details.resume-menu");
+    if (menu && menu.open && (!menu.contains(e.target) || e.target.closest("a"))) {
+      closeMenu(false);
+    }
+    if (e.target.closest("[data-theme-toggle]")) {
+      closeMenu(false);
+      if (overlaid()) setPanel(false);
+      apply(function () {
+        var dark = cfg.theme === "auto" ? siteTheme === "dark" : THEMES[cfg.theme].dark;
+        cfg.theme = dark ? "light" : "dark";
+        persistTheme(cfg.theme);
+      });
+      return;
+    }
     var dl = e.target.closest("[data-download]");
     if (dl) { e.preventDefault(); download(dl.getAttribute("data-download")); return; }
-    if (e.target.closest(".contact li[data-real]")) {
-      apply(function () { cfg.contact = "show"; });
+    var contact = e.target.closest(".contact li[data-real]");
+    if (contact) {
+      showContact(contact);
       return;
     }
     if (overlaid() && document.documentElement.getAttribute("data-panel") === "open" &&
@@ -588,13 +705,12 @@
       var target = JUMPS[parseInt(v, 10)];
       if (!target) return;
       if (overlaid()) setPanel(false);
+      focusContent(target.node.querySelector("h2, h3") || target.node);
       target.node.scrollIntoView({ behavior: motion(), block: "start" });
       return;
     }
     if (g === "copy") {
-      if (navigator.clipboard) navigator.clipboard.writeText(location.href);
-      btn.textContent = "Copied";
-      setTimeout(function () { btn.textContent = "Copy link"; }, 1400);
+      copyLink(btn);
       return;
     }
     apply(function () {
@@ -604,6 +720,7 @@
       else if (g === "all-topics") cfg.only = [];
       else if (g === "layout") cfg.layout = v;
       else if (g === "len" || g === "lead" || g === "theme" || g === "contact") cfg[g] = v;
+      if (g === "theme") persistTheme(v);
     }, g === "reset");
   }
 
@@ -650,15 +767,75 @@
     });
   }
 
+  function syncPanelAccessibility() {
+    if (!PANEL) return;
+    var side = PANEL.querySelector(".v-side");
+    var open = document.documentElement.getAttribute("data-panel") === "open";
+    var modal = open && overlaid();
+    if (modal) {
+      side.setAttribute("role", "dialog");
+      side.setAttribute("aria-modal", "true");
+      var regions = document.querySelectorAll(
+        ".resume-site-header, .resume-main, .resume-site-footer");
+      if (!regions.length) regions = document.querySelectorAll(".sheet");
+      for (var i = 0; i < regions.length; i++) {
+        var region = regions[i];
+        if (!inertRegions.some(function (item) { return item.node === region; })) {
+          inertRegions.push({ node: region, inert: region.inert });
+        }
+        region.inert = true;
+      }
+      if (!side.contains(document.activeElement)) {
+        side.querySelector(".v-hide").focus({ preventScroll: true });
+      }
+    } else {
+      side.removeAttribute("role");
+      side.removeAttribute("aria-modal");
+      inertRegions.forEach(function (item) { item.node.inert = item.inert; });
+      inertRegions = [];
+    }
+  }
+
+  function onKeyDown(e) {
+    var contact = e.target.closest(".contact li[data-real]");
+    if (contact && (e.key === "Enter" || e.key === " ")) {
+      e.preventDefault();
+      showContact(contact);
+      return;
+    }
+    var side = PANEL.querySelector(".v-side");
+    var open = document.documentElement.getAttribute("data-panel") === "open";
+    if (e.key === "Escape") {
+      if (open) { e.preventDefault(); setPanel(false); }
+      else closeMenu(true);
+      return;
+    }
+    if (e.key !== "Tab" || !open || !overlaid()) return;
+    var controls = Array.from(side.querySelectorAll(
+      'a[href], button, input, select, textarea, [tabindex="0"]')).filter(function (item) {
+      return !item.disabled && !item.hidden && item.getClientRects().length > 0;
+    });
+    if (!controls.length) return;
+    var first = controls[0], last = controls[controls.length - 1];
+    if (e.shiftKey && (document.activeElement === first || !side.contains(document.activeElement))) {
+      e.preventDefault(); last.focus();
+    } else if (!e.shiftKey &&
+        (document.activeElement === last || !side.contains(document.activeElement))) {
+      e.preventDefault(); first.focus();
+    }
+  }
+
   function setPanel(open, manageFocus) {
-    var side = PANEL.querySelector(".v-side"), toggle = PANEL.querySelector(".v-toggle");
+    var side = PANEL.querySelector(".v-side");
     var wasInside = side.contains(document.activeElement);
+    if (open) closeMenu(false);
     document.documentElement.setAttribute("data-panel", open ? "open" : "closed");
     side.inert = !open;
-    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    TRIGGER.setAttribute("aria-expanded", open ? "true" : "false");
+    syncPanelAccessibility();
     if (manageFocus !== false) {
       if (open) side.querySelector(".v-hide").focus({ preventScroll: true });
-      else if (wasInside) toggle.focus({ preventScroll: true });
+      else if (wasInside) TRIGGER.focus({ preventScroll: true });
     }
     try { localStorage.setItem("resume-panel", open ? "open" : "closed"); } catch (e) {}
   }
@@ -674,20 +851,27 @@
     };
     MASTER = sheet.cloneNode(true);
     discover();
+    siteTheme = readSiteTheme();
     cfg = read();
     buildPanel();
     document.addEventListener("click", onClick);
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" &&
-          document.documentElement.getAttribute("data-panel") === "open") setPanel(false);
-    });
+    document.addEventListener("keydown", onKeyDown);
     document.addEventListener("input", onInput);
     window.addEventListener("popstate", function () {
       cancelPendingSearch();
       cfg = read(); render(); update(true);
     });
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+    window.addEventListener("resize", function () { syncPanelAccessibility(); onScroll(); });
+    window.addEventListener("storage", function (e) {
+      if (e.key !== "theme" && e.key !== null) return;
+      siteTheme = e.key === "theme" ? (e.newValue === "light" ? "light" : "dark") : readSiteTheme();
+      syncTheme();
+    });
+    var menu = document.querySelector("details.resume-menu");
+    if (menu) menu.addEventListener("toggle", function () {
+      if (menu.open) setPanel(false);
+    });
     window.addEventListener("beforeprint", function () { reveal(document); });
     window.addEventListener("afterprint", function () {
       if (cfg.contact !== "show") render();
@@ -695,9 +879,21 @@
     document.documentElement.setAttribute("data-versions", "on");
     var saved = null;
     try { saved = localStorage.getItem("resume-panel"); } catch (e) {}
-    setPanel(saved ? saved === "open" : window.innerWidth >= 1180, false);
+    setPanel(saved === "open", false);
     render();
     update(true);
+    document.querySelectorAll('.resume-save[data-download="pdf"]').forEach(function (button) {
+      button.hidden = false;
+    });
+    var toolbar = document.querySelector(".resume-tools");
+    if (toolbar) {
+      var measureTools = function () {
+        el.style.setProperty("--tools-height", toolbar.getBoundingClientRect().height + "px");
+      };
+      measureTools();
+      if (window.ResizeObserver) new ResizeObserver(measureTools).observe(toolbar);
+      else window.addEventListener("resize", measureTools);
+    }
   }
 
   if (document.readyState === "loading") {

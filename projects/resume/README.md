@@ -10,24 +10,27 @@ Source files, local archives and generated PDFs are not included in the deployed
 One hand-written source, `src/resume.html`, and one published file, `index.html`. Every other
 rendition of this document — shorter, re-laid-out, tailored to a role, as a PDF, a Word file,
 plain text, Markdown or JSON — is built in your browser at the moment you ask for it. Fonts
-are inlined as base64 woff2, so the page renders identically offline, from `file://`, or
+are inlined, so the document renders identically offline, from `file://`, or
 behind any host, with nothing to break when a CDN changes.
+
+The screen view shares the portfolio's Lora headings, warm palette, navigation and theme
+preference. Its shell and screen styles are separate from the resume itself: saved files
+and print retain the original document layouts without the website navigation or controls.
 
 ## The page filters itself
 
-`/` ships the whole annotated document — every bullet carrying the tags that decide when it
-survives — plus a 59 KB engine that does in the browser exactly what the build used to do on
+`/resume/` ships the whole annotated document — every bullet carrying the tags that decide when it
+survives — plus an engine that does in the browser exactly what the build used to do on
 my machine: drop the subtrees a shorter version does not admit, join the bullets that merge
-into their neighbour, re-count the sentences that count themselves. About 340 KB, no network calls,
-no framework.
+into their neighbour, re-count the sentences that count themselves. No network calls, no framework.
 
 The opening view is **Full**, the detailed career record. **Two-page** and **One-page**
-provide shorter copies. The datasheet layout leads with platform ownership and three
+provide shorter copies. The default Editorial view (`lay=datasheet`) leads with platform ownership and three
 concrete proof points; the shorter copies use a concise skills summary and describe the
 DOOM port rather than reducing it to a project name and link.
 
-The controls live in a panel down the left edge, behind a chip in the corner on a narrow
-screen. It sits outside the resume — appended to the page, never mounted inside the document
+The **Customize** button opens a panel of reading and export controls.
+It sits outside the resume — appended to the page, never mounted inside the document
 it filters — which is why nothing it does can turn up in a file you save, and why the search
 field keeps your cursor while the document rebuilds underneath it. Every control writes itself
 into the query string, so whatever view you arrive at is a link you can send.
@@ -40,13 +43,13 @@ marked as you scroll.
 | Control | Param | Try it |
 |---|---|---|
 | **Length** — full, two-page, one-page | `len` | [`?len=one`](https://kunal26das.github.io/resume/?len=one) |
-| **Layout** — datasheet, column, plain | `lay` | [`?lay=plain`](https://kunal26das.github.io/resume/?lay=plain) |
+| **Layout** — editorial (`datasheet`), column, plain | `lay` | [`?lay=plain`](https://kunal26das.github.io/resume/?lay=plain) |
 | **Lead with** — platform, product, android, rn | `lead` | [`?lead=android`](https://kunal26das.github.io/resume/?lead=android) |
 | **Only show** — 14 topic tags | `only` | [`?only=kmp,ios`](https://kunal26das.github.io/resume/?only=kmp,ios) |
 | **Companies** — hide any of the five | `hide` | [`?hide=none`](https://kunal26das.github.io/resume/?hide=none) |
 | **Search** — highlights as it filters | `q` | [`?q=gradle`](https://kunal26das.github.io/resume/?q=gradle) |
 | **Contact** — masked or shown on screen | `contact` | [`?contact=show`](https://kunal26das.github.io/resume/?contact=show) |
-| **Theme** — auto, light, dark, paper, contrast, slate, terminal | `theme` | [`?theme=terminal`](https://kunal26das.github.io/resume/?theme=terminal) |
+| **Theme** — website (`auto`), light, dark, paper, contrast, slate, terminal | `theme` | [`?theme=terminal`](https://kunal26das.github.io/resume/?theme=terminal) |
 
 They compose:
 [`?len=short&lead=android&lay=plain`](https://kunal26das.github.io/resume/?len=short&lead=android&lay=plain)
@@ -66,11 +69,11 @@ With JavaScript off, the page is the full resume. The engine only ever removes.
 
 ## The file is made at the moment you ask for it
 
-**Save as PDF** at the foot of the panel — or ⌘P — renders whatever is on screen through the
+**Save as PDF** in the toolbar or customization panel — or ⌘P — renders the selected document through the
 same `@media print` stylesheet the build asserts page counts against. It is named after the
 view it came from, `kunal-das-resume-short-android-no-wish.pdf`, and it carries the full
 contact details whatever the screen is showing. A PDF is what people ask for, so it is the
-only button.
+only download format exposed in the controls.
 
 The page can also write itself out as a self-contained HTML file, as Word, as plain text, as
 Markdown and as [JSON Resume](https://jsonresume.org) — same code, same view, no library and
@@ -127,12 +130,15 @@ python3 src/selftest.py  # 32 checks, including backup rotation
 node src/formats-selftest.js
 ```
 
-No dependencies beyond Python 3, and a local Chrome or Chromium — without one the build prints
+The screen build reads the shared Lora font from `site/assets/fonts/lora-semibold.ttf` in the
+portfolio repository. It needs no dependencies beyond Python 3, and a local Chrome or Chromium — without one the build prints
 `SKIPPED` and still succeeds. Composing the page takes well under a second; the rest of that
 time is ten headless Chrome runs — nine PDFs, and one that drives the download generators over
 five different views.
 
-Edit `src/resume.html`, rebuild, and commit the changed source together with `index.html`.
+Edit `src/resume.html` for content, `src/screen.css` for the website presentation, or
+`src/shell.html` for navigation and controls around the document. Rebuild and commit the
+changed source together with `index.html`.
 The Python and Node self-tests above do not require a browser.
 
 ## Publish with the portfolio
@@ -150,7 +156,7 @@ regenerate the resume. Commit changes normally, preserving the repository's hist
 A push to `master` runs the shared GitHub Pages workflow and publishes the resume together
 with the portfolio. There is no separate resume repository, Pages deployment or force-push step.
 
-The fonts account for 147 KB; the self-contained page is about 340 KB, and that page is the site.
+The generated page embeds its fonts and scripts; that single file is the resume website.
 
 ## How the versions stay honest
 
@@ -168,7 +174,7 @@ when filtering changes the count. The renditions are made in the browser now, so
 drives them there: a headless run generates all four downloads across five different views,
 then checks the text and Markdown for invented figures, the JSON for a section gone silently
 empty, and the Word file for its five parts. Portfolio and app links must survive in text,
-Markdown and Word, with clickable links in the latter two. Ten browser checks cover search,
+Markdown and Word, with clickable links in the latter two. Browser checks cover search,
 Reset, shared layouts, topic highlights, one-page role coverage and keyboard focus when opening or closing the panel.
 `src/selftest.py` exercises the content rules and checks backup rotation in folders with spaces.
 
@@ -177,12 +183,17 @@ is estimated, rounded up, or extrapolated.
 
 ## Design notes
 
-Themed through CSS custom properties declared once for light on a bare `:root`, again under
-`prefers-color-scheme: dark` guarded against an explicit light override, and again for each
-named palette — dark, paper, contrast, slate, terminal — so the page is legible whichever way
-a browser resolves the question, and the panel's own choice wins over all of them. Every
-contrast pair was computed rather than eyeballed. Leave the theme on auto and the page prints
-light, which is what a print stylesheet is for; pick one and it prints as you picked it.
+The screen defaults to the portfolio's theme, shared through its `theme` storage preference,
+with dark as the initial fallback. A small head script applies this before the page paints.
+The header theme button uses the same preference; an explicit `theme` query parameter still
+selects one of the existing resume palettes. The **Website** option (`theme=auto`) follows the
+portfolio on screen and prints light. An explicitly selected resume palette prints as selected.
+
+`src/screen.css` supplies the screen presentation as a separate `style[data-site]` block after
+the document and layout styles. `src/shell.html` wraps the original `.sheet` without changing
+the content that the filtering engine processes. Print hides the website shell, and standalone
+downloads use only the original `style[data-doc]` and selected layout. Neither the website
+chrome nor its font enters exported documents.
 
 Amber is reserved for measured quantities and nothing else, which is what makes the numbers
 scannable at a glance; ordinary emphasis is bold. The `plain` layout has no colour at all,
@@ -190,7 +201,9 @@ which keeps the reservation by having nothing to reserve. A layout file may not 
 and the build refuses one that does: a layout restyles the document, never the controls
 around it.
 
-Typefaces: [Archivo](https://github.com/Omnibus-Type/Archivo) for display,
+The website uses [Lora](https://github.com/cyrealtype/Lora-Cyrillic) for its display type, embedded
+from the portfolio's shared font asset; its SIL OFL licence is in `site/assets/fonts/OFL-Lora.txt`.
+The document and exports retain [Archivo](https://github.com/Omnibus-Type/Archivo) for display,
 [IBM Plex Sans](https://github.com/IBM/plex) for body and IBM Plex Mono for labels and data —
 147 KB of woff2, inlined. Both are SIL OFL 1.1 and the licences ship in `src/fonts/`. The
 `plain` layout uses system fonts instead, and the ATS-plain PDF is rendered from it.
@@ -199,6 +212,8 @@ Typefaces: [Archivo](https://github.com/Omnibus-Type/Archivo) for display,
 
 ```
 src/resume.html        THE SOURCE                edit this
+src/screen.css         portfolio screen presentation, excluded from exports
+src/shell.html         website navigation and document wrapper
 src/layout/*.css       one file per layout       datasheet, column, plain
 src/versions.js        the live filter engine
 src/formats.js         text, Markdown, JSON and Word, written in the browser

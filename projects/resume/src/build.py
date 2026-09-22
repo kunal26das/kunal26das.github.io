@@ -10,8 +10,9 @@ by deleting annotated subtrees and joining what is left, never by writing a
 second copy of any sentence. That is what makes a figure unable to drift between
 versions -- there is only ever one copy of each, in `src/resume.html`.
 
-The page is self-contained: fonts are inlined as base64 woff2, so it has no
-network dependencies and works offline or from a file:// URL.
+The page is self-contained: fonts are inlined, so it has no network dependencies
+and works offline or from a file:// URL. Its screen shell follows the portfolio;
+the document styles remain the source for print and standalone downloads.
 
 Usage:  python3 src/build.py
 """
@@ -34,6 +35,7 @@ SRC = pathlib.Path(__file__).resolve().parent
 ROOT = SRC.parent
 FONTS = SRC / "fonts"
 LAYOUT_CSS = SRC / "layout"
+SITE_FONT = ROOT.parent.parent / "site" / "assets" / "fonts" / "lora-semibold.ttf"
 
 SITE_URL = "https://kunal26das.github.io/resume/"
 STEM = "kunal-das-resume"
@@ -444,6 +446,28 @@ def split_title(body):
 FAVICON = ("data:image/svg+xml,"
            "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>"
            "<text y='.9em' font-size='90'>&#128208;</text></svg>")
+SITE_FAVICON = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' "
+                "viewBox='0 0 64 64'%3E%3Crect width='64' height='64' "
+                "fill='%231B1916'/%3E%3Ctext x='32' y='42' text-anchor='middle' "
+                "font-family='Georgia,serif' font-size='29' font-weight='bold' "
+                "fill='%23F3F0E9'%3EKD%3C/text%3E%3C/svg%3E")
+
+LIVE_HEAD = """<meta name="theme-color" content="#1B1916">
+<script>
+(function () {
+  var root = document.documentElement, theme = "dark";
+  try { if (localStorage.getItem("theme") === "light") theme = "light"; }
+  catch (e) {}
+  root.setAttribute("data-site-theme", theme);
+  var explicit = new URLSearchParams(location.search).get("theme");
+  if (/^(light|dark|paper|contrast|slate|terminal)$/.test(explicit || "")) {
+    root.setAttribute("data-theme", explicit);
+    theme = /^(dark|slate|terminal)$/.test(explicit) ? "dark" : "light";
+  }
+  document.querySelector('meta[name="theme-color"]').setAttribute(
+    "content", theme === "dark" ? "#1B1916" : "#F3F0E9");
+}());
+</script>"""
 
 
 BULLET = "&#8226;"
@@ -514,6 +538,26 @@ def layout_styles():
     return "".join(extra)
 
 
+def live_shell(body):
+    """Wrap the original document without changing the exportable styles."""
+    start = '<div class="sheet">'
+    if body.count(start) != 1:
+        raise SystemExit("live: expected exactly one .sheet to place in the site shell")
+    styles, _, document = body.partition(start)
+    shell = (SRC / "shell.html").read_text()
+    marker = "<!-- RESUME_DOCUMENT -->"
+    if shell.count(marker) != 1:
+        raise SystemExit("shell.html must contain exactly one RESUME_DOCUMENT marker")
+    css = (SRC / "screen.css").read_text()
+    if any(ord(c) >= 128 for c in css):
+        raise SystemExit("screen.css contains non-ASCII characters")
+    if css.count("__LORA__") != 1:
+        raise SystemExit("screen.css must contain exactly one __LORA__ font placeholder")
+    css = css.replace("__LORA__", base64.b64encode(SITE_FONT.read_bytes()).decode())
+    return (styles + f'<style data-site>\n{css}\n</style>\n' +
+            shell.replace(marker, start + document))
+
+
 def emit_live(source_body, title_src):
     body = unfiltered(source_body)
     if body.count("</style>") != 1:
@@ -525,18 +569,20 @@ def emit_live(source_body, title_src):
         raise SystemExit(f"live: unsubstituted placeholder(s) {left}")
 
     body, masked = mask_contacts(body)
+    body = live_shell(body)
     body = ascii_only(body)
     for name in ("formats.js", "versions.js"):
         body += f"\n<script>\n{script(name)}</script>"
     title = ascii_only(title_src)
     text = page(body, title, url=SITE_URL, canonical=SITE_URL,
-                attrs=' data-len="full" data-layout="datasheet" data-lead=""')
+                attrs=' data-len="full" data-layout="datasheet" data-lead=""',
+                extra_head=LIVE_HEAD, favicon=SITE_FAVICON)
     (ROOT / "index.html").write_text(text, encoding="utf-8")
     print(f"{'index.html':<30}{len(text)/1024:>6.0f} KB  "
           f"({masked} contact entries masked)")
 
 
-def page(body, title, *, url, canonical, attrs=""):
+def page(body, title, *, url, canonical, attrs="", extra_head="", favicon=FAVICON):
     head = [
         '<meta charset="utf-8">',
         '<meta name="viewport" content="width=device-width, initial-scale=1">',
@@ -544,13 +590,15 @@ def page(body, title, *, url, canonical, attrs=""):
         f'<meta name="description" content="{DESC}">',
         '<meta name="author" content="Kunal Das">',
         f'<link rel="canonical" href="{canonical}">',
-        f'<link rel="icon" href="{FAVICON}">',
+        f'<link rel="icon" href="{favicon}">',
         '<meta property="og:type" content="profile">',
         f'<meta property="og:title" content="{title}">',
         f'<meta property="og:description" content="{DESC}">',
         f'<meta property="og:url" content="{url}">',
         '<meta name="twitter:card" content="summary">',
     ]
+    if extra_head:
+        head.append(extra_head)
     return f"""<!doctype html>
 <html lang="en"{attrs}>
 <head>
