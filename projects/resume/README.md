@@ -73,7 +73,9 @@ With JavaScript off, the page is the full resume. The engine only ever removes.
 same `@media print` stylesheet the build asserts page counts against. It is named after the
 view it came from, `kunal-das-resume-short-android-no-wish.pdf`, and it carries the full
 contact details whatever the screen is showing. A PDF is what people ask for, so it is the
-only download format exposed in the controls.
+only download format exposed in the controls. The print fonts load in the background, and
+the PDF button waits for them before opening print. If a font cannot load, visible system
+fonts keep the export readable; native printing uses the same fallback.
 
 The page can also write itself out as a self-contained HTML file, as Word, as plain text, as
 Markdown and as [JSON Resume](https://jsonresume.org) — same code, same view, no library and
@@ -92,7 +94,9 @@ There is no PDF here, no `.docx`, no `.txt`, no `resume.json`, and no second HTM
 
 The build still renders nine PDFs locally on every run — full, two-page, ATS-plain, one-page,
 platform, product, android, and dark versions of the first two — and asserts the page count
-and the paper size of each. They are now printed from the published page itself
+and the paper size of each, plus font resources and actual text drawing. When Poppler is
+installed, extracted text must also be readable, so an empty document cannot pass merely
+by having the expected number of pages. They are printed from the published page itself
 (`index.html?len=short&lead=android`), so those assertions cover the engine and the print
 stylesheet a reader actually gets, which is the reason to render them at all: it is the only
 thing that catches a content edit quietly spilling a two-page version onto a third page.
@@ -124,7 +128,7 @@ python3 src/build.py     # about 25 seconds
 
 # any one-off copy, into gitignored out/ — the same renditions without a browser
 python3 src/render.py --len short --lead android --hide wish --theme dark --pdf
-python3 src/selftest.py  # 32 checks, including backup rotation
+python3 src/selftest.py  # 42 checks, including blank-PDF rejection and backup rotation
 
 # optional focused export regression checks (requires Node.js)
 node src/formats-selftest.js

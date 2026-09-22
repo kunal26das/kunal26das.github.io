@@ -65,7 +65,7 @@
         var target = document.querySelector("[data-resume-controls]");
         if (target) assert(target.contains(toggle), "trigger is missing from the toolbar");
       });
-      await check("Save as PDF is available without opening customization", function () {
+      await check("Save as PDF is available without opening customization", async function () {
         var button = document.querySelector('.resume-save[data-download="pdf"]');
         assert(button && !button.hidden && button.getClientRects().length > 0,
           "the toolbar PDF action is not visible");
@@ -73,10 +73,104 @@
         try {
           window.print = function () { calls++; };
           button.click();
+          await window.__versions.download("pdf");
           assert(calls === 1, "the toolbar PDF action did not invoke printing");
           assert(document.documentElement.getAttribute("data-panel") === "closed",
             "saving a PDF unexpectedly opened customization");
         } finally { window.print = originalPrint; }
+      });
+
+      await check("PDF waits for every print font and clears modal state before printing", async function () {
+        var faces = Array.from(document.fonts).filter(function (face) {
+          return /^(Archivo|PlexSans|PlexMono)$/.test(face.family.replace(/^["']|["']$/g, ""));
+        });
+        assert(faces.length === 4, "the four embedded print faces are not registered");
+        var descriptors = faces.map(function (face) { return Object.getOwnPropertyDescriptor(face, "load"); });
+        var originalPrint = window.print, calls = 0, loads = 0, release, task;
+        var pending = new Promise(function (resolve) { release = resolve; });
+        try {
+          faces.forEach(function (face) {
+            Object.defineProperty(face, "load", { configurable: true, value: function () {
+              loads++;
+              return pending.then(function () { return face; });
+            } });
+          });
+          window.print = function () {
+            calls++;
+            assert(document.documentElement.getAttribute("data-panel") === "closed",
+              "printing left the customization panel open");
+            assert(!document.querySelector(".resume-main").inert,
+              "printing left the resume inert");
+          };
+          panel(true);
+          task = window.__versions.download("pdf");
+          await new Promise(function (resolve) { setTimeout(resolve, 0); });
+          assert(loads === 4, "printing did not explicitly load every embedded face");
+          assert(calls === 0, "printing started before fonts were ready");
+          document.querySelectorAll('[data-download="pdf"]').forEach(function (button) {
+            assert(button.disabled && button.getAttribute("aria-busy") === "true",
+              "PDF controls were not disabled while preparation was pending");
+          });
+          var status = document.querySelector(".resume-print-status");
+          assert(!status.hidden && status.getAttribute("role") === "status" && /Preparing/.test(status.textContent),
+            "font preparation had no visible accessible status");
+          release();
+          var result = await task;
+          assert(calls === 1 && result.printed && result.fontsReady,
+            "printing did not run once after all faces became ready");
+          document.querySelectorAll('[data-download="pdf"]').forEach(function (button) {
+            assert(!button.disabled && !button.hasAttribute("aria-busy"),
+              "PDF preparation left a control disabled");
+          });
+        } finally {
+          release();
+          if (task) await task;
+          faces.forEach(function (face, i) {
+            if (descriptors[i]) Object.defineProperty(face, "load", descriptors[i]);
+            else delete face.load;
+          });
+          window.print = originalPrint;
+        }
+      });
+
+      await check("failed print fonts use a visible fallback without blocking PDF controls", async function () {
+        var face = Array.from(document.fonts).find(function (item) { return /PlexSans/.test(item.family); });
+        assert(face, "the body print face is not registered");
+        var descriptor = Object.getOwnPropertyDescriptor(face, "load");
+        var originalPrint = window.print, calls = 0;
+        try {
+          Object.defineProperty(face, "load", { configurable: true, value: function () {
+            return Promise.reject(new Error("Font decoding failed"));
+          } });
+          window.print = function () { calls++; };
+          var result = await window.__versions.download("pdf");
+          assert(calls === 1 && result.printed && !result.fontsReady,
+            "a failed face prevented the standard-font print fallback");
+          var status = document.querySelector(".resume-print-status");
+          assert(!status.hidden && /standard fonts/.test(status.textContent),
+            "a failed face did not explain the fallback");
+          document.querySelectorAll('[data-download="pdf"]').forEach(function (button) {
+            assert(!button.disabled && !button.hasAttribute("aria-busy"),
+              "a failed face left a PDF control disabled");
+          });
+          assert(!/font-display\s*:\s*block/.test(document.querySelector("style[data-doc]").textContent),
+            "print CSS can still hide text behind a blocking font face");
+        } finally {
+          if (descriptor) Object.defineProperty(face, "load", descriptor);
+          else delete face.load;
+          window.print = originalPrint;
+        }
+      });
+
+      await check("native print closes customization and restores masked contacts afterward", function () {
+        window.__versions.apply({});
+        panel(true);
+        window.dispatchEvent(new Event("beforeprint"));
+        assert(document.documentElement.getAttribute("data-panel") === "closed" &&
+          !document.querySelector(".resume-main").inert, "native print retained the modal background");
+        assert(!document.querySelector(".contact [data-real]"), "native print left contacts masked");
+        window.dispatchEvent(new Event("afterprint"));
+        assert(document.querySelector(".contact [data-real]"), "native print did not restore screen masking");
       });
       panel(true);
       window.__versions.apply({});

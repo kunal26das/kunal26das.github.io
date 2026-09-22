@@ -56,6 +56,7 @@
   var cfg = null, sourceDefaults = null;
   var stats = { shown: 0, total: 0 }, timer = null, ticking = false;
   var siteTheme = "dark", inertRegions = [];
+  var printTask = null;
 
   function readSiteTheme() {
     try { return localStorage.getItem("theme") === "light" ? "light" : "dark"; }
@@ -618,8 +619,91 @@
     setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
   }
 
+  function loadPrintFonts() {
+    if (!document.fonts || !document.fonts.forEach) {
+      return Promise.reject(new Error("Font loading is unavailable"));
+    }
+    var faces = [];
+    document.fonts.forEach(function (face) {
+      var family = face.family.replace(/^["']|["']$/g, "");
+      if (family === "Archivo" || family === "PlexSans" || family === "PlexMono") {
+        faces.push(face);
+      }
+    });
+    if (!faces.length) return Promise.reject(new Error("Print fonts are unavailable"));
+    return new Promise(function (resolve, reject) {
+      var timeout = setTimeout(function () {
+        reject(new Error("Print fonts took too long to load"));
+      }, 8000);
+      Promise.all(faces.map(function (face) {
+        return Promise.resolve().then(function () { return face.load(); });
+      })).then(function () {
+        clearTimeout(timeout);
+        resolve();
+      }, function (error) {
+        clearTimeout(timeout);
+        reject(error);
+      });
+    });
+  }
+
+  function printStatus(message) {
+    var status = document.querySelector(".resume-print-status");
+    if (!status) {
+      status = document.createElement("p");
+      status.className = "resume-print-status";
+      status.setAttribute("role", "status");
+      status.setAttribute("aria-live", "polite");
+      (document.querySelector(".resume-tools") || PANEL).appendChild(status);
+    }
+    status.hidden = !message;
+    status.textContent = message;
+  }
+
+  function preparePrint() {
+    closeMenu(false);
+    setPanel(false);
+    reveal(document);
+  }
+
+  function printResume() {
+    if (printTask) return printTask;
+    closeMenu(false);
+    setPanel(false);
+    var buttons = Array.from(document.querySelectorAll('[data-download="pdf"]'));
+    var disabled = buttons.map(function (button) { return button.disabled; });
+    buttons.forEach(function (button) {
+      button.disabled = true;
+      button.setAttribute("aria-busy", "true");
+    });
+    printStatus("Preparing PDF...");
+    printTask = Promise.resolve().then(loadPrintFonts).then(function () {
+      return true;
+    }, function () {
+      return false;
+    }).then(function (fontsReady) {
+      printStatus(fontsReady ? "" : "Some fonts could not load. The PDF will use standard fonts.");
+      try {
+        preparePrint();
+        window.print();
+        return { printed: true, fontsReady: fontsReady };
+      } catch (error) {
+        printStatus("Printing could not open. Use your browser's Print option to save a PDF.");
+        if (cfg.contact !== "show") render();
+        return { printed: false, fontsReady: fontsReady };
+      }
+    }).finally(function () {
+      buttons.forEach(function (button, i) {
+        button.disabled = disabled[i];
+        button.removeAttribute("aria-busy");
+      });
+      printTask = null;
+    });
+    return printTask;
+  }
+
   function download(kind) {
-    if (kind === "pdf") { window.print(); return; }
+    if (kind === "pdf") return printResume();
     if (kind === "html") { save(stem() + ".html", MIME.html, standalone()); return; }
     var f = window.__formats, doc = f.parse(MOUNT);
     if (kind === "txt") save(stem() + ".txt", MIME.txt, f.text(doc));
@@ -872,7 +956,7 @@
     if (menu) menu.addEventListener("toggle", function () {
       if (menu.open) setPanel(false);
     });
-    window.addEventListener("beforeprint", function () { reveal(document); });
+    window.addEventListener("beforeprint", preparePrint);
     window.addEventListener("afterprint", function () {
       if (cfg.contact !== "show") render();
     });
@@ -882,6 +966,9 @@
     setPanel(saved === "open", false);
     render();
     update(true);
+    // The website does not use these embedded faces on screen. Start their
+    // decoding before a native Print command switches to the print stylesheet.
+    Promise.resolve().then(loadPrintFonts).catch(function () {});
     document.querySelectorAll('.resume-save[data-download="pdf"]').forEach(function (button) {
       button.hidden = false;
     });

@@ -21,11 +21,13 @@ import io
 import json
 import pathlib
 import re
+import shutil
 import socket
 import subprocess
 import tempfile
 import time
 import zipfile
+import zlib
 import xml.etree.ElementTree as ET
 from datetime import date
 from html import unescape
@@ -697,6 +699,56 @@ def wait_until_written(path, timeout=60.0):
     return False
 
 
+def pdf_paints_text(data):
+    """Inspect Chromium's page streams even when Poppler is not installed.
+
+    Page count alone also accepts a PDF containing only backgrounds and rules.
+    Require font resources and a nonempty text-show operand in a text object,
+    rather than guessing from file size or counting embedded font bytes.
+    """
+    if not (re.search(rb"/Type\s*/Font\b", data) and
+            re.search(rb"/Font\s*(?:<<|\d+\s+\d+\s+R)", data)):
+        return False
+    objects = {tuple(map(int, m.group(1, 2))): m.group(3)
+               for m in re.finditer(rb"(\d+)\s+(\d+)\s+obj\b(.*?)endobj", data, re.S)}
+    content_refs = set()
+    for obj in objects.values():
+        if not re.search(rb"/Type\s*/Page\b", obj):
+            continue
+        contents = re.search(rb"/Contents\s*(\[.*?\]|\d+\s+\d+\s+R)", obj, re.S)
+        if contents:
+            content_refs.update(tuple(map(int, ref)) for ref in
+                                re.findall(rb"(\d+)\s+(\d+)\s+R", contents.group(1)))
+    for ref, obj in objects.items():
+        if ref not in content_refs and not re.search(rb"/Subtype\s*/Form\b", obj):
+            continue
+        start = re.search(rb"\bstream(?:\r\n|\n|\r)", obj)
+        if not start:
+            continue
+        header = obj[:start.start()]
+        stream = obj[start.end():].rsplit(b"endstream", 1)[0]
+        length = re.search(rb"/Length\s+(\d+)\s*(?=[/>])", header)
+        if length:
+            stream = stream[:int(length.group(1))]
+        # Without a direct length, preserve the syntax EOL too: zlib accepts
+        # trailing bytes, while stripping LF/CR can truncate a valid checksum.
+        if b"/Filter" in header:
+            if not re.search(rb"/Filter\s*(?:/FlateDecode\b|\[\s*/FlateDecode\s*\])", header):
+                continue
+            try:
+                stream = zlib.decompress(stream)
+            except zlib.error:
+                continue
+        for text in re.findall(rb"\bBT\b(.*?)\bET\b", stream, re.S):
+            if not re.search(rb"/[^\s/]+\s+[\d.]+\s+Tf\b", text):
+                continue
+            operand = rb"(?:<\s*[0-9a-fA-F][0-9a-fA-F\s]*>|\((?:\\.|[^\\)])+\))"
+            if (re.search(operand + rb"\s*(?:Tj\b|['\"])", text) or
+                    re.search(rb"\[[^\]]*" + operand + rb"[^\]]*\]\s*TJ\b", text)):
+                return True
+    return False
+
+
 def check_pdf(path, want_pages):
     data = path.read_bytes()
     n = len(re.findall(rb"/Type\s*/Page(?![s])", data))
@@ -708,6 +760,19 @@ def check_pdf(path, want_pages):
         raise SystemExit(f"{path.name}: {w}x{h}pt, expected {PAPER} {A4_PT[0]}x{A4_PT[1]}pt")
     if want_pages is not None and n != want_pages:
         raise SystemExit(f"{path.name}: {n} pages, expected {want_pages}")
+    if not pdf_paints_text(data):
+        raise SystemExit(f"{path.name}: no rendered text; PDF may contain only blank pages")
+    pdftotext = shutil.which("pdftotext")
+    if pdftotext:
+        try:
+            extracted = subprocess.run([pdftotext, "-enc", "UTF-8", str(path), "-"],
+                                       capture_output=True, timeout=30)
+        except (OSError, subprocess.TimeoutExpired) as error:
+            raise SystemExit(f"{path.name}: PDF text extraction failed") from error
+        if extracted.returncode:
+            raise SystemExit(f"{path.name}: PDF text extraction failed")
+        if not extracted.stdout.strip():
+            raise SystemExit(f"{path.name}: no readable text; PDF may contain only blank pages")
     return n
 
 

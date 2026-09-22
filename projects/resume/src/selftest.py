@@ -195,6 +195,85 @@ def check_backup_rotation():
         return 0 if ok else 1
 
 
+def check_pdf_text():
+    import pathlib
+    import re
+    import subprocess
+    import tempfile
+    import zlib
+    from unittest.mock import patch
+    import build
+
+    def fixture(content, *, pages=1, fonts=True, compressed=True):
+        # Only the PDF objects used by the validator are needed. Poppler is
+        # mocked below so this regression suite stays independent of installs.
+        objects = []
+        content_ref, font_ref = pages + 1, pages + 2
+        for number in range(1, pages + 1):
+            resource = f"/Font << /F1 {font_ref} 0 R >>" if fonts else ""
+            objects.append((number, (f"<< /Type /Page /MediaBox [0 0 595 842] "
+                                    f"/Resources << {resource} >> "
+                                    f"/Contents {content_ref} 0 R >>").encode()))
+        stream = zlib.compress(content) if compressed else content
+        filters = b" /Filter /FlateDecode" if compressed else b""
+        objects.append((content_ref, b"<< /Length " + str(len(stream)).encode() + filters +
+                        b" >>\nstream\n" + stream + b"\nendstream"))
+        if fonts:
+            objects.append((font_ref, b"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>"))
+        return (b"%PDF-1.4\n" + b"".join(str(number).encode() + b" 0 obj\n" + obj +
+                                       b"\nendobj\n" for number, obj in objects) + b"%%EOF\n")
+
+    text = b"BT /F1 12 Tf (Resume regression text) Tj ET"
+    cases = [
+        ("rejects seven A4 pages containing only backgrounds",
+         fixture(b"0 0 595 842 re f", pages=7, fonts=False), 7, None, None, "no rendered text"),
+        ("rejects unused fonts and an empty text object",
+         fixture(b"BT /F1 12 Tf ET"), 1, None, None, "no rendered text"),
+        ("rejects empty text-show operands",
+         fixture(b"BT /F1 12 Tf () Tj [] TJ ET"), 1, None, None, "no rendered text"),
+        ("accepts text drawn in a compressed page stream",
+         fixture(text), 1, None, None, None),
+        ("preserves a compressed checksum ending in a newline byte",
+         fixture(b"BT /F1 12 Tf (Resume regression text 89) Tj ET"),
+         1, None, None, None),
+        ("preserves compressed bytes when stream length is indirect",
+         re.sub(rb"/Length \d+", b"/Length 99 0 R",
+                fixture(b"BT /F1 12 Tf (Resume regression text 89) Tj ET")),
+         1, None, None, None),
+        ("accepts an uncompressed text array",
+         fixture(b"BT /F1 12 Tf [<0052> 25 (esume)] TJ ET", compressed=False),
+         1, None, None, None),
+        ("rejects text operators when extraction returns blank pages",
+         fixture(text), 1, "/mock/pdftotext",
+         subprocess.CompletedProcess([], 0, b"\f\n \f", b""), "no readable text"),
+        ("accepts readable extracted text",
+         fixture(text), 1, "/mock/pdftotext",
+         subprocess.CompletedProcess([], 0, b"Resume regression text\f", b""), None),
+        ("rejects a failed text extraction",
+         fixture(text), 1, "/mock/pdftotext",
+         subprocess.CompletedProcess([], 1, b"", b"parse error"), "text extraction failed"),
+    ]
+    failures = 0
+    with tempfile.TemporaryDirectory(prefix="resume PDF checks ") as temp:
+        path = pathlib.Path(temp) / "regression.pdf"
+        for name, data, pages, executable, result, expected in cases:
+            path.write_bytes(data)
+            error = None
+            with patch.object(build.shutil, "which", return_value=executable), \
+                    patch.object(build.subprocess, "run", return_value=result):
+                try:
+                    got = build.check_pdf(path, pages)
+                except SystemExit as exc:
+                    error = str(exc)
+            ok = (error is None and got == pages) if expected is None else \
+                 (error is not None and expected in error)
+            failures += not ok
+            print(f"{'PASS' if ok else 'FAIL'}  PDF: {name}")
+            if not ok:
+                print(f"      expected {expected or 'success'}, got {error or 'success'}")
+    return failures, len(cases)
+
+
 def main():
     failures = 0
     for name, markup, keep, variant, join, want in CASES:
@@ -215,7 +294,9 @@ def main():
     struct_failures, struct_total = structural_refusals()
     failures += struct_failures
     failures += check_backup_rotation()
-    total = len(CASES) + 2 + len(REFUSALS) + struct_total
+    pdf_failures, pdf_total = check_pdf_text()
+    failures += pdf_failures
+    total = len(CASES) + 2 + len(REFUSALS) + struct_total + pdf_total
     print(f"\n{total - failures}/{total} passed")
     return 1 if failures else 0
 
