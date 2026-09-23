@@ -1,0 +1,42 @@
+/* Shared portfolio tokens carry the page; the board supplies the color. */
+.flow-page { --flow-a: #e99576; --flow-b: #73b7df; --flow-c: #a9c583; --flow-d: #c09ddd; --flow-e: #e8c867; }
+:root[data-theme='light'] .flow-page { --flow-a: #ae472e; --flow-b: #226796; --flow-c: #4b742b; --flow-d: #79529a; --flow-e: #886814; }
+.flow-page .game-layout { row-gap: 30px; grid-template-rows: max-content 1fr; }
+.flow-panel { grid-column: 2; grid-row: 1 / span 2; }
+.flow-page .game-help { grid-column: 1; grid-row: 2; margin-top: 0; }
+.flow-toolbar { display: flex; align-items: end; justify-content: space-between; gap: 14px; margin-bottom: 20px; }
+.flow-toolbar label { display: grid; gap: 6px; color: var(--muted); font-size: 12px; min-width: 0; }
+.flow-toolbar select { width: 100%; max-width: 100%; min-height: 44px; padding: 9px 32px 9px 12px; border: 1px solid var(--line); border-radius: 3px; background: var(--surface); color: var(--ink); font: inherit; font-size: 14px; }
+.flow-stats { justify-content: space-between; margin: 0 0 16px; }
+.flow-stats dd { font-size: 23px; }
+.flow-board { position: relative; display: grid; grid-template-columns: repeat(var(--size, 4), minmax(0, 1fr)); width: 100%; aspect-ratio: 1; background: var(--surface); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; }
+.flow-cell { position: relative; display: grid; place-items: center; min-width: 0; min-height: 0; padding: 0; border: 0; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); background: transparent; color: var(--ink); }
+.flow-cell.last-column { border-right: 0; }
+.flow-cell.last-row { border-bottom: 0; }
+.flow-cell:focus-visible { outline: 3px solid var(--ink); outline-offset: -5px; z-index: 2; }
+.flow-cell:hover { background: var(--surface-hi); }
+.flow-cell.active-end { background: color-mix(in srgb, var(--flow-color) 12%, var(--surface)); }
+.flow-cell .dot { position: relative; display: grid; place-items: center; width: 57%; aspect-ratio: 1; border-radius: 50%; background: var(--flow-color); color: var(--bg); font-size: clamp(16px, 2vw, 24px); font-weight: 700; z-index: 1; }
+.flow-cell.active-end .dot { outline: 2px solid var(--flow-color); outline-offset: 4px; }
+.flow-line { position: absolute; width: 24%; height: 24%; border-radius: 50%; background: var(--flow-color); pointer-events: none; }
+.flow-line.up { top: -1px; height: 51%; border-radius: 0; }
+.flow-line.down { bottom: -1px; height: 51%; border-radius: 0; }
+.flow-line.left { left: -1px; width: 51%; border-radius: 0; }
+.flow-line.right { right: -1px; width: 51%; border-radius: 0; }
+.flow-instructions { margin: 13px 0 0; font-size: 12px; color: var(--muted); }
+.flow-panel .game-status { min-height: 3.2em; margin: 12px 0; font-size: 14px; }
+.flow-panel[data-outcome='won'] .game-status { color: var(--flow-c); }
+.flow-panel[data-outcome='revealed'] .game-status { color: var(--clay); }
+.flow-legend { display: flex; flex-wrap: wrap; gap: 10px 18px; margin: 15px 0 24px; font-size: 12px; color: var(--muted); }
+.flow-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.flow-legend b { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--flow-color); color: var(--bg); font-size: 12px; }
+.flow-solver { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding-top: 21px; border-top: 1px solid var(--line); }
+.flow-solver > div { flex: 1 1 240px; }
+.flow-solver h2 { font-size: 19px; margin-bottom: 6px; }
+.flow-solver p { margin-bottom: 0; font-size: 12px; line-height: 1.7; color: var(--muted); }
+.flow-solver button { flex-shrink: 0; }
+.flow-page .game-help details { margin-top: 20px; font-size: 13px; }
+.flow-page .game-help summary { cursor: pointer; padding-block: 7px; }
+.flow-page .game-help details p { margin-top: 10px; }
+@media (max-width: 860px) { .flow-page .game-layout { grid-template-rows: auto; }.flow-panel, .flow-page .game-help { grid-column: auto; grid-row: auto; }.flow-page .game-help { width: 100%; max-width: 540px; margin-inline: auto; } }
+@media (max-width: 380px) { .flow-toolbar { gap: 9px; }.flow-toolbar select { font-size: 12px; padding-left: 8px; }.flow-stats dd { font-size: 21px; }.flow-cell .dot { font-size: 16px; } }

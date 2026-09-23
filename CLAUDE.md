@@ -25,6 +25,9 @@ projects before deploying `dist/` on pushes to `master`.
 - Shared theme tokens and typography are in `site/blog/blog.css`; theme persistence is handled
   by `site/blog/blog.js`. Homepage-specific styles and interactions use `site/home.css` and
   `site/home.js`.
+- `projects/games/` publishes the game collection and browser adaptations at `/games/`.
+  Run `node --test projects/games/tests/*.test.cjs` after changing its rules or solvers.
+  Game links belong in the project collection and footers, outside top navigation.
 - Preserve the existing visual design, keyboard controls, mobile layouts, readable HTML and
   reduced-motion behavior. Use the existing CSS variables instead of inventing another theme.
 - `projects/resume/` contains the résumé and its editing/export tools. Edit `src/` and run

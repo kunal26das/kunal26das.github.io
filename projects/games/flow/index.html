@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flow Free — Connect the dots | Kunal Das</title>
+  <meta name="description" content="Connect matching dots and fill the board. Four small Flow Free puzzles, with a backtracking solver to show the way.">
+  <link rel="canonical" href="https://kunal26das.github.io/games/flow/">
+  <meta property="og:title" content="Flow Free — Connect the dots">
+  <meta property="og:description" content="Connect matching dots and fill the board. Four small puzzles with a backtracking solver to show the way.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kunal26das.github.io/games/flow/">
+  <meta property="og:image" content="https://kunal26das.github.io/icon-512.png">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#1b1916">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/blog/blog.css?v=2">
+  <link rel="stylesheet" href="/home.css">
+  <link rel="stylesheet" href="/games/styles.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="/blog/blog.js" defer></script>
+  <script src="/home.js" defer></script>
+  <script src="app.js" type="module"></script>
+</head>
+<body class="games-page flow-page">
+  <a class="skip-link" href="#flow-board">Skip to game</a>
+  <header class="site-header portfolio-header">
+    <div class="shell header-inner">
+      <a class="brand" href="/" aria-label="Kunal Das, home"><span class="brand-mark">KD</span><span class="brand-name">Kunal Das</span></a>
+      <nav class="header-nav home-nav" aria-label="Main navigation"><a href="/#work">Work</a><a href="/blog/">Writing</a><a href="/#code">Code</a><a href="/resume/">Résumé <span aria-hidden="true">↗</span></a></nav>
+      <details class="home-menu"><summary>Menu</summary><nav aria-label="Mobile navigation"><a href="/#work">Work</a><a href="/blog/">Writing</a><a href="/#code">Code</a><a href="/involute/">Involute</a><a href="/resume/">Résumé</a><a href="/#contact">Contact</a></nav></details>
+      <button class="theme-toggle" type="button" hidden data-theme-toggle aria-label="Switch color theme">Light</button>
+    </div>
+  </header>
+  <main class="shell">
+    <nav class="game-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/games/">Games</a><span aria-hidden="true">/</span><span aria-current="page">Flow Free</span></nav>
+    <div class="game-layout">
+      <div class="game-intro">
+        <h1>Flow Free<span class="title-dot" aria-hidden="true">.</span></h1>
+        <p class="game-deck">Connect the dots.<br>Fill the space.</p>
+        <p>Find a route for every pair. A little planning leaves room for them all.</p>
+      </div>
+      <section class="game-panel flow-panel" aria-label="Play Flow Free">
+        <div class="flow-toolbar">
+          <label for="flow-puzzle">Puzzle<select id="flow-puzzle"></select></label>
+          <button id="flow-reset" class="game-button secondary" type="button">Reset</button>
+        </div>
+        <dl class="game-stats flow-stats"><div><dt>Pairs joined</dt><dd id="flow-pairs">0 / 3</dd></div><div><dt>Board filled</dt><dd id="flow-filled">6 / 16</dd></div></dl>
+        <div id="flow-board" class="flow-board" role="group" tabindex="-1" aria-label="Flow Free board" aria-describedby="flow-instructions"></div>
+        <p id="flow-instructions" class="flow-instructions">Start at a lettered dot. Connect its matching letter.</p>
+        <p id="flow-status" class="game-status" role="status" aria-live="polite" aria-atomic="true">Choose a dot to begin.</p>
+        <div id="flow-legend" class="flow-legend" aria-label="Pair progress"></div>
+        <div class="flow-solver">
+          <div><h2>See a way through.</h2><p>Backtracking tries a route, then retraces it when another pair gets blocked.</p></div>
+          <button id="flow-reveal" class="game-button secondary" type="button">Show solution</button>
+        </div>
+        <noscript><p>Enable JavaScript to play Flow Free.</p></noscript>
+      </section>
+      <section class="game-help" aria-labelledby="flow-help-title">
+        <h2 id="flow-help-title">Leave no square behind.</h2>
+        <p>Join matching letters with horizontal or vertical paths. Paths cannot cross, and every square needs a path.</p>
+        <p>Drag from a dot, or tap it and then tap neighboring squares. Retrace a path to shorten it; select a dot to redraw it.</p>
+        <details><summary>Keyboard controls</summary><p>Tab to the board. Use arrows to choose a dot, then Enter or Space to start. Arrow keys draw the path. Escape stops drawing; Backspace removes the last step.</p></details>
+      </section>
+    </div>
+  </main>
+  <footer class="site-footer shell"><a href="/games/">← All games</a><span>A little room for play.</span><nav aria-label="Footer navigation"><a href="https://github.com/kunal26das/game-algorithms/tree/master/Flow%20Free">Original source ↗</a><a href="/games/LICENSE.txt">Apache 2.0 license</a></nav></footer>
+</body>
+</html>

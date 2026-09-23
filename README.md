@@ -21,6 +21,7 @@ site/                    Website source, published at the domain root
   app-ads.txt, ads.txt    Publisher verification
 projects/
   2048/                  Adapted 2048 game, browser assets and game-rule tests
+  games/                 Tetris, chess, Flow Free, Tic-Tac-Toe and game collection
   resume/                Résumé source, export tools and generated index.html
   involute/              Involute Explorer and original calculator files
 scripts/
@@ -41,7 +42,7 @@ python3 -m http.server 8080 --directory dist
 
 Open **http://localhost:8080**. After editing files in `site/`, run the build again and reload
 the page. For quick work on the portfolio alone, serve `site/` directly. `/resume/`, `/involute/`,
-`/2048/`, `/doom/` and legacy asset aliases are included in the assembled `dist/` preview.
+`/2048/`, `/games/`, `/doom/` and legacy asset aliases are included in the assembled `dist/` preview.
 
 The `/startup/` and `/yify/` project sites are deployed independently;
 their root-relative links resolve on the live GitHub Pages domain, not this local server.
@@ -52,6 +53,7 @@ their root-relative links resolve on the live GitHub Pages domain, not this loca
 python3 scripts/build.py
 python3 scripts/check.py --check-js
 node --test projects/2048/tests/*.test.cjs
+node --test projects/games/tests/*.test.cjs
 ```
 
 Python checks the assembled pages, local links and anchors, assets, discovery files and
@@ -60,7 +62,8 @@ tests; it is not a build or runtime dependency for the website. There are no npm
 install. Project-specific checks and editing commands are documented in
 [`projects/resume/README.md`](projects/resume/README.md) and
 [`projects/involute/README.md`](projects/involute/README.md), plus
-[`projects/2048/README.md`](projects/2048/README.md).
+[`projects/2048/README.md`](projects/2048/README.md) and
+[`projects/games/README.md`](projects/games/README.md).
 
 Pull requests targeting `master` run these checks. A push to `master`, or a manual run of
 `.github/workflows/deploy.yml`, also publishes `dist/` to GitHub Pages. Only the deployment job
@@ -77,6 +80,12 @@ The adapted 2048 game is published at `/2048/` from `projects/2048/`. Its HTML, 
 JavaScript and original MIT license are explicitly included in the build; tests and
 authoring documentation stay out of the published output.
 
+The Games collection at `/games/` adds browser adaptations of Tetris, chess puzzles,
+Flow Free and Tic-Tac-Toe from `kunal26das/game-algorithms`, retaining its Apache-2.0
+license and contributor notices. The original repository remains independent. Its
+executables and object files are not imported into the website. Games are linked from
+the homepage's Experiments category and site footers, outside the main navigation.
+
 `doom-dist/` is copied unchanged to `/doom/`. It is produced by `kunal26das/doom` and can still
 use Kotlin independently; do not edit its generated files in this repository.
 
@@ -91,6 +100,8 @@ use Kotlin independently; do not edit its generated files in this repository.
   redirect and run its geometry checks before publishing.
 - **2048:** edit `projects/2048/` and run its Node game-rule tests before publishing.
   Preserve the original game's attribution and MIT license.
+- **Game collection:** edit `projects/games/` and run its rule/solver tests. Keep the
+  collection, homepage project link and sitemap current; preserve Apache notices.
 - **Design:** shared typography, colors, header and theme behavior live in `site/blog/blog.css`
   and `site/blog/blog.js`; homepage-specific styles and interactions live in `home.css` and
   `home.js`. Preserve keyboard access, mobile layouts and reduced-motion support.

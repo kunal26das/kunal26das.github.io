@@ -35,6 +35,9 @@ jobs:
       - name: Verify 2048 game rules and saved games
         run: node --test projects/2048/tests/*.test.cjs
 
+      - name: Verify game collection rules and solvers
+        run: node --test projects/games/tests/*.test.cjs
+
       - name: Build static site
         run: python3 scripts/build.py
 

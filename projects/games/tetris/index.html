@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tetris — A place for every piece | Kunal Das</title>
+  <meta name="description" content="Make room for one more piece. Play Tetris with your keyboard or touch controls in Kunal Das’s collection of browser games.">
+  <link rel="canonical" href="https://kunal26das.github.io/games/tetris/">
+  <meta property="og:title" content="Tetris — A place for every piece">
+  <meta property="og:description" content="Turn, slide, and drop. Make room for one more piece.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kunal26das.github.io/games/tetris/">
+  <meta property="og:image" content="https://kunal26das.github.io/icon-512.png">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#1b1916">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/blog/blog.css?v=2">
+  <link rel="stylesheet" href="/home.css">
+  <link rel="stylesheet" href="/games/styles.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="/blog/blog.js" defer></script>
+  <script src="/home.js" defer></script>
+  <script src="app.js" type="module"></script>
+</head>
+<body class="games-page tetris-page">
+  <a class="skip-link" href="#tetris-board">Skip to game</a>
+  <header class="site-header portfolio-header">
+    <div class="shell header-inner">
+      <a class="brand" href="/" aria-label="Kunal Das, home"><span class="brand-mark">KD</span><span class="brand-name">Kunal Das</span></a>
+      <nav class="header-nav home-nav" aria-label="Main navigation"><a href="/#work">Work</a><a href="/blog/">Writing</a><a href="/#code">Code</a><a href="/resume/">Résumé <span aria-hidden="true">↗</span></a></nav>
+      <details class="home-menu"><summary>Menu</summary><nav aria-label="Mobile navigation"><a href="/#work">Work</a><a href="/blog/">Writing</a><a href="/#code">Code</a><a href="/involute/">Involute</a><a href="/resume/">Résumé</a><a href="/#contact">Contact</a></nav></details>
+      <button class="theme-toggle" type="button" hidden data-theme-toggle aria-label="Switch color theme">Light</button>
+    </div>
+  </header>
+  <main class="shell">
+    <nav class="game-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/games/">Games</a><span aria-hidden="true">/</span><span aria-current="page">Tetris</span></nav>
+    <div class="game-layout tetris-layout">
+      <div class="game-intro">
+        <h1>Tetris<span class="title-dot" aria-hidden="true">.</span></h1>
+        <p class="game-deck">A place for every piece.</p>
+        <p>Turn, slide, and drop. Fill a row to clear it. Leave a little room for whatever comes next.</p>
+        <div class="game-help tetris-help">
+          <h2>Keep making room.</h2>
+          <dl class="tetris-key-guide"><div><dt>← →</dt><dd>Move sideways</dd></div><div><dt>↑</dt><dd>Rotate the piece</dd></div><div><dt>↓</dt><dd>Fall faster</dd></div><div><dt>Space</dt><dd>Drop into place</dd></div><div><dt>P / Esc</dt><dd>Pause</dd></div></dl>
+          <p>On touch screens, use the buttons below the board. The outline shows where your piece will land.</p>
+          <p>Clearing several rows at once earns more points. Every 10 rows, the pieces fall a little faster.</p>
+        </div>
+      </div>
+      <section class="game-panel tetris-panel" aria-label="Play Tetris">
+        <dl class="game-stats tetris-stats"><div><dt>Score</dt><dd id="tetris-score">0</dd></div><div><dt>Lines</dt><dd id="tetris-lines">0</dd></div><div><dt>Level</dt><dd id="tetris-level">1</dd></div></dl>
+        <div class="game-controls tetris-actions"><button class="game-button" id="tetris-toggle" type="button">Start game</button><button class="game-button secondary" id="tetris-restart" type="button" disabled>New game</button></div>
+        <div class="tetris-playfield">
+          <div class="tetris-board-wrap">
+            <canvas id="tetris-board" width="300" height="600" tabindex="0" role="img" aria-label="Tetris board. Press Start game to begin." aria-describedby="tetris-instructions">The game needs a browser with canvas support.</canvas>
+            <div class="tetris-overlay" id="tetris-overlay"><p id="tetris-overlay-title">One piece at a time.</p><span id="tetris-overlay-detail">Ready when you are.</span></div>
+          </div>
+          <aside class="tetris-next"><p>Next</p><canvas id="tetris-next" width="120" height="100" role="img" aria-label="Next piece"></canvas><p class="tetris-next-hint">Make room.<br>Keep going.</p></aside>
+        </div>
+        <div class="tetris-touch" role="group" aria-label="Move the falling piece"><button type="button" data-action="left" aria-label="Move left" disabled>←</button><button type="button" data-action="rotate" aria-label="Rotate clockwise" disabled>↻</button><button type="button" data-action="right" aria-label="Move right" disabled>→</button><button type="button" data-action="down" aria-label="Move down" disabled>↓</button><button type="button" data-action="drop" aria-label="Drop piece" disabled>Drop</button></div>
+        <p id="tetris-instructions" class="tetris-instructions">Arrow keys to move and rotate. Space to drop.</p>
+        <p class="game-status" id="tetris-status" role="status" aria-live="polite" aria-atomic="true">Press Start game to begin.</p>
+        <noscript><p>Enable JavaScript to play Tetris. <a href="/games/">Explore all games</a>.</p></noscript>
+      </section>
+    </div>
+  </main>
+  <footer class="site-footer shell"><a href="/games/">← All games</a><span>By Kunal, Aarush, Vaibhav &amp; Rohan.</span><nav aria-label="Footer navigation"><a href="https://github.com/kunal26das/game-algorithms/blob/master/Tetris/cpp/Group%205%20-%20Tetris.cpp">Original source ↗</a><a href="/games/LICENSE.txt">Apache 2.0 license</a></nav></footer>
+</body>
+</html>

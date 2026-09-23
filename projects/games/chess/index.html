@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<!-- Browser adaptation of game-algorithms/Chess Pieces, changed September 2026.
+     Accessible board, cooperative solvers and step/play visualization added.
+     Original and adaptation licensed under Apache-2.0; see /games/LICENSE.txt. -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chess puzzles — Games | Kunal Das</title>
+  <meta name="description" content="Explore a knight’s tour, eight queens, and eight rooks. Choose a starting square and watch a solution unfold, one move at a time.">
+  <link rel="canonical" href="https://kunal26das.github.io/games/chess/">
+  <meta property="og:title" content="Chess puzzles — Games | Kunal Das">
+  <meta property="og:description" content="One board. Many possibilities. Explore a knight’s tour, eight queens, and eight rooks, one step at a time.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kunal26das.github.io/games/chess/">
+  <meta property="og:image" content="https://kunal26das.github.io/icon-512.png">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#1B1916">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/blog/blog.css?v=2">
+  <link rel="stylesheet" href="/home.css">
+  <link rel="stylesheet" href="/games/styles.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="/blog/blog.js" defer></script>
+  <script src="/home.js" defer></script>
+  <script type="module" src="app.js"></script>
+</head>
+<body class="games-page chess-page">
+  <a class="skip-link" href="#chess-board">Skip to chess board</a>
+  <header class="site-header portfolio-header">
+    <div class="shell header-inner">
+      <a class="brand" href="/" aria-label="Kunal Das, home"><span class="brand-mark">KD</span><span class="brand-name">Kunal Das</span></a>
+      <nav class="header-nav home-nav" aria-label="Main navigation"><a href="/#work">Work</a><a href="/blog/">Writing</a><a href="/#code">Code</a><a href="/resume/">Résumé <span aria-hidden="true">↗</span></a></nav>
+      <details class="home-menu"><summary>Menu</summary><nav aria-label="Mobile navigation"><a href="/#work">Work</a><a href="/blog/">Writing</a><a href="/#code">Code</a><a href="/involute/">Involute</a><a href="/resume/">Résumé</a><a href="/#contact">Contact</a></nav></details>
+      <button class="theme-toggle" type="button" hidden data-theme-toggle aria-label="Switch color theme">Light</button>
+    </div>
+  </header>
+  <main class="shell">
+    <nav class="game-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/games/">Games</a><span aria-hidden="true">/</span><span aria-current="page">Chess puzzles</span></nav>
+    <div class="game-layout chess-layout">
+      <div class="game-intro">
+        <h1>Chess puzzles.</h1>
+        <p class="game-deck">One board.<br>Many possibilities.</p>
+        <p>Choose a piece and a starting square. See how one simple rule shapes the whole board.</p>
+        <fieldset class="chess-choices"><legend>Choose a puzzle</legend>
+          <label><input type="radio" name="puzzle" value="knight" checked><span><strong>Knight’s tour</strong><small>Visit all 64 squares exactly once.</small></span><span class="choice-piece" aria-hidden="true">♞</span></label>
+          <label><input type="radio" name="puzzle" value="queens"><span><strong>Eight queens</strong><small>Place eight queens that cannot attack.</small></span><span class="choice-piece" aria-hidden="true">♛</span></label>
+          <label><input type="radio" name="puzzle" value="rooks"><span><strong>Eight rooks</strong><small>Give every rook its own row and column.</small></span><span class="choice-piece" aria-hidden="true">♜</span></label>
+        </fieldset>
+        <div class="chess-explanation"><h2 id="rule-title">An L-shaped journey.</h2><p id="rule-detail">A knight moves two squares in one direction and one to the side. Can it reach every square without visiting one twice?</p></div>
+      </div>
+      <section class="game-panel chess-panel" aria-label="Chess puzzle explorer">
+        <div class="chess-board-heading"><p>Starts at <strong id="start-square">a1</strong></p><span id="progress">1 / 64 squares</span></div>
+        <div class="chess-board-wrap">
+          <div id="chess-board" class="chess-board" role="grid" aria-label="Choose the starting square" aria-describedby="board-help" aria-rowcount="8" aria-colcount="8" tabindex="-1"></div>
+          <svg class="chess-path" viewBox="0 0 800 800" aria-hidden="true"><polyline id="tour-path" points=""></polyline></svg>
+        </div>
+        <div class="chess-files" aria-hidden="true"><span>a</span><span>b</span><span>c</span><span>d</span><span>e</span><span>f</span><span>g</span><span>h</span></div>
+        <p class="game-help" id="board-help">Tap a square to choose the start. With a keyboard, use arrows to explore the board and Enter to select.</p>
+        <div class="game-controls chess-controls">
+          <button class="game-button" id="play" type="button" aria-pressed="false">Play solution</button>
+          <button class="game-button secondary" id="step" type="button">Step</button>
+          <button class="game-button secondary" id="show" type="button">Show solution</button>
+          <button class="game-button secondary" id="reset" type="button">Reset</button>
+        </div>
+        <div class="chess-speed"><label for="speed">Playback speed</label><select id="speed"><option value="700">Slow</option><option value="300" selected>Normal</option><option value="100">Fast</option></select></div>
+        <p id="chess-status" class="game-status" role="status" aria-live="polite" aria-atomic="true">Your knight starts at a1. Play the tour or reveal it one step at a time.</p>
+        <noscript><p>Enable JavaScript to explore these puzzles. <a href="/games/">Browse all games</a>.</p></noscript>
+      </section>
+    </div>
+    <section class="game-help chess-note" aria-labelledby="how-it-works"><h2 id="how-it-works">The rule behind the route.</h2><p id="algorithm-note">The knight looks for the next square with the fewest onward moves. If it gets stuck, it backs up and tries another route. The animation follows a completed tour, so you can study the moves without the dead ends.</p><p>Adapted from my original <a href="https://github.com/kunal26das/game-algorithms/tree/master/Chess%20Pieces">Chess Pieces experiments</a>, with a new interface and corrected solvers for the browser.</p></section>
+  </main>
+  <footer class="site-footer shell"><a href="/games/">← All games</a><span>A little room for play.</span><nav aria-label="Footer navigation"><a href="https://github.com/kunal26das/game-algorithms">Original source ↗</a><a href="/games/LICENSE.txt">Apache 2.0 license</a></nav></footer>
+</body>
+</html>

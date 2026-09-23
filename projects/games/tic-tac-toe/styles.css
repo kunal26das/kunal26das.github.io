@@ -1,0 +1,19 @@
+.ttt-options { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 25px; }
+.ttt-options label { display: flex; flex-direction: column; gap: 8px; color: var(--muted); font-size: 12px; }
+.ttt-options select { color: var(--ink); font-size: 14px; }
+.ttt-options select:disabled { opacity: .5; }
+.turn-label { font: 600 23px/1.4 var(--font-serif); letter-spacing: -.025em; margin-bottom: 18px; }
+.ttt-board { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); aspect-ratio: 1; gap: 10px; padding: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 4px; }
+.ttt-board button { display: grid; place-items: center; min-width: 0; border: 1px solid transparent; border-radius: 2px; background: var(--surface-hi); color: var(--clay); font: 600 clamp(44px, 7vw, 82px)/1 var(--font-serif); cursor: pointer; padding: 0; }
+.ttt-board button[data-mark='O'] { color: var(--ink); }
+.ttt-board button[aria-disabled='false']:hover { border-color: var(--clay); }
+.ttt-board button[aria-disabled='true'] { cursor: default; }
+.ttt-board button.winning { background: var(--clay); color: var(--bg); }
+.ttt-board button.hint { border: 3px solid var(--clay); }
+.ttt-board button:focus-visible { outline-offset: 1px; }
+@media (max-width: 380px) { .ttt-board { gap: 7px; padding: 7px; } }
+
+.ttt-layout { row-gap: 28px; }
+.ttt-layout .game-panel { grid-column: 2; grid-row: 1 / span 2; }
+.ttt-help { grid-column: 1; grid-row: 2; margin-top: 0; }
+@media (max-width: 860px) { .ttt-layout .game-panel, .ttt-help { grid-column: auto; grid-row: auto; } }
