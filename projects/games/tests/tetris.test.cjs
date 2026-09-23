@@ -17,6 +17,40 @@ test('starts with an empty board, a legal piece and a next piece', () => {
   assert.ok(game.board.every(row => row.every(cell => cell === null)));
 });
 
+test('starting a ready game uses the displayed preview without reshuffling', () => {
+  let draws = 0;
+  const game = new Tetris(() => ++draws <= 6 ? .1 : .9);
+  const preview = game.next;
+  assert.equal(draws, 6);
+  game.start();
+  assert.equal(game.active.type, preview);
+  assert.equal(draws, 6);
+  game.drop();
+  game.reset();
+  const newPreview = game.next;
+  const drawsAfterReset = draws;
+  game.start();
+  assert.equal(game.active.type, newPreview);
+  assert.equal(draws, drawsAfterReset);
+});
+
+test('playing again after game over resets the board and starts a fresh bag', () => {
+  const game = new Tetris(() => .5);
+  game.start();
+  game.board[0][4] = 'Z';
+  game.next = 'O';
+  game.active = piece('O', 0, 18);
+  game.drop();
+  assert.equal(game.status, 'over');
+  assert.ok(game.score > 0 || game.pieces > 0);
+  assert.equal(game.start(), true);
+  assert.equal(game.status, 'playing');
+  assert.equal(game.score, 0);
+  assert.equal(game.pieces, 0);
+  assert.ok(game.board.every(row => row.every(cell => cell === null)));
+  assert.ok(canPlace(game.board, game.active));
+});
+
 test('every bag contains all seven pieces exactly once', () => {
   const game = new Tetris(() => .4);
   const first = [game.next, ...Array.from({ length: 6 }, () => game.drawPiece())];

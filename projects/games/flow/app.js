@@ -113,23 +113,39 @@ board.addEventListener('pointerdown', event => {
   const button = event.target.closest('[data-cell]');
   if (!button) return;
   event.preventDefault();
-  pointer = event.pointerId;
   const cell = Number(button.dataset.cell);
   setFocus(cell);
-  act(cell);
-  board.setPointerCapture(event.pointerId);
+  pointer = act(cell) ? event.pointerId : null;
+  if (pointer !== null) board.setPointerCapture(event.pointerId);
 });
-board.addEventListener('pointermove', event => {
+function extendDrag(event) {
   if (pointer !== event.pointerId || game.active === null) return;
   const button = document.elementFromPoint(event.clientX, event.clientY)?.closest('[data-cell]');
   if (!button || !board.contains(button)) return;
   const cell = Number(button.dataset.cell);
-  if (game.extend(cell)) { setFocus(cell); render(); }
-});
+  const size = game.puzzle.size;
+  let head = game.paths[game.active].at(-1);
+  if (head === cell) return;
+  // Fast drags can skip pointer events over several cells. Fill only a straight
+  // segment, validating every square so blockers and endpoints cannot be jumped.
+  const sameRow = Math.floor(head / size) === Math.floor(cell / size);
+  const sameColumn = head % size === cell % size;
+  if (!sameRow && !sameColumn) return;
+  const step = Math.sign(cell - head) * (sameRow ? 1 : size);
+  let changed = false;
+  while (head !== cell && game.active !== null) {
+    const next = head + step;
+    if (!game.extend(next)) break;
+    head = next;
+    changed = true;
+  }
+  if (changed) { setFocus(head); render(); }
+}
+board.addEventListener('pointermove', extendDrag);
 function stopPointer(event) {
   if (pointer === event.pointerId) pointer = null;
 }
-board.addEventListener('pointerup', stopPointer);
+board.addEventListener('pointerup', event => { extendDrag(event); stopPointer(event); });
 board.addEventListener('pointercancel', stopPointer);
 board.addEventListener('lostpointercapture', stopPointer);
 board.addEventListener('click', event => {

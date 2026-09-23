@@ -1,4 +1,4 @@
-import { Tetris, SHAPES, WIDTH, HEIGHT } from './engine.mjs';
+import { Tetris, SHAPES, WIDTH, HEIGHT } from './engine.mjs?v=2';
 
 const engine = new Tetris();
 const canvas = document.querySelector('#tetris-board');
@@ -114,10 +114,14 @@ controls.forEach(button => button.addEventListener('click', () => {
 }));
 
 document.addEventListener('keydown', event => {
-  if (event.defaultPrevented || event.isComposing || event.altKey || event.ctrlKey || event.metaKey || document.hidden) return;
+  if (event.defaultPrevented || event.isComposing || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey || document.hidden) return;
+  if (document.querySelector('.home-menu[open]')) return;
   const target = event.target;
-  if (target instanceof Element && (target.closest('a, button, input, select, textarea, summary, [contenteditable]:not([contenteditable="false"]), [role="textbox"], [role="combobox"]') || document.querySelector('.home-menu[open]'))) return;
+  if (target instanceof Element && target.closest('a, input, select, textarea, summary, [contenteditable]:not([contenteditable="false"]), [role="textbox"], [role="combobox"]')) return;
   const key = event.key.toLowerCase();
+  // Theme and game buttons can keep focus after a click. Continue accepting
+  // game keys there, while leaving their native activation keys untouched.
+  if ((key === ' ' || key === 'enter') && target instanceof Element && target.closest('button, [role="button"]')) return;
   if ((key === 'p' || key === 'escape') && (engine.status === 'playing' || engine.status === 'paused')) {
     event.preventDefault();
     if (event.repeat) return;

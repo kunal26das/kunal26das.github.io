@@ -83,7 +83,8 @@ export class Tetris {
   start() {
     if (this.status === 'playing') return false;
     if (this.status === 'paused') { this.status = 'playing'; return true; }
-    this.reset();
+    // A ready game already has a shuffled bag and a visible next piece.
+    if (this.status === 'over') this.reset();
     this.status = 'playing';
     return this.spawn();
   }
