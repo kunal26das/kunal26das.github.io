@@ -2,7 +2,8 @@
 
 The `/games/` collection brings browser editions of
 [Game Algorithms](https://github.com/kunal26das/game-algorithms) into the portfolio,
-alongside links to its existing 2048 and DOOM pages.
+alongside original Snake, Minesweeper and Connect Four implementations and
+links to its existing 2048 and DOOM pages.
 
 Source reference: `bb8545995e4c2d43a4feb2175eed4f0c5c636cce`.
 The original Apache-2.0 license and contributor notices are retained in
@@ -16,6 +17,13 @@ The original Apache-2.0 license and contributor notices are retained in
   puzzles. Joining all pairs and covering every cell are both required.
 - **Tic-Tac-Toe** extends the original board-tree skeleton. The full game,
   minimax opponent, hints and two-player controls are new browser features.
+
+- **Snake** adds a growing-tail arcade game with keyboard, swipe and direction controls.
+- **Minesweeper** adds safe first openings, flags and two board sizes.
+- **Connect Four** adds gravity-based four-in-a-row play against a computer or friend.
+
+The three additions are original implementations for this collection, not
+ports from the historical Game Algorithms repository.
 
 Each game separates rules in `engine.mjs` from its interface in `app.js`.
 Shared colors and typography come from the portfolio; `styles.css` supplies

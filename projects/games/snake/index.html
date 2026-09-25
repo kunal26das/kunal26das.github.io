@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Snake — A little room to grow | Kunal Das</title>
+  <meta name="description" content="Follow the diamonds, find your next turn, and grow. Play Snake with arrow keys, WASD, swipes, or touch controls.">
+  <link rel="canonical" href="https://kunal26das.github.io/games/snake/">
+  <meta property="og:title" content="Snake — A little room to grow">
+  <meta property="og:description" content="Follow the diamonds. Leave yourself a way out.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kunal26das.github.io/games/snake/">
+  <meta property="og:image" content="https://kunal26das.github.io/icon-512.png">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#1b1916">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/blog/blog.css?v=2">
+  <link rel="stylesheet" href="/home.css">
+  <link rel="stylesheet" href="/games/styles.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="/blog/blog.js" defer></script>
+  <script src="/home.js" defer></script>
+  <script src="app.js" type="module"></script>
+</head>
+<body class="games-page snake-page">
+  <a class="skip-link" href="#snake-board">Skip to game</a>
+  <header class="site-header portfolio-header">
+    <div class="shell header-inner">
+      <a class="brand" href="/" aria-label="Kunal Das, home"><span class="brand-mark">KD</span><span class="brand-name">Kunal Das</span></a>
+      <nav class="header-nav home-nav" aria-label="Main navigation"><a href="/#work">Work</a><a href="/blog/">Writing</a><a href="/#code">Code</a><a href="/resume/">Résumé <span aria-hidden="true">↗</span></a></nav>
+      <details class="home-menu"><summary>Menu</summary><nav aria-label="Mobile navigation"><a href="/#work">Work</a><a href="/blog/">Writing</a><a href="/#code">Code</a><a href="/involute/">Involute</a><a href="/resume/">Résumé</a><a href="/#contact">Contact</a></nav></details>
+      <button class="theme-toggle" type="button" hidden data-theme-toggle aria-label="Switch color theme">Light</button>
+    </div>
+  </header>
+  <main class="shell">
+    <nav class="game-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/games/">Games</a><span aria-hidden="true">/</span><span aria-current="page">Snake</span></nav>
+    <div class="game-layout snake-layout">
+      <div class="game-intro">
+        <h1>Snake<span class="title-dot" aria-hidden="true">.</span></h1>
+        <p class="game-deck">A little room to grow.</p>
+        <p>Follow the diamonds. Each one makes you longer, and the next turn a little more interesting.</p>
+        <div class="game-help snake-help">
+          <h2>Leave yourself a way out.</h2>
+          <dl class="snake-key-guide"><div><dt>Arrow keys</dt><dd>Choose your next turn</dd></div><div><dt>W A S D</dt><dd>Another way to steer</dd></div><div><dt>P / Esc</dt><dd>Pause or resume</dd></div></dl>
+          <p>On touch screens, swipe across the board or use the arrow buttons below it.</p>
+          <p>Collect diamonds without hitting the edge or your own body. You cannot turn straight back on yourself. Fill all 256 squares to win.</p>
+          <p>The pace stays steady. Think one corner ahead.</p>
+        </div>
+      </div>
+      <section class="game-panel snake-panel" aria-label="Play Snake">
+        <dl class="game-stats"><div><dt>Score</dt><dd id="snake-score">0</dd></div><div><dt>Best</dt><dd id="snake-best">0</dd></div><div><dt>Length</dt><dd id="snake-length">3</dd></div></dl>
+        <div class="game-controls snake-actions"><button class="game-button" id="snake-toggle" type="button">Start game</button><button class="game-button secondary" id="snake-restart" type="button" disabled>New game</button></div>
+        <div class="snake-board-wrap">
+          <canvas id="snake-board" width="480" height="480" tabindex="0" role="img" aria-label="Snake board. Press Start game to begin." aria-describedby="snake-instructions">The game needs a browser with canvas support.</canvas>
+          <div class="snake-overlay" id="snake-overlay"><p id="snake-overlay-title">A little room to grow.</p><span id="snake-overlay-detail">Press Start game when you’re ready.</span></div>
+        </div>
+        <div class="snake-controls" role="group" aria-label="Steer the snake"><button type="button" data-direction="up" aria-label="Turn up" disabled>↑</button><button type="button" data-direction="left" aria-label="Turn left" disabled>←</button><button type="button" data-direction="down" aria-label="Turn down" disabled>↓</button><button type="button" data-direction="right" aria-label="Turn right" disabled>→</button></div>
+        <p id="snake-instructions" class="snake-instructions">Arrows or WASD to steer. Swipe or use the buttons on touch screens. Collect diamonds; avoid the edges and your own body. P / Esc to pause.</p>
+        <p class="game-status" id="snake-status" role="status" aria-live="polite" aria-atomic="true">Press Start game to begin.</p>
+        <noscript><p>Enable JavaScript to play Snake. <a href="/games/">Explore all games</a>.</p></noscript>
+      </section>
+    </div>
+  </main>
+  <footer class="site-footer shell"><a href="/games/">← All games</a><span>Made by Kunal Das.</span><nav aria-label="Footer navigation"><a href="https://github.com/kunal26das/kunal26das.github.io/tree/master/projects/games/snake">Source code ↗</a></nav></footer>
+</body>
+</html>

@@ -1,0 +1,23 @@
+.mines-size { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; color: var(--muted); font-size: 12px; margin-top: 24px; }
+.mines-size select { font-size: 14px; color: var(--ink); }
+.mines-board { --columns: 8; display: grid; grid-template-columns: repeat(var(--columns), minmax(0, 1fr)); gap: 3px; padding: 6px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); user-select: none; -webkit-user-select: none; }
+.mines-board button { display: grid; place-items: center; min-width: 0; aspect-ratio: 1; padding: 0; border: 1px solid var(--line); border-radius: 2px; background: var(--surface-hi); color: var(--ink); font: 600 clamp(14px, 2vw, 23px)/1 var(--font-serif); touch-action: manipulation; }
+.mines-board button[data-state='covered']:hover, .mines-board button[data-state='flagged']:hover { border-color: var(--clay); }
+.mines-board button[data-state='open'] { background: var(--bg); border-color: transparent; cursor: default; }
+.mines-board button[data-state='flagged'], .mines-board button[data-state='correct-flag'] { color: var(--clay); }
+.mines-board button[data-count='1'] { color: var(--ink); }
+.mines-board button[data-count='2'] { color: var(--clay); }
+.mines-board button[data-count='3'], .mines-board button[data-count='4'], .mines-board button[data-count='5'], .mines-board button[data-count='6'], .mines-board button[data-count='7'], .mines-board button[data-count='8'] { color: var(--ink); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.mines-board button[data-state='mine'], .mines-board button[data-state='incorrect-flag'] { background: var(--surface); color: var(--clay); }
+.mines-board button[data-state='exploded'] { background: var(--clay); border-color: var(--clay); color: var(--bg); }
+.mines-board button:focus-visible { position: relative; z-index: 1; outline-offset: 0; outline-width: 3px; }
+.mines-panel[data-outcome='won'] .mines-board { border-color: var(--clay); }
+.mines-panel[data-outcome='lost'] .mines-board button, .mines-panel[data-outcome='won'] .mines-board button { cursor: default; }
+.games-page #mines-flag[aria-pressed='true'] { border-color: var(--clay); color: var(--clay); }
+.mines-mode { color: var(--muted); font-size: 12px; }
+.mines-review { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 12px; color: var(--muted); margin: 12px 0 0; }
+.mines-layout { row-gap: 28px; }
+.mines-layout .mines-panel { grid-column: 2; grid-row: 1 / span 2; }
+.mines-help { grid-column: 1; grid-row: 2; margin-top: 0; }
+@media (max-width: 860px) { .mines-layout .mines-panel, .mines-help { grid-column: auto; grid-row: auto; } }
+@media (max-width: 380px) { .mines-board { gap: 2px; padding: 3px; } .mines-panel .game-stats { gap: 12px; justify-content: space-between; } .mines-panel .game-stats dt { font-size: 11px; } .mines-panel .game-stats dd { font-size: 24px; } }

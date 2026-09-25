@@ -21,6 +21,7 @@ COMPATIBILITY_ASSETS = {
 PROJECT_ASSETS = {
     "games": (
         "index.html", "styles.css", "tetris", "flow", "chess", "tic-tac-toe",
+        "snake", "minesweeper", "connect-four",
         "LICENSE.txt", "NOTICE.txt",
     ),
     "2048": ("index.html", "styles.css", "js", "LICENSE.txt"),

@@ -1,5 +1,6 @@
-Game Algorithms — browser editions
+Games — browser collection
 
+Tetris, chess puzzles, Flow Free and Tic-Tac-Toe:
 Based on https://github.com/kunal26das/game-algorithms
 Source revision: bb8545995e4c2d43a4feb2175eed4f0c5c636cce
 Original project distributed under the Apache License, Version 2.0.
@@ -23,3 +24,7 @@ binaries or Borland graphics programs. See README.md in this website's source
 repository for implementation details and links to the original work.
 
 2048 and DOOM are linked existing projects and retain their separate licenses.
+
+Snake, Minesweeper and Connect Four are original browser implementations
+added to this collection in September 2026, licensed under Apache-2.0.
+They are not adaptations of the original Game Algorithms repository.

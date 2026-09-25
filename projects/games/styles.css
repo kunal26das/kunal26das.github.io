@@ -54,6 +54,14 @@
 .preview-2048 i { display: grid; place-items: center; font: normal 600 23px/1 var(--font-serif); color: #342b21; background: #ddd4c5; border-radius: 2px; }
 .preview-2048 i:nth-child(2) { background: #d6bb94; }.preview-2048 i:nth-child(3) { background: #8c9e72; }.preview-2048 i:nth-child(4) { background: #f0d184; font-size: 17px; }
 .preview-doom { place-items: center; font: 600 32px/1 var(--font-serif); letter-spacing: -.06em; color: #e39a74; background: #24211d; }
+.preview-snake svg, .preview-connect svg { width: 100%; height: 100%; }
+.preview-mines { grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); gap: 2px; padding: 5px; }
+.preview-mines i { display: grid; place-items: center; font: normal 600 24px/1 var(--font-serif); color: var(--muted); }
+.preview-mines .covered { background: var(--surface-hi); border: 1px solid var(--line); border-radius: 2px; }
+.preview-mines .flagged { color: var(--clay); }
+.preview-connect .disc-0 { fill: var(--bg); stroke: var(--line); stroke-width: 1; }
+.preview-connect .disc-1 { fill: var(--clay); }
+.preview-connect .disc-2 { fill: none; stroke: var(--ink); stroke-width: 3; }
 .games-origin { border-block: 1px solid var(--line); padding: 28px 0; margin: 20px 0 56px; display: grid; grid-template-columns: 1fr 2fr; gap: 48px; }
 .games-origin h2 { font-size: 24px; margin: 0; }.games-origin p { font-size: 13px; line-height: 1.9; color: var(--muted); max-width: 70ch; margin: 0; }
 @media (max-width: 860px) {
