@@ -4,8 +4,8 @@ My personal portfolio and engineering notebook at **https://kunal26das.github.io
 
 The website is plain HTML, CSS and JavaScript. It has no framework, package installation,
 Kotlin compiler, Gradle build or application server. The homepage and articles remain readable
-without JavaScript; small scripts handle themes, navigation, project filters, the sorting
-demonstration and reading tools.
+without JavaScript; small scripts handle themes, navigation, section highlighting and reading
+tools.
 
 ## Structure
 
@@ -84,7 +84,7 @@ The Games collection at `/games/` adds browser adaptations of Tetris, chess puzz
 Flow Free and Tic-Tac-Toe from `kunal26das/game-algorithms`, retaining its Apache-2.0
 license and contributor notices. The original repository remains independent. Its
 executables and object files are not imported into the website. Games are linked from
-the homepage's Experiments category and site footers, outside the main navigation.
+site footers, outside the main navigation and the homepage's project selection.
 
 `doom-dist/` is copied unchanged to `/doom/`. It is produced by `kunal26das/doom` and can still
 use Kotlin independently; do not edit its generated files in this repository.
@@ -94,6 +94,10 @@ use Kotlin independently; do not edit its generated files in this repository.
 - **Articles:** add `site/blog/<slug>/index.html`, then update the blog index, homepage article
   list, `feed.xml` and `sitemap.xml`.
 - **Projects and profile:** edit `site/index.html`. There is no second Kotlin copy to maintain.
+  The homepage is written for hiring managers: positioning and proof points, what I do,
+  experience, selected projects, writing, about and contact. Take every figure from
+  `projects/resume/src/resume.html` and follow the résumé's default view (Wish stays hidden).
+  Keep the legacy `#work`, `#code` and `#journey` anchors, which older links and other pages use.
 - **Résumé:** edit `projects/resume/src/`, then run `python3 projects/resume/src/build.py` to
   regenerate `projects/resume/index.html` before building the combined site.
 - **Involute:** edit the web files in `projects/involute/`; retain the legacy `explorer.html`
@@ -101,7 +105,7 @@ use Kotlin independently; do not edit its generated files in this repository.
 - **2048:** edit `projects/2048/` and run its Node game-rule tests before publishing.
   Preserve the original game's attribution and MIT license.
 - **Game collection:** edit `projects/games/` and run its rule/solver tests. Keep the
-  collection, homepage project link and sitemap current; preserve Apache notices.
+  collection, footer link and sitemap current; preserve Apache notices.
 - **Design:** shared typography, colors, header and theme behavior live in `site/blog/blog.css`
   and `site/blog/blog.js`; homepage-specific styles and interactions live in `home.css` and
   `home.js`. Preserve keyboard access, mobile layouts and reduced-motion support.

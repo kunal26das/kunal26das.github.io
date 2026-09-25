@@ -19,7 +19,10 @@ projects before deploying `dist/` on pushes to `master`.
 ## Source and content
 
 - `site/` maps to the published domain root, including hidden `.well-known/` files.
-- `site/index.html` is the homepage and the source of profile, project and repository content.
+- `site/index.html` is the homepage and the source of profile, experience and project content.
+  It is written for hiring managers. Every figure must come from `projects/resume/src/resume.html`,
+  keep qualifiers such as "green on the branch" with their figures, and follow the résumé's
+  default view (Wish stays hidden). Keep the legacy `#work`, `#code` and `#journey` anchors.
 - `site/blog/` contains the blog index, standalone article pages and shared styles/scripts.
 - New articles must also appear in the homepage, blog index, RSS feed and sitemap.
 - Shared theme tokens and typography are in `site/blog/blog.css`; theme persistence is handled
@@ -27,9 +30,12 @@ projects before deploying `dist/` on pushes to `master`.
   `site/home.js`.
 - `projects/games/` publishes the game collection and browser adaptations at `/games/`.
   Run `node --test projects/games/tests/*.test.cjs` after changing its rules or solvers.
-  Game links belong in the project collection and footers, outside top navigation.
+  Game links belong in the game collection and site footers, outside top navigation and the
+  homepage's project selection.
 - Preserve the existing visual design, keyboard controls, mobile layouts, readable HTML and
   reduced-motion behavior. Use the existing CSS variables instead of inventing another theme.
+  Pages that use the portfolio header (`/games/`, `/2048/`, the résumé shell) share the
+  homepage's navigation; update them together.
 - `projects/resume/` contains the résumé and its editing/export tools. Edit `src/` and run
   `python3 projects/resume/src/build.py` to regenerate its published `index.html`.
 - `projects/involute/` contains Involute Explorer and its original calculator artifacts.
