@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+  <title>Career compensation · Kunal Das</title>
+  <meta name="description" content="A private, browser-based workspace for exploring compensation milestones, monthly pay, equity and consulting. Start with a fictional example or import your own file.">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#F5F7FC">
+  <link rel="canonical" href="https://kunal26das.github.io/compensation/">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to compensation</a>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="/" aria-label="Kunal Das, home"><span class="brand-mark" aria-hidden="true">KD</span><span class="brand-name">Kunal Das</span></a>
+      <nav class="header-nav" aria-label="Page navigation">
+        <a class="portfolio-link" href="/">Back to portfolio</a>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch color theme">Dark theme</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="shell page-shell">
+    <section class="page-intro" aria-labelledby="content-title">
+      <div class="intro-copy">
+        <h1 id="content-title">Career compensation</h1>
+        <p class="lede">See the milestones behind the numbers. Explore annual packages, monthly pay and the rewards that sit outside salary.</p>
+      </div>
+      <div class="data-controls" aria-label="Compensation data controls">
+        <div class="data-state"><span id="mode-badge" class="mode-badge">Example data</span><span id="as-of" class="as-of"></span></div>
+        <div class="data-actions">
+          <input id="import-input" type="file" accept="application/json,.json" hidden>
+          <button id="import-button" class="button button-primary" type="button">Import your data</button>
+          <button id="demo-button" class="button button-secondary" type="button">View example</button>
+          <details class="file-menu">
+            <summary>File options</summary>
+            <div class="file-menu-content">
+              <button id="export-button" type="button" disabled>Export a backup</button>
+              <button id="clear-button" class="clear-button" type="button" disabled>Clear my data</button>
+            </div>
+          </details>
+        </div>
+        <p class="privacy-note">Your file stays in this browser. Nothing is uploaded.</p>
+      </div>
+    </section>
+
+    <p id="data-status" class="data-status" role="status" aria-live="polite">Showing fictional example data. Import a compensation file to explore your own history.</p>
+    <p id="error-message" class="error-message" role="alert" hidden></p>
+
+    <noscript><div class="noscript-message"><h2>JavaScript is needed for this workspace</h2><p>Enable JavaScript to explore the example or read a compensation file in your browser. No personal compensation data is included in this page.</p></div></noscript>
+
+    <section class="timeline-section" aria-labelledby="timeline-title">
+      <div class="section-heading">
+        <div><h2 id="timeline-title">Annual compensation</h2><p>Rates recorded at each milestone. Select a point to see what changed.</p></div>
+        <span class="unit-label">₹ lakh per year</span>
+      </div>
+      <div class="timeline-surface">
+        <div class="timeline-overview">
+          <div id="timeline-chart" class="timeline-chart" aria-label="Annual compensation timeline"></div>
+          <div id="annual-legend" class="chart-legend" aria-label="Annual compensation legend">
+            <span><i class="legend-dot legend-fixed" aria-hidden="true"></i>Fixed</span>
+            <span><i class="legend-dot legend-variable" aria-hidden="true"></i>Target variable</span>
+            <span><i class="legend-dot legend-unknown" aria-hidden="true"></i>Breakdown unavailable</span>
+          </div>
+          <div class="milestone-navigation">
+            <p class="control-label" id="milestone-label">Explore a milestone</p>
+            <div id="milestone-list" class="milestone-list" role="group" aria-labelledby="milestone-label"></div>
+          </div>
+        </div>
+        <aside class="milestone-panel" aria-label="Selected milestone">
+          <div id="milestone-detail" aria-live="polite" aria-atomic="true"><p class="empty-state">Choose a milestone to see its compensation details and context.</p></div>
+        </aside>
+      </div>
+      <p class="section-footnote">Annual package rates are not income earned during a calendar year. Variable pay is a target; employer benefits and definitions can differ between organisations.</p>
+    </section>
+
+    <section class="payroll-section content-section" aria-labelledby="payroll-title">
+      <div class="section-heading">
+        <div><h2 id="payroll-title">The monthly picture</h2><p>Gross pay and take-home from the latest regular payslip available for each organisation.</p></div>
+        <span class="unit-label">₹ per month</span>
+      </div>
+      <div class="payroll-surface">
+        <div class="chart-legend payroll-legend" aria-label="Monthly pay legend">
+          <span><i class="legend-dot legend-gross" aria-hidden="true"></i>Gross pay</span>
+          <span><i class="legend-dot legend-net" aria-hidden="true"></i>Take-home</span>
+        </div>
+        <div id="payroll-chart" class="payroll-chart" aria-label="Monthly gross and take-home comparison"></div>
+      </div>
+      <p id="payroll-note" class="section-footnote">Payslip months may differ. Take-home reflects tax withholding and deductions, so it does not measure package growth on its own.</p>
+    </section>
+
+    <div class="additional-sections">
+      <section class="content-section equity-section" aria-labelledby="equity-title">
+        <div class="section-heading"><div><h2 id="equity-title">Beyond salary</h2><p>Equity grants, with their own dates and vesting terms.</p></div></div>
+        <div id="equity-list" class="equity-list record-list"></div>
+        <p class="section-footnote">A grant value is not annual cash or a verified current holding value. These amounts are separate from the annual compensation chart.</p>
+      </section>
+
+      <section class="content-section consulting-section" aria-labelledby="consulting-title">
+        <div class="section-heading"><div><h2 id="consulting-title">Consulting</h2><p>Contract fees and invoiced amounts, separate from employment compensation.</p></div></div>
+        <div id="consulting-list" class="consulting-list record-list"></div>
+        <p class="section-footnote">A monthly fee does not establish a full year of earnings. An invoice records an amount billed, not proof of payment.</p>
+      </section>
+    </div>
+
+    <section class="notes-section content-section" aria-labelledby="notes-title">
+      <div class="section-heading"><div><h2 id="notes-title">How to read this history</h2><p>Evidence, coverage and the details that deserve a second look.</p></div></div>
+      <div class="notes-layout">
+        <div class="evidence-notes"><ul id="notes-list" class="notes-list"></ul><ul id="unavailable-list" class="unavailable-list" aria-label="Records without compensation details"></ul></div>
+        <aside class="privacy-panel" aria-labelledby="privacy-title">
+          <h3 id="privacy-title">Only in this browser</h3>
+          <p>Imported data is saved in this browser on this device. It is not published to this website.</p>
+          <p>Use <strong>Export a backup</strong> to keep a copy. Use <strong>Clear my data</strong> to remove your data from this workspace and its saved browser copy. Clearing browser storage can also remove it.</p>
+          <p>Anyone using this browser profile can view saved data.</p>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer shell"><p>A personal workspace for understanding compensation.</p><a href="/">Kunal Das</a></footer>
+</body>
+</html>

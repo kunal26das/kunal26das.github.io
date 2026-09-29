@@ -38,6 +38,9 @@ jobs:
       - name: Verify game collection rules and solvers
         run: node --test projects/games/tests/*.test.cjs
 
+      - name: Verify compensation data imports and privacy boundaries
+        run: node --test tests/compensation.test.mjs
+
       - name: Build static site
         run: python3 scripts/build.py
 
