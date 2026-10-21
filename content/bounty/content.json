@@ -1,0 +1,213 @@
+{
+  "schemaVersion": 1,
+  "isDraft": true,
+  "reviewedOn": "21 October 2026",
+  "supportEmail": "kunal26das@gmail.com",
+  "appName": "Bounty",
+  "appId": "io.github.kunal26das.bounty",
+  "developerName": "Kudos Labs",
+  "draftNotice": "Draft for owner review. These notices are prepared for the local test build and have not been published as final policies or accepted terms.",
+  "documents": [
+    {
+      "id": "PRIVACY",
+      "slug": "privacy",
+      "title": "Privacy policy",
+      "summary": "How Bounty handles local ledgers, sign-in, subscriptions and support requests.",
+      "sections": [
+        {
+          "heading": "Bounty and your choices",
+          "paragraphs": [
+            "Bounty is a shared-expense recordkeeping app listed under the developer name Kudos Labs. Questions about privacy or your account can be sent to kunal26das@gmail.com. The app identifier is io.github.kunal26das.bounty.",
+            "You can use Local and Demo workspaces without signing in. Signing in connects an account for subscription access; it does not automatically upload Local or Demo ledgers. Cloud sharing, invitations, remote receipt transfers and automatic cloud-account deletion are paused in this test build. Previously saved Cloud ledgers can be viewed and exported, and pending changes remain saved on the device."
+          ]
+        },
+        {
+          "heading": "Ledger and receipt data on your device",
+          "paragraphs": [
+            "The app stores the information you enter: your profile name, currency and spending targets; group names and participant names or optional email addresses; expense amounts, dates, categories, payer contributions and shares; settlements, notes, comments, recurring rules, receipt itemization, exchange-rate records and activity history. Selected receipt images or PDFs are stored as attachments in the workspace.",
+            "Local and Demo records stay in the app's device storage unless you export, share or otherwise send them. A ledger backup contains receipt references, not the attached image or PDF bytes. Keep separate copies of receipt files you need to preserve. The app does not read your address book or automatically import your other files.",
+            "Receipt text scanning runs only when you request it and the platform supports it. Android uses on-device ML Kit text recognition; iOS uses Apple's on-device Vision text recognition. Review recognized text before saving. Browser receipt text scanning is unavailable. These scanning paths do not send receipt images to a Bounty OCR server.",
+            "Google's bundled ML Kit SDK on Android processes installation identifiers, device and app information, and feature configuration, performance, usage and error information for diagnostics and usage analytics. On-device receipt recognition does not mean the SDK sends no technical data."
+          ]
+        },
+        {
+          "heading": "Sign-in and account information",
+          "paragraphs": [
+            "When you choose Google sign-in on Android or the web, or Sign in with Apple on iOS, the identity provider and Firebase Authentication process the sign-in request. Bounty receives an account identifier, provider identity and available name or email information. Apple may provide a private-relay email. Bounty uses the Firebase user identifier to associate account access and subscription status.",
+            "Firebase Authentication also processes technical information such as IP addresses and user-agent information for authentication and abuse prevention. Bounty retains a session on the device so you can remain signed in. Android session secrets use Keystore-backed encryption; iOS session secrets use Keychain. Browser credentials are stored in origin-isolated IndexedDB, where scripts trusted on the same site can access them.",
+            "Google and Apple accounts are not automatically joined by matching email addresses. Self-service cross-platform account linking is not available in this test build. Do not assume a new sign-in will inherit another account's groups or purchases."
+          ]
+        },
+        {
+          "heading": "Subscriptions and service providers",
+          "paragraphs": [
+            "Bounty uses RevenueCat and the applicable storefront to obtain subscription options, validate purchases, restore access and check whether Pro is active. RevenueCat receives the Firebase user identifier and purchase or subscription information, including product, transaction and entitlement status, along with SDK and platform information needed to provide its service. RevenueCat's subscription dashboard also provides purchase analytics. Bounty does not send ledger notes, expense amounts or receipt attachments to RevenueCat through its billing adapter.",
+            "Payment details are handled by the storefront or checkout provider used for a purchase. Bounty's native billing adapters do not receive full payment-card details. Web checkout products are not configured for sale in this test build. Google, Apple, Firebase, RevenueCat and any future enabled checkout provider have their own data-processing practices.",
+            "The inspected app source has no advertising SDK, advertising-identifier collection, cross-app advertising tracking integration or data-sale feature. It does not integrate a general-purpose analytics or crash-reporting SDK. This does not remove the account, purchase, support or infrastructure processing described here."
+          ]
+        },
+        {
+          "heading": "Exports, sharing, support and technical requests",
+          "paragraphs": [
+            "You control when the app opens a file picker, exports a ledger, copies text or invokes a system share sheet. Files or messages you choose to send are handled by the destination you select. An export may include other participants' details, notes and financial records; review it before sharing.",
+            "If you contact support by email, your email address, message and any attachments are processed to respond to your request. Do not send passwords, verification codes, authentication tokens, full card details or unredacted private ledgers. Send the minimum information needed to explain the problem.",
+            "Opening the web app or using an online provider sends normal network information, including an IP address, to the hosting or service provider. The static notice pages themselves have no analytics scripts, external fonts, embedded trackers or submission form."
+          ]
+        },
+        {
+          "heading": "Storage, retention and deletion",
+          "paragraphs": [
+            "Local ledgers and attachments remain in app storage until that storage is removed or the records are replaced through an explicit operation. Signing out does not erase saved ledgers or pending Cloud changes. Browser site-data removal or eviction can remove local data. Exported files and copies you send elsewhere remain outside Bounty's control.",
+            "Automatic cloud-account deletion is paused with cloud sharing. You can prepare an account or data deletion request using the instructions in Account and data deletion, or contact kunal26das@gmail.com. Sending a request does not itself delete an account or cancel a subscription. Ownership must be verified before account changes; completion must be confirmed separately.",
+            "The future cloud cleanup implementation removes the sign-in account, profile, memberships, the account's comments and uploaded receipts. In groups still used by other members, it retains shared amounts, titles, notes, participant identifiers and financial history under a Former member identity. Titles and notes may contain information entered by users; this is not guaranteed anonymization. Copies on other devices or in exported backups are not remotely erased.",
+            "Before this policy is published, the owner must confirm the legal operator and applicable contact details, support-request handling, retention periods for support and subscription records, provider deletion procedures and any lawful basis for retaining shared history. No fixed retention period, immediate erasure guarantee or India-only storage promise is made by this draft."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "TERMS",
+      "slug": "terms",
+      "title": "Terms of use",
+      "summary": "Draft terms for using Bounty's expense records and optional Pro features.",
+      "sections": [
+        {
+          "heading": "Purpose and current availability",
+          "paragraphs": [
+            "Bounty helps you keep shared-expense records, calculate allocations and record settlements. Recording a settlement does not transfer money. Bounty does not connect a bank account or provide a bank, wallet, lending or payment-transfer service in this build.",
+            "This is a local test candidate. Cloud sharing, invitations and remote receipts are paused. Local and Demo remain separate; signing in does not automatically upload either workspace. Available features differ by platform, provider configuration and subscription status."
+          ]
+        },
+        {
+          "heading": "Your records and account",
+          "paragraphs": [
+            "Review amounts, participants, currencies, shares, receipt text and imported data before relying on them. Keep your own records for payments, taxes or agreements with others. A balance in Bounty records what users entered; it does not establish that a payment occurred or resolve a dispute between participants.",
+            "Only upload or share information you have permission to use. Avoid including unnecessary sensitive information about yourself or other people. Protect access to your device and identity-provider account. Contact support if you believe your Bounty account is being used without authorization.",
+            "Keep exports and original receipt files where you can recover them. A ledger backup includes attachment references, not the attachment bytes. Device loss, cleared site data or unsupported storage can affect access to local records."
+          ]
+        },
+        {
+          "heading": "Pro subscriptions",
+          "paragraphs": [
+            "Bounty Pro offers optional advanced insights, creation or changes to recurring expense rules, and supported receipt text scanning. Core expense splitting, recorded settlements, manual itemization and exports do not require Pro. Existing ledger records and recurring rules remain accessible when Pro ends.",
+            "Where a real store offering is available, the app displays its price, billing period and applicable checkout terms before purchase. Monthly and yearly are alternative recurring plans. A subscription renews until it is cancelled through the provider used for the purchase. Manage renewal there; uninstalling Bounty, signing out or deleting an account does not cancel a subscription.",
+            "Read Subscription information for restore, platform availability and account-identity limits. This draft does not create a trial, refund guarantee, lifetime plan or entitlement to a feature that is currently unavailable."
+          ]
+        },
+        {
+          "heading": "Questions and account requests",
+          "paragraphs": [
+            "Contact kunal26das@gmail.com for support, privacy questions or account requests. Explain the request without sending passwords, one-time codes or payment-card details. A support request is not an automatic purchase cancellation or proof of account deletion.",
+            "These terms remain a draft. The owner must confirm the contracting party, launch markets, audience, applicable consumer rights and any additional legal terms before publication. No jurisdiction, arbitration agreement, liability exclusion or waiver is supplied by this draft."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "SUBSCRIPTIONS",
+      "slug": "subscriptions",
+      "title": "Subscription information",
+      "summary": "What Pro includes, how renewal works and how to restore or manage access.",
+      "sections": [
+        {
+          "heading": "What Bounty Pro includes",
+          "paragraphs": [
+            "Pro provides advanced insights, creation or changes to recurring expense rules, and optional receipt text scanning on supported platforms. Android and iOS have text-scanning adapters; browser text scanning is unavailable. Cloud sharing is currently paused and is not a paid subscription benefit.",
+            "Groups, exact and unequal splits, currency-separated ledgers, recorded settlements, manual receipt itemization and all exports remain free. Existing records, receipt attachments and recurring rules remain accessible after Pro ends. Demo previews do not create a subscription or grant Pro in another workspace."
+          ]
+        },
+        {
+          "heading": "Price, billing period and renewal",
+          "paragraphs": [
+            "When available, choose one monthly or yearly plan. The app displays the actual localized price and period returned by the storefront. Your checkout confirmation is authoritative for the amount, currency, taxes and any offer. The yearly price is a charge for the full year, not a monthly instalment. No free trial is advertised in this build.",
+            "Payment is charged through the provider used for the purchase when you confirm. The plan automatically renews for its displayed billing period unless you cancel before the provider's renewal deadline. On Apple's App Store, turn off renewal at least 24 hours before the current period ends; renewal may be charged during the 24 hours before the end of the period.",
+            "Use Manage subscriptions in Bounty or your storefront's subscription settings to view renewal details and cancel. Cancellation generally stops a future renewal; access and any refund follow the provider's rules and applicable rights. Do not buy a second plan merely to change your billing period; review the existing subscription first."
+          ]
+        },
+        {
+          "heading": "Sign-in, restore and changing devices",
+          "paragraphs": [
+            "Sign in to the Bounty account that should hold Pro before starting a purchase or restore. Bounty associates subscription status with the Firebase user identifier. On Android and iOS, the current RevenueCat transfer setting means restoring or making a purchase with the same store account can move Pro from another Bounty account to the account you are using. RevenueCat then updates access for the previous account. Expense records remain with their original accounts; this does not merge ledgers or link Google and Apple identities. Browser Restore refreshes subscription status for the currently signed-in Bounty account.",
+            "On a new device, use the same intentionally connected Bounty identity and the store account used for the purchase, then choose Restore purchases. Google sign-in on Android or the web and Apple sign-in on iOS can identify different Bounty accounts. Cross-provider linking is unavailable in this test build, so cross-platform purchase continuity is not promised.",
+            "A cancelled checkout grants no new access. A pending payment remains pending until the provider confirms it. If plans are unavailable, refresh later or contact support; the app does not invent a price or active subscription. Native iOS and web paid offerings are not yet configured for sale."
+          ]
+        },
+        {
+          "heading": "Deletion and billing help",
+          "paragraphs": [
+            "Deleting Bounty data, deleting an account, signing out or uninstalling the app does not cancel an auto-renewing store subscription. Manage renewal before an account deletion request. Keep a purchase reference for support, but do not send a full payment-card number or store password.",
+            "For purchase, refund or cancellation requests, use the provider that processed the transaction and contact kunal26das@gmail.com if Bounty access is incorrect. A support email does not itself cancel billing. No purchase, renewal or refund guarantee is made by this draft."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "SUPPORT",
+      "slug": "support",
+      "title": "Support",
+      "summary": "Get help with a local ledger, sign-in, subscription or account request.",
+      "sections": [
+        {
+          "heading": "Contact Bounty",
+          "paragraphs": [
+            "Email kunal26das@gmail.com. Include the app version shown in Your corner, your platform, what you expected, what happened and the steps that reproduce the problem. Include only the minimum account information needed to identify your request. A screenshot is optional; remove other people's names, expense details and private information first.",
+            "Never send passwords, one-time codes, session tokens, private keys, full payment-card details or an unredacted ledger. Sending support mail opens your email app; nothing is submitted automatically by these pages."
+          ]
+        },
+        {
+          "heading": "Protect a saved ledger",
+          "paragraphs": [
+            "Before reinstalling, clearing app or browser data, importing a replacement backup or changing accounts, use Your corner → Your data → Ledger backup. Also keep the original receipt files: backups contain receipt references, not attachment bytes. An exported file may include other participants' data, so store it privately.",
+            "Cloud sharing is paused. Local and Demo remain usable, and previously saved Cloud data is read-only and exportable. Pending Cloud changes are preserved on the device. Signing out does not erase those saved records and does not transfer them to another account.",
+            "If a saved session used retired email/password sign-in, preserve the session and export before signing out. Google or Apple must already identify the same Bounty account to recover its access. Matching email text is not proof of account ownership, and no automatic account merge is available."
+          ]
+        },
+        {
+          "heading": "Subscriptions and account deletion",
+          "paragraphs": [
+            "Use Restore purchases while signed in to the intended Bounty identity, or use Manage subscriptions for the provider's renewal controls. A purchase reference can help investigate an access problem; never include card details or a store password.",
+            "For account or data removal, read Account and data deletion and email a clear request. Automatic cloud deletion is paused, so the app must not show success before the requested work has actually completed. Cancelling a subscription and deleting an account are separate actions."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "DELETE_ACCOUNT",
+      "slug": "delete-account",
+      "title": "Account and data deletion",
+      "summary": "Prepare a request to remove a Bounty account or ask about stored data.",
+      "sections": [
+        {
+          "heading": "Current test-build status",
+          "paragraphs": [
+            "Automatic cloud-account deletion is paused with cloud sharing. A disabled Delete account button, signing out, uninstalling Bounty or sending a message is not confirmation that an account has been deleted. An existing interrupted deletion request stays saved for later continuation.",
+            "This page is a draft request route for owner review. The support inbox and an operator process for verified Firebase and RevenueCat removal must be confirmed before this page is published or used to claim a working deletion service."
+          ]
+        },
+        {
+          "heading": "How to request account or data deletion",
+          "paragraphs": [
+            "Email kunal26das@gmail.com with the subject Bounty account deletion or Bounty data request. State whether you want the Bounty account removed, a copy of data, or help removing particular data. Include the sign-in provider, the account email shown in Bounty if available, and your platform. You do not need to create another Bounty account to send a request.",
+            "Do not send a password, one-time code, ID token, full card details or private ledger. Ownership needs to be verified before account changes; the operator should use a proportionate verified process and explain any additional information required. A request is complete only after the operator confirms the result and any data retained. No completion time is promised by this draft.",
+            "Save a ledger export and original receipt files you need before removal. Deleting an account may end access to that account's records and Pro identity. Manage renewal with your storefront first: deleting a Bounty account does not cancel an auto-renewing subscription."
+          ]
+        },
+        {
+          "heading": "What the prepared cloud cleanup removes and retains",
+          "paragraphs": [
+            "When enabled and completed, the prepared cloud cleanup removes the Bounty sign-in account, cloud profile and memberships, the account's comments and uploaded receipt files. A group with no remaining members is removed. Shared groups with other members retain amounts, titles, notes, financial history and participant identifiers, while the removed participant is labelled Former member and its linked account and email fields are removed.",
+            "Retained titles, notes, identifiers and financial history may still contain personal information entered by users. This is not guaranteed anonymization or deletion of every occurrence of a person's information. The owner must confirm any justified retention, its duration and how a request to remove embedded personal data will be handled before launch.",
+            "The prepared cloud workflow does not automatically erase exported files, copies held by other participants, offline caches on other devices, or provider-held billing records. RevenueCat and storefront data need a separately verified handling process; this app's cloud deletion code does not prove those records were removed."
+          ]
+        },
+        {
+          "heading": "Local and browser records",
+          "paragraphs": [
+            "Local and Demo workspaces are separate from a signed-in account. Signing out or deleting a cloud account does not remove them. To remove local app or browser records, use your device's app-data or browser site-data controls after saving anything you need. iOS Keychain can retain a sign-in credential independently of ledger files; sign out before removing the app when possible.",
+            "Files you exported or shared are separate copies. Remove those from their saved locations or ask their recipients where appropriate. Account deletion cannot remotely erase a copy you or another participant already exported."
+          ]
+        }
+      ]
+    }
+  ]
+}

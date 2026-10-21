@@ -1,0 +1,37 @@
+/* Bounty information pages extend the portfolio's shared reading layout. */
+.bounty-page .article-title { max-width: 17ch; }
+.bounty-page .article-meta { overflow-wrap: anywhere; }
+.bounty-page .article-meta > span { min-width: 0; max-width: 100%; }
+.bounty-title-dot { color: var(--clay); }
+.bounty-status { padding: 22px 26px; margin: 28px 0 0; border: 1px solid var(--line); border-left: 3px solid var(--clay); background: var(--surface); }
+.bounty-label { color: var(--clay); font: 11px/1.6 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
+.bounty-status p { max-width: 85ch; margin: 10px 0 0; font-size: 15px; line-height: 1.75; }
+.bounty-status p + p { color: var(--muted); }
+.bounty-document-nav { display: flex; flex-wrap: wrap; gap: 4px 24px; padding: 20px 0; border-bottom: 1px solid var(--line); }
+.bounty-document-nav a { min-height: 44px; display: inline-flex; align-items: center; color: var(--muted); font-size: 13px; text-underline-offset: 5px; }
+.bounty-document-nav a[aria-current='page'] { color: var(--ink); font-weight: 600; text-decoration-thickness: 2px; }
+.bounty-page .prose > h2:first-child { margin-top: 0; }
+.bounty-contact { margin: 36px 0 0; padding-top: 28px; border-top: 1px solid var(--line); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+.bounty-contact-link { display: inline-flex; align-items: center; gap: 20px; min-height: 48px; font-size: 17px; font-weight: 600; }
+.bounty-contact p { color: var(--muted); font-size: 14px; line-height: 1.75; margin: 10px 0 0; }
+.bounty-documents { margin: 52px 0 0; }
+.bounty-section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 10px 24px; padding: 0 0 16px; border-bottom: 1px solid var(--line); }
+.bounty-section-heading h2 { margin: 0; font-family: var(--font-serif); font-size: 28px; letter-spacing: -.02em; }
+.bounty-section-heading p { margin: 0; color: var(--muted); font-size: 13px; }
+.bounty-card { display: grid; grid-template-columns: 35px minmax(0, 1fr) 25px; gap: 24px; align-items: start; padding: 28px 0; border-bottom: 1px solid var(--line); text-decoration: none; }
+.bounty-card-number { padding-top: 8px; color: var(--clay); font: 11px/1.6 var(--font-mono); }
+.bounty-card h2 { margin: 0 0 8px; font-family: var(--font-serif); font-size: 28px; letter-spacing: -.02em; }
+.bounty-card p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.75; }
+.bounty-card-arrow { color: var(--clay); font-size: 23px; }
+.bounty-card:hover h2 { text-decoration: underline; text-underline-offset: 5px; }
+.bounty-current { padding: 6px 0 45px; margin-left: 59px; }
+@media (max-width: 760px) {
+    .bounty-status { padding: 18px 20px; margin-top: 22px; }
+    .bounty-document-nav { gap: 0 20px; padding: 12px 0; }
+    .bounty-documents { margin-top: 36px; }
+    .bounty-section-heading { display: block; }
+    .bounty-section-heading p { margin-top: 9px; }
+    .bounty-card { grid-template-columns: 25px minmax(0, 1fr) 18px; gap: 12px; padding: 24px 0; }
+    .bounty-card h2 { font-size: 24px; }
+    .bounty-current { margin-left: 0; padding-bottom: 25px; }
+}
