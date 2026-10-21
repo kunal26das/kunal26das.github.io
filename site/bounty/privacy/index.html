@@ -34,7 +34,7 @@
         <p class="eyebrow">Bounty · Draft notice</p>
         <h1 class="article-title" id="document-title">Privacy policy<span class="bounty-title-dot">.</span></h1>
         <p class="article-subtitle">How Bounty handles local ledgers, sign-in, subscriptions and support requests.</p>
-        <div class="article-meta"><span>Content reviewed 21 October 2026</span><span>io.github.kunal26das.bounty</span></div>
+        <div class="article-meta"><span>Content reviewed 22 October 2026</span><span>io.github.kunal26das.bounty</span></div>
     </header>
     <aside class="bounty-status" aria-label="Publication status">
         <span class="bounty-label">Draft preview</span>
@@ -48,47 +48,52 @@
                 <a href="/bounty/delete-account/">Account and data deletion</a></nav>
     <details class="toc-mobile"><summary>On this page</summary><nav aria-label="On this page"><ol>
             <li><a href="#section-1">Bounty and your choices</a></li>
-            <li><a href="#section-2">Ledger and receipt data on your device</a></li>
-            <li><a href="#section-3">Sign-in and account information</a></li>
-            <li><a href="#section-4">Subscriptions and service providers</a></li>
-            <li><a href="#section-5">Exports, sharing, support and technical requests</a></li>
-            <li><a href="#section-6">Storage, retention and deletion</a></li>
+            <li><a href="#section-2">Audience and availability</a></li>
+            <li><a href="#section-3">Ledger and receipt data on your device</a></li>
+            <li><a href="#section-4">Sign-in and account information</a></li>
+            <li><a href="#section-5">Subscriptions and service providers</a></li>
+            <li><a href="#section-6">Exports, sharing, support and technical requests</a></li>
+            <li><a href="#section-7">Storage, retention and deletion</a></li>
         </ol></nav></details>
     <div class="reading-layout">
         <aside class="toc"><p class="toc-title">On this page</p><nav aria-label="On this page"><ol>
             <li><a href="#section-1">Bounty and your choices</a></li>
-            <li><a href="#section-2">Ledger and receipt data on your device</a></li>
-            <li><a href="#section-3">Sign-in and account information</a></li>
-            <li><a href="#section-4">Subscriptions and service providers</a></li>
-            <li><a href="#section-5">Exports, sharing, support and technical requests</a></li>
-            <li><a href="#section-6">Storage, retention and deletion</a></li>
+            <li><a href="#section-2">Audience and availability</a></li>
+            <li><a href="#section-3">Ledger and receipt data on your device</a></li>
+            <li><a href="#section-4">Sign-in and account information</a></li>
+            <li><a href="#section-5">Subscriptions and service providers</a></li>
+            <li><a href="#section-6">Exports, sharing, support and technical requests</a></li>
+            <li><a href="#section-7">Storage, retention and deletion</a></li>
         </ol></nav></aside>
         <article class="prose" aria-labelledby="document-title">
             <h2 id="section-1">Bounty and your choices</h2>
-            <p>Bounty is a shared-expense recordkeeping app listed under the developer name Kudos Labs. Questions about privacy or your account can be sent to kunal26das@gmail.com. The app identifier is io.github.kunal26das.bounty.</p>
+            <p>Bounty is operated by Kunal Das personally and is listed under the developer name Kudos Labs. Questions about privacy or your account can be sent to kunal26das@gmail.com. The app identifier is io.github.kunal26das.bounty.</p>
             <p>You can use Local and Demo workspaces without signing in. Signing in connects an account for subscription access; it does not automatically upload Local or Demo ledgers. Cloud sharing, invitations, remote receipt transfers and automatic cloud-account deletion are paused in this test build. Previously saved Cloud ledgers can be viewed and exported, and pending changes remain saved on the device.</p>
-            <h2 id="section-2">Ledger and receipt data on your device</h2>
+            <h2 id="section-2">Audience and availability</h2>
+            <p>Bounty is a general-audience expense-recordkeeping app intended for availability in storefront-supported countries. It is not designed or marketed specifically for children under 13. Store availability, provider services and applicable rights can differ by country.</p>
+            <p>Use sign-in and purchase features only when you meet the applicable provider&#x27;s age and consent requirements. A parent or guardian should assist where the law or provider requires it. If you believe a child&#x27;s information was provided without appropriate authorization, contact kunal26das@gmail.com with the minimum information needed to explain the concern; do not send a child&#x27;s private ledger, passwords or verification codes.</p>
+            <h2 id="section-3">Ledger and receipt data on your device</h2>
             <p>The app stores the information you enter: your profile name, currency and spending targets; group names and participant names or optional email addresses; expense amounts, dates, categories, payer contributions and shares; settlements, notes, comments, recurring rules, receipt itemization, exchange-rate records and activity history. Selected receipt images or PDFs are stored as attachments in the workspace.</p>
             <p>Local and Demo records stay in the app&#x27;s device storage unless you export, share or otherwise send them. A ledger backup contains receipt references, not the attached image or PDF bytes. Keep separate copies of receipt files you need to preserve. The app does not read your address book or automatically import your other files.</p>
             <p>Receipt text scanning runs only when you request it and the platform supports it. Android uses on-device ML Kit text recognition; iOS uses Apple&#x27;s on-device Vision text recognition. Review recognized text before saving. Browser receipt text scanning is unavailable. These scanning paths do not send receipt images to a Bounty OCR server.</p>
             <p>Google&#x27;s bundled ML Kit SDK on Android processes installation identifiers, device and app information, and feature configuration, performance, usage and error information for diagnostics and usage analytics. On-device receipt recognition does not mean the SDK sends no technical data.</p>
-            <h2 id="section-3">Sign-in and account information</h2>
+            <h2 id="section-4">Sign-in and account information</h2>
             <p>When you choose Google sign-in on Android or the web, or Sign in with Apple on iOS, the identity provider and Firebase Authentication process the sign-in request. Bounty receives an account identifier, provider identity and available name or email information. Apple may provide a private-relay email. Bounty uses the Firebase user identifier to associate account access and subscription status.</p>
             <p>Firebase Authentication also processes technical information such as IP addresses and user-agent information for authentication and abuse prevention. Bounty retains a session on the device so you can remain signed in. Android session secrets use Keystore-backed encryption; iOS session secrets use Keychain. Browser credentials are stored in origin-isolated IndexedDB, where scripts trusted on the same site can access them.</p>
             <p>Google and Apple accounts are not automatically joined by matching email addresses. Self-service cross-platform account linking is not available in this test build. Do not assume a new sign-in will inherit another account&#x27;s groups or purchases.</p>
-            <h2 id="section-4">Subscriptions and service providers</h2>
-            <p>Bounty uses RevenueCat and the applicable storefront to obtain subscription options, validate purchases, restore access and check whether Pro is active. RevenueCat receives the Firebase user identifier and purchase or subscription information, including product, transaction and entitlement status, along with SDK and platform information needed to provide its service. RevenueCat&#x27;s subscription dashboard also provides purchase analytics. Bounty does not send ledger notes, expense amounts or receipt attachments to RevenueCat through its billing adapter.</p>
+            <h2 id="section-5">Subscriptions and service providers</h2>
+            <p>Bounty uses RevenueCat and the applicable storefront to obtain subscription options, validate purchases, restore access and check whether Pro is active. RevenueCat receives the Firebase user identifier and purchase or subscription information, including product, transaction and entitlement status, along with SDK and platform information needed to provide its service. RevenueCat&#x27;s subscription dashboard also provides purchase analytics. Bounty does not send ledger notes, expense amounts or receipt attachments to RevenueCat through its billing adapter. RevenueCat can determine a country from a transaction or, when unavailable, a last-seen network IP address. Its documentation states that it drops the IP address after determining the country.</p>
             <p>Payment details are handled by the storefront or checkout provider used for a purchase. Bounty&#x27;s native billing adapters do not receive full payment-card details. Web checkout products are not configured for sale in this test build. Google, Apple, Firebase, RevenueCat and any future enabled checkout provider have their own data-processing practices.</p>
             <p>The inspected app source has no advertising SDK, advertising-identifier collection, cross-app advertising tracking integration or data-sale feature. It does not integrate a general-purpose analytics or crash-reporting SDK. This does not remove the account, purchase, support or infrastructure processing described here.</p>
-            <h2 id="section-5">Exports, sharing, support and technical requests</h2>
+            <h2 id="section-6">Exports, sharing, support and technical requests</h2>
             <p>You control when the app opens a file picker, exports a ledger, copies text or invokes a system share sheet. Files or messages you choose to send are handled by the destination you select. An export may include other participants&#x27; details, notes and financial records; review it before sharing.</p>
             <p>If you contact support by email, your email address, message and any attachments are processed to respond to your request. Do not send passwords, verification codes, authentication tokens, full card details or unredacted private ledgers. Send the minimum information needed to explain the problem.</p>
             <p>Opening the web app or using an online provider sends normal network information, including an IP address, to the hosting or service provider. The static notice pages themselves have no analytics scripts, external fonts, embedded trackers or submission form.</p>
-            <h2 id="section-6">Storage, retention and deletion</h2>
+            <h2 id="section-7">Storage, retention and deletion</h2>
             <p>Local ledgers and attachments remain in app storage until that storage is removed or the records are replaced through an explicit operation. Signing out does not erase saved ledgers or pending Cloud changes. Browser site-data removal or eviction can remove local data. Exported files and copies you send elsewhere remain outside Bounty&#x27;s control.</p>
             <p>Automatic cloud-account deletion is paused with cloud sharing. You can prepare an account or data deletion request using the instructions in Account and data deletion, or contact kunal26das@gmail.com. Sending a request does not itself delete an account or cancel a subscription. Ownership must be verified before account changes; completion must be confirmed separately.</p>
             <p>The future cloud cleanup implementation removes the sign-in account, profile, memberships, the account&#x27;s comments and uploaded receipts. In groups still used by other members, it retains shared amounts, titles, notes, participant identifiers and financial history under a Former member identity. Titles and notes may contain information entered by users; this is not guaranteed anonymization. Copies on other devices or in exported backups are not remotely erased.</p>
-            <p>Before this policy is published, the owner must confirm the legal operator and applicable contact details, support-request handling, retention periods for support and subscription records, provider deletion procedures and any lawful basis for retaining shared history. No fixed retention period, immediate erasure guarantee or India-only storage promise is made by this draft.</p>
+            <p>Before this policy is approved as final, support-request handling, retention periods for support and subscription records, provider deletion procedures and any lawful basis for retaining shared history must be confirmed. No fixed retention period, immediate erasure guarantee or India-only storage promise is made by this draft.</p>
             <div class="article-end"><a href="/bounty/">← All Bounty information</a><a href="/bounty/support/">Get help ↗</a></div>
         </article>
     </div>
