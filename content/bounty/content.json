@@ -65,9 +65,9 @@
           "heading": "Storage, retention and deletion",
           "paragraphs": [
             "Local ledgers and attachments remain in app storage until that storage is removed or the records are replaced through an explicit operation. Signing out does not erase saved ledgers or pending Cloud changes. Browser site-data removal or eviction can remove local data. Exported files and copies you send elsewhere remain outside Bounty's control.",
-            "Automatic cloud-account deletion is paused with cloud sharing. You can prepare an account or data deletion request using the instructions in Account and data deletion, or contact kunal26das@gmail.com. Sending a request does not itself delete an account or cancel a subscription. Ownership must be verified before account changes; completion must be confirmed separately.",
+            "You can request account or associated-data deletion from Your corner → Request account deletion, through the Account and data deletion page, or at kunal26das@gmail.com. Support verifies account ownership before making changes and confirms completed and retained data separately. Automatic Cloud cleanup remains unavailable. Opening an email composer or sending a request does not itself delete an account or cancel a subscription.",
             "The future cloud cleanup implementation removes the sign-in account, profile, memberships, the account's comments and uploaded receipts. In groups still used by other members, it retains shared amounts, titles, notes, participant identifiers and financial history under a Former member identity. Titles and notes may contain information entered by users; this is not guaranteed anonymization. Copies on other devices or in exported backups are not remotely erased.",
-            "Before this policy is approved as final, support-request handling, retention periods for support and subscription records, provider deletion procedures and any lawful basis for retaining shared history must be confirmed. No fixed retention period, immediate erasure guarantee or India-only storage promise is made by this draft."
+            "Before this policy is approved as final, system-specific retention periods, verified provider deletion procedures and any lawful basis for retaining shared history must be confirmed. The support inbox is monitored, but no fixed retention period, immediate erasure guarantee or India-only storage promise is made by this draft."
           ]
         }
       ]
@@ -157,7 +157,7 @@
         {
           "heading": "Contact Bounty",
           "paragraphs": [
-            "Email kunal26das@gmail.com. Include the app version shown in Your corner, your platform, what you expected, what happened and the steps that reproduce the problem. Include only the minimum account information needed to identify your request. A screenshot is optional; remove other people's names, expense details and private information first.",
+            "Contact the monitored Bounty support inbox at kunal26das@gmail.com. Include the app version shown in Your corner, your platform, what you expected, what happened and the steps that reproduce the problem. Include only the minimum account information needed to identify your request. A screenshot is optional; remove other people's names, expense details and private information first.",
             "Never send passwords, one-time codes, session tokens, private keys, full payment-card details or an unredacted ledger. Sending support mail opens your email app; nothing is submitted automatically by these pages."
           ]
         },
@@ -173,7 +173,7 @@
           "heading": "Subscriptions and account deletion",
           "paragraphs": [
             "Use Restore purchases while signed in to the intended Bounty identity, or use Manage subscriptions for the provider's renewal controls. A purchase reference can help investigate an access problem; never include card details or a store password.",
-            "For account or data removal, read Account and data deletion and email a clear request. Automatic cloud deletion is paused, so the app must not show success before the requested work has actually completed. Cancelling a subscription and deleting an account are separate actions."
+            "For account or associated-data removal, choose Request account deletion in Your corner or use Account and data deletion. Support accepts manual requests and verifies ownership before changes. Automatic Cloud cleanup remains unavailable, so completion is confirmed only after the requested work is actually finished. Cancelling a subscription and deleting an account are separate actions."
           ]
         }
       ]
@@ -182,21 +182,22 @@
       "id": "DELETE_ACCOUNT",
       "slug": "delete-account",
       "title": "Account and data deletion",
-      "summary": "Prepare a request to remove a Bounty account or ask about stored data.",
+      "summary": "Request removal of a Bounty account or associated data, with verification and a separate completion notice.",
       "sections": [
         {
-          "heading": "Current test-build status",
+          "heading": "Account deletion requests",
           "paragraphs": [
-            "Automatic cloud-account deletion is paused with cloud sharing. A disabled Delete account button, signing out, uninstalling Bounty or sending a message is not confirmation that an account has been deleted. An existing interrupted deletion request stays saved for later continuation.",
-            "This page is a draft request route for owner review. The support inbox and an operator process for verified Firebase and RevenueCat removal must be confirmed before this page is published or used to claim a working deletion service."
+            "Bounty accepts account and associated-data deletion requests at kunal26das@gmail.com. In the app, open Your corner → Request account deletion to read these instructions and compose an email. You can also send a request directly without reinstalling Bounty or creating another account.",
+            "Support handles requests manually and independently verifies account ownership before changes. Opening the email composer does not send a request automatically. A drafted or sent request, signing out, uninstalling Bounty, or deleting local files is not confirmation that the account has been deleted. The operator confirms the actual result and any retained data separately.",
+            "Automatic Cloud cleanup remains unavailable. Existing interrupted cleanup requests stay saved. If any requested data cannot yet be inspected or removed, support explains the unfinished steps instead of reporting the request complete."
           ]
         },
         {
           "heading": "How to request account or data deletion",
           "paragraphs": [
-            "Email kunal26das@gmail.com with the subject Bounty account deletion or Bounty data request. State whether you want the Bounty account removed, a copy of data, or help removing particular data. Include the sign-in provider, the account email shown in Bounty if available, and your platform. You do not need to create another Bounty account to send a request.",
-            "Do not send a password, one-time code, ID token, full card details or private ledger. Ownership needs to be verified before account changes; the operator should use a proportionate verified process and explain any additional information required. A request is complete only after the operator confirms the result and any data retained. No completion time is promised by this draft.",
-            "Save a ledger export and original receipt files you need before removal. Deleting an account may end access to that account's records and Pro identity. Manage renewal with your storefront first: deleting a Bounty account does not cancel an auto-renewing subscription."
+            "Email kunal26das@gmail.com with the subject Bounty account deletion or Bounty data request. State whether you want the Bounty account and associated data removed, a copy of data, or help removing particular data. Include your sign-in provider, platform and the account email shown in Bounty if available. The Support ID in Your corner can help locate the account, but is not proof of ownership.",
+            "Do not send a provider password, sign-in code, ID/access/refresh token, full card details or private ledger. Support uses an independent account confirmation before changes; an incoming email address, display name, screenshot or purchase reference alone is not verification. You receive a separate completion or partial-result notice after the actual work. No completion deadline is promised by this draft.",
+            "You may export records and keep original receipt files before removal; this is optional and is not a condition for submitting a request. Account deletion can end access to the account and its Pro identity. Deleting a Bounty account does not cancel a Google Play or other native store subscription: manage renewal with the purchase provider separately."
           ]
         },
         {
