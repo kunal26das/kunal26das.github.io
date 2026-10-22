@@ -23,6 +23,25 @@ ORIGIN = "https://kunal26das.github.io"
 SLUGS = ("privacy", "terms", "subscriptions", "support", "delete-account")
 
 
+def load_brand_version():
+    brand_root = ROOT / "site" / "bounty"
+    brand = json.loads((brand_root / "brand-assets.json").read_text())
+    expected = {"bounty-icon.svg", "bounty-icon-180.png", "bounty-icon-512.png"}
+    if brand["brandMaster"] != "design/brand/bounty-icon.svg" or {item["file"] for item in brand["files"]} != expected or len(brand["files"]) != len(expected):
+        raise SystemExit("Unsupported Bounty brand asset manifest.")
+    for item in brand["files"]:
+        asset = (brand_root / item["file"]).read_bytes()
+        if len(asset) != item["bytes"] or hashlib.sha256(asset).hexdigest() != item["sha256"]:
+            raise SystemExit(f"Bounty brand asset does not match its provenance: {item['file']}")
+    svg_hash = hashlib.sha256((brand_root / "bounty-icon.svg").read_bytes()).hexdigest()
+    if svg_hash != brand["brandSha256"]:
+        raise SystemExit("Bounty website icon does not match its approved master hash.")
+    return brand["brandSha256"][:12]
+
+
+BRAND_VERSION = load_brand_version()
+
+
 def load_content():
     content_bytes = CONTENT.read_bytes()
     data = json.loads(content_bytes)
@@ -59,8 +78,17 @@ def layout(data, title, description, path, body):
     <meta property="og:description" content="{escape(description, quote=True)}">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{ORIGIN}{path}">
+    <meta property="og:image" content="{ORIGIN}/bounty/bounty-icon-512.png?v={BRAND_VERSION}">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:image:alt" content="Bounty’s six-segment citrus app icon">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="{ORIGIN}/bounty/bounty-icon-512.png?v={BRAND_VERSION}">
+    <meta name="twitter:image:alt" content="Bounty’s six-segment citrus app icon">
     <meta name="theme-color" content="#1B1916">
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/svg+xml" sizes="any" href="/bounty/bounty-icon.svg?v={BRAND_VERSION}">
+    <link rel="apple-touch-icon" sizes="180x180" href="/bounty/bounty-icon-180.png?v={BRAND_VERSION}">
     <link rel="stylesheet" href="/blog/blog.css">
     <link rel="stylesheet" href="/bounty/bounty.css">
     <script src="/blog/blog.js" defer></script>
@@ -115,7 +143,7 @@ def render_document(data, document):
     label = "Draft notice" if data["isDraft"] else "Bounty notice"
     body = f'''    <header class="article-header">
         <a class="back-link" href="/bounty/">← Bounty information</a>
-        <p class="eyebrow">Bounty · {label}</p>
+        <p class="eyebrow bounty-eyebrow"><a class="bounty-app-brand" href="/bounty/"><img src="/bounty/bounty-icon.svg?v={BRAND_VERSION}" width="32" height="32" alt=""><span>Bounty</span></a><span aria-hidden="true">·</span><span>{label}</span></p>
         <h1 class="article-title" id="document-title">{escape(document["title"])}<span class="bounty-title-dot">.</span></h1>
         <p class="article-subtitle">{escape(document["summary"])}</p>
         <div class="article-meta"><span>Content reviewed {escape(data["reviewedOn"])}</span><span>{escape(data["appId"])}</span></div>
@@ -139,7 +167,7 @@ def render_hub(data):
         cards.append(f'''        <a class="bounty-card" href="/bounty/{document["slug"]}/"><span class="bounty-card-number" aria-hidden="true">0{index}</span><div><h2>{escape(document["title"])}</h2><p>{escape(document["summary"])}</p></div><span class="bounty-card-arrow" aria-hidden="true">↗</span></a>''')
     body = f'''    <header class="article-header bounty-hub-header">
         <a class="back-link" href="/">← Back to portfolio</a>
-        <p class="eyebrow">Bounty · Shared expenses</p>
+        <p class="eyebrow bounty-eyebrow"><a class="bounty-app-brand" href="/bounty/"><img src="/bounty/bounty-icon.svg?v={BRAND_VERSION}" width="32" height="32" alt=""><span>Bounty</span></a><span aria-hidden="true">·</span><span>Shared expenses</span></p>
         <h1 class="article-title" id="bounty-title">A little clarity.<br><em>For a shared life.</em></h1>
         <p class="article-subtitle">Privacy, subscriptions and help for Bounty.</p>
         <div class="article-meta"><span>Content reviewed {escape(data["reviewedOn"])}</span><span>{escape(data["appId"])}</span></div>

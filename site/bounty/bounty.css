@@ -1,4 +1,8 @@
 /* Bounty information pages extend the portfolio's shared reading layout. */
+.bounty-eyebrow { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+.bounty-app-brand { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; color: inherit; text-decoration: none; }
+.bounty-app-brand img { display: block; width: 32px; height: 32px; flex: none; }
+.bounty-app-brand:hover span { text-decoration: underline; text-underline-offset: 4px; }
 .bounty-page .article-title { max-width: 17ch; }
 .bounty-page .article-meta { overflow-wrap: anywhere; }
 .bounty-page .article-meta > span { min-width: 0; max-width: 100%; }

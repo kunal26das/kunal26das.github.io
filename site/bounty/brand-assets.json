@@ -1,0 +1,24 @@
+{
+  "brandMaster": "design/brand/bounty-icon.svg",
+  "brandSha256": "f0dea35f1e37864811edca78c5ffefa3191052e90b6340df1cc388cf9e20d9b4",
+  "files": [
+    {
+      "file": "bounty-icon.svg",
+      "source": "shared/src/wasmJsMain/resources/bounty-icon.svg",
+      "bytes": 2952,
+      "sha256": "f0dea35f1e37864811edca78c5ffefa3191052e90b6340df1cc388cf9e20d9b4"
+    },
+    {
+      "file": "bounty-icon-180.png",
+      "source": "shared/src/wasmJsMain/resources/bounty-icon-180.png",
+      "bytes": 5017,
+      "sha256": "6492ff91d731c8aa782adaabb9d1a98d68619f1f3a93060aef6abb8cfabe898c"
+    },
+    {
+      "file": "bounty-icon-512.png",
+      "source": "design/store/play/icon-512.png",
+      "bytes": 14504,
+      "sha256": "cc8a97ea77d177f08508218ab397c1750a1348266905fbb88be2be7b0c4654ef"
+    }
+  ]
+}
