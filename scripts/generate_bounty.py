@@ -162,6 +162,11 @@ def render_document(data, document):
 
 
 def render_hub(data):
+    availability_title = "The current test build" if data["isDraft"] else "Bounty for Android"
+    notice_status = ("These notices remain under review. The legal operator, launch audience and markets, support handling and retention details still need confirmation before final policies and terms can be approved."
+        if data["isDraft"] else "These notices describe Bounty for Android: Local and Demo records, optional Google sign-in and Google Play Pro. Account and associated-data deletion requests are handled manually through the monitored support inbox; see Account and data deletion for the process and retention information.")
+    summary = ("Bounty's draft privacy and subscription notices, support information and account-deletion request instructions."
+        if data["isDraft"] else "Bounty for Android privacy and subscription notices, support information and account-deletion request instructions.")
     cards = []
     for index, document in enumerate(data["documents"], 1):
         cards.append(f'''        <a class="bounty-card" href="/bounty/{document["slug"]}/"><span class="bounty-card-number" aria-hidden="true">0{index}</span><div><h2>{escape(document["title"])}</h2><p>{escape(document["summary"])}</p></div><span class="bounty-card-arrow" aria-hidden="true">↗</span></a>''')
@@ -178,13 +183,13 @@ def render_hub(data):
 {chr(10).join(cards)}
     </section>
     <section class="bounty-current prose" aria-labelledby="availability-title">
-        <h2 id="availability-title">The current test build</h2>
+        <h2 id="availability-title">{availability_title}</h2>
         <p>Bounty keeps shared-expense records, calculates splits and records settlements. Recording a settlement does not transfer money.</p>
         <p>Local and Demo workspaces remain separate. Signing in connects subscription access; it does not automatically upload these ledgers. Cloud sharing, invitations, remote receipts and automatic cloud-account deletion are paused.</p>
-        <p>These notices remain under review. The legal operator, launch audience and markets, support handling and retention details still need confirmation before final policies and terms can be approved.</p>
+        <p>{notice_status}</p>
         <p>For this website’s theme preference, GitHub Pages hosting and email links, see <a href="/privacy/">Portfolio privacy and storage</a>. App information is covered by the separate Bounty notices above.</p>
     </section>'''
-    return layout(data, "Information and support", "Bounty's draft privacy and subscription notices, support information and account-deletion request instructions.", "/bounty/", body)
+    return layout(data, "Information and support", summary, "/bounty/", body)
 
 
 def rendered_pages(data):
