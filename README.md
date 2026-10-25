@@ -16,6 +16,7 @@ site/                    Website source, published at the domain root
   assets/                Fonts, font license and project screenshot
   blog/                  Blog index, shared styles/scripts and article pages
   multidex/              Multidex landing page
+  touche/                Touché product page, history guide and brand assets
   bounty/                Bounty product page, policies, support and deletion information
   feed.xml, sitemap.xml  RSS and search discovery
   .well-known/           Android Digital Asset Links
@@ -112,6 +113,18 @@ use Kotlin independently; do not edit its generated files in this repository.
 - **Design:** shared typography, colors, header and theme behavior live in `site/blog/blog.css`
   and `site/blog/blog.js`; homepage-specific styles and interactions live in `home.css` and
   `home.js`. Preserve keyboard access, mobile layouts and reduced-motion support.
+
+## Touché product pages
+
+`site/touche/` publishes Touché’s product page at `/touche/` and its practical
+notification-history guide at `/touche/notification-history/`. They share the portfolio’s
+theme tokens, local fonts and theme preference. Product-specific layout and brand assets
+stay under `/touche/`; the homepage only links to the product page.
+
+The pages link directly to the existing Google Play app. Touché’s privacy, purchase terms,
+support and review-media URLs remain on `https://touche-84483.web.app`; this move does not
+change app permissions, billing or those documents. Keep product claims aligned with the
+published app version and update both canonical URLs and the root sitemap when adding pages.
 
 ## Bounty product page and notices
 
