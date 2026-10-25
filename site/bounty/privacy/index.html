@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Privacy policy — Bounty</title>
-    <meta name="description" content="How Bounty for Android handles local records, Google sign-in, subscriptions and support requests.">
+    <meta name="description" content="How Bounty for Android handles local expense and loan records, Google sign-in, subscriptions and support requests.">
     <link rel="canonical" href="https://kunal26das.github.io/bounty/privacy/">
     <meta property="og:title" content="Privacy policy — Bounty">
-    <meta property="og:description" content="How Bounty for Android handles local records, Google sign-in, subscriptions and support requests.">
+    <meta property="og:description" content="How Bounty for Android handles local expense and loan records, Google sign-in, subscriptions and support requests.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://kunal26das.github.io/bounty/privacy/">
     <meta property="og:image" content="https://kunal26das.github.io/bounty/bounty-icon-512.png?v=f0dea35f1e37">
@@ -18,7 +18,7 @@
     <meta property="og:image:alt" content="Bounty’s six-segment citrus app icon">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Privacy policy — Bounty">
-    <meta name="twitter:description" content="How Bounty for Android handles local records, Google sign-in, subscriptions and support requests.">
+    <meta name="twitter:description" content="How Bounty for Android handles local expense and loan records, Google sign-in, subscriptions and support requests.">
     <meta name="twitter:image" content="https://kunal26das.github.io/bounty/bounty-icon-512.png?v=f0dea35f1e37">
     <meta name="twitter:image:alt" content="Bounty’s six-segment citrus app icon">
     <meta name="theme-color" content="#1B1916">
@@ -35,7 +35,7 @@
             "@id": "https://kunal26das.github.io/bounty/privacy/#webpage",
             "url": "https://kunal26das.github.io/bounty/privacy/",
             "name": "Privacy policy — Bounty",
-            "description": "How Bounty for Android handles local records, Google sign-in, subscriptions and support requests.",
+            "description": "How Bounty for Android handles local expense and loan records, Google sign-in, subscriptions and support requests.",
             "inLanguage": "en",
             "about": {
                 "@id": "https://kunal26das.github.io/bounty/#app"
@@ -61,8 +61,8 @@
         <a class="back-link" href="/bounty/">← Bounty information</a>
         <p class="eyebrow bounty-eyebrow"><a class="bounty-app-brand" href="/bounty/"><img src="/bounty/bounty-icon.svg?v=f0dea35f1e37" width="32" height="32" alt=""><span>Bounty</span></a><span aria-hidden="true">·</span><span>Bounty notice</span></p>
         <h1 class="article-title" id="document-title">Privacy policy<span class="bounty-title-dot">.</span></h1>
-        <p class="article-subtitle">How Bounty for Android handles local records, Google sign-in, subscriptions and support requests.</p>
-        <div class="article-meta"><span>Content reviewed 22 October 2026</span><span>io.github.kunal26das.bounty</span></div>
+        <p class="article-subtitle">How Bounty for Android handles local expense and loan records, Google sign-in, subscriptions and support requests.</p>
+        <div class="article-meta"><span>Content reviewed 26 October 2026</span><span>io.github.kunal26das.bounty</span></div>
     </header>
 
     <nav class="bounty-document-nav" aria-label="Bounty documents"><a href="/bounty/privacy/" aria-current="page">Privacy policy</a>
@@ -97,13 +97,13 @@
             <p>Bounty is a general-audience expense-recordkeeping app intended for availability in countries supported by Google Play. It is not designed or marketed specifically for children under 13. Store availability, provider services and applicable rights can differ by country.</p>
             <p>Use sign-in and purchase features only when you meet the applicable provider&#x27;s age and consent requirements. A parent or guardian should assist where the law or provider requires it. If you believe a child&#x27;s information was provided without appropriate authorization, contact support with the minimum information needed to explain the concern. Do not send a child&#x27;s private ledger, passwords or verification codes.</p>
             <h2 id="section-3">Ledger and receipt data on your device</h2>
-            <p>The app stores the information you enter: your profile name, currency and spending targets; group and participant names or optional email addresses; expense amounts, dates, categories, payer contributions and shares; settlements, notes, comments, recurring rules, receipt itemization, exchange-rate records and activity history. Selected receipt images or PDFs are stored as attachments in the workspace.</p>
-            <p>Local and Demo records stay in app storage unless you export, share or otherwise send them. A ledger backup contains receipt references, not the attached image or PDF bytes. Keep separate copies of receipt files you need. Bounty does not read your address book or automatically import your other files.</p>
+            <p>The app stores the information you enter: your profile name, currency and spending targets; group and participant names or optional email addresses; expense amounts, dates, categories, payer contributions and shares; settlements, notes, comments, recurring rules, receipt itemization, exchange-rate records and activity history. Private loan records can include loan and counterparty names, borrowed or lent direction, opening principal and date, supplied dues, repayment amounts and dates, principal/interest/fee classifications, applications to dues, reversals and notes. Selected receipt images or PDFs are stored as attachments in the workspace.</p>
+            <p>Local and Demo records stay in app storage unless you export, share or otherwise send them. Private loans are device records in Local or Demo; they do not change group balances or sync to Cloud. A ledger backup contains receipt references, not the attached image or PDF bytes. Keep separate copies of receipt files you need. Bounty does not read your address book or automatically import your other files.</p>
             <p>Receipt text scanning runs when you request it. Android uses on-device ML Kit text recognition; review recognized text before saving. This path does not send receipt images to a Bounty OCR server.</p>
             <p>Google&#x27;s bundled ML Kit SDK processes installation identifiers, device and app information, and feature configuration, performance, usage and error information for diagnostics and usage analytics. On-device receipt recognition does not mean that the SDK sends no technical data.</p>
             <h2 id="section-4">Google sign-in and account information</h2>
-            <p>When you choose Google sign-in, Google and Firebase Authentication process the request. Bounty receives an account identifier, provider identity and available name or email information. Bounty uses the Firebase user identifier to associate account access and subscription status.</p>
-            <p>Firebase Authentication processes technical information such as IP addresses and user-agent information for authentication and abuse prevention. Bounty retains a session on the device so you can remain signed in. Android session secrets use Keystore-backed encryption.</p>
+            <p>When you choose Google sign-in, Google and Firebase Authentication process the request. Bounty receives an account identifier, provider identity and available name, email and profile-image URL. Bounty uses the Firebase user identifier to associate account access and subscription status. When displaying an available profile image, the app requests it from its HTTPS image host; that host receives ordinary network request information. Initials are shown when no image is available or it cannot load. Profile images are not saved to a persistent image disk cache.</p>
+            <p>Firebase Authentication processes technical information such as IP addresses and user-agent information for authentication and abuse prevention. Bounty can remember up to ten accounts on the device so you can switch without repeatedly opening the provider chooser while a saved sign-in remains valid. Android session secrets use Keystore-backed encryption. Signing out removes only the selected account’s saved sign-in and does not automatically select another remembered account. You can remove other saved sign-ins through the account menu. Removing a saved sign-in does not delete that account’s retained Cloud ledger or pending edits; those stay separately scoped on the device.</p>
             <p>Accounts are not automatically joined by matching email addresses. Self-service account linking is unavailable; do not assume that signing in to another account transfers records or joins identities.</p>
             <h2 id="section-5">Subscriptions and service providers</h2>
             <p>Bounty uses RevenueCat and Google Play to obtain subscription options, validate purchases, restore access and check Pro status. RevenueCat receives the Firebase user identifier and purchase or subscription information, including product, transaction and entitlement status, along with SDK and platform information needed to provide its service. RevenueCat also provides purchase analytics. Bounty&#x27;s billing adapter does not send ledger notes, expense amounts or receipt attachments to RevenueCat. RevenueCat can determine a country from a transaction or, when unavailable, the last-seen network IP address. Its documentation states that it drops the IP address after determining the country.</p>
@@ -111,6 +111,7 @@
             <p>The Android app has no advertising SDK, advertising-identifier collection, cross-app advertising tracking integration or data-sale feature. It does not integrate a separate general-purpose analytics or crash-reporting SDK. This does not remove the account, purchase, support or technical processing described here.</p>
             <h2 id="section-6">Exports, sharing, support and security</h2>
             <p>You control when Bounty opens a file picker, exports records, copies text or invokes the system share sheet. Files or messages you send are handled by the destination you select. An export may include other participants&#x27; details, notes and financial records; review it before sharing.</p>
+            <p>If you export recorded loan due dates, Bounty creates a calendar file for unpaid dates on active loans in the next 12 months, up to 600 events. The file uses a generic recorded-loan-due label and excludes lender names, amounts and alarms. The file does not update after payments or schedule changes. Opening or importing it in another app is your choice; review old calendar entries yourself. Bounty does not schedule automatic loan notifications.</p>
             <p>If you contact support by email, your address, message and attachments are processed to respond to your request. Send only the minimum information needed; do not send passwords, sign-in codes, authentication tokens, full payment-card details or unredacted private ledgers. Support records are restricted to the operator.</p>
             <p>Bounty uses encrypted HTTPS connections for its authentication and subscription services. Device and account security also depend on protecting your device and Google account. The public information pages receive ordinary hosting requests, including network information; they have no analytics scripts, external fonts, embedded trackers or submission form.</p>
             <h2 id="section-7">Storage, retention and deletion</h2>

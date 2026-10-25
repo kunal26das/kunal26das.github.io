@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "isDraft": false,
-  "reviewedOn": "22 October 2026",
+  "reviewedOn": "26 October 2026",
   "supportEmail": "kunal26das@gmail.com",
   "appName": "Bounty",
   "appId": "io.github.kunal26das.bounty",
@@ -12,7 +12,7 @@
       "id": "PRIVACY",
       "slug": "privacy",
       "title": "Privacy policy",
-      "summary": "How Bounty for Android handles local records, Google sign-in, subscriptions and support requests.",
+      "summary": "How Bounty for Android handles local expense and loan records, Google sign-in, subscriptions and support requests.",
       "sections": [
         {
           "heading": "Bounty and your choices",
@@ -31,8 +31,8 @@
         {
           "heading": "Ledger and receipt data on your device",
           "paragraphs": [
-            "The app stores the information you enter: your profile name, currency and spending targets; group and participant names or optional email addresses; expense amounts, dates, categories, payer contributions and shares; settlements, notes, comments, recurring rules, receipt itemization, exchange-rate records and activity history. Selected receipt images or PDFs are stored as attachments in the workspace.",
-            "Local and Demo records stay in app storage unless you export, share or otherwise send them. A ledger backup contains receipt references, not the attached image or PDF bytes. Keep separate copies of receipt files you need. Bounty does not read your address book or automatically import your other files.",
+            "The app stores the information you enter: your profile name, currency and spending targets; group and participant names or optional email addresses; expense amounts, dates, categories, payer contributions and shares; settlements, notes, comments, recurring rules, receipt itemization, exchange-rate records and activity history. Private loan records can include loan and counterparty names, borrowed or lent direction, opening principal and date, supplied dues, repayment amounts and dates, principal/interest/fee classifications, applications to dues, reversals and notes. Selected receipt images or PDFs are stored as attachments in the workspace.",
+            "Local and Demo records stay in app storage unless you export, share or otherwise send them. Private loans are device records in Local or Demo; they do not change group balances or sync to Cloud. A ledger backup contains receipt references, not the attached image or PDF bytes. Keep separate copies of receipt files you need. Bounty does not read your address book or automatically import your other files.",
             "Receipt text scanning runs when you request it. Android uses on-device ML Kit text recognition; review recognized text before saving. This path does not send receipt images to a Bounty OCR server.",
             "Google's bundled ML Kit SDK processes installation identifiers, device and app information, and feature configuration, performance, usage and error information for diagnostics and usage analytics. On-device receipt recognition does not mean that the SDK sends no technical data."
           ]
@@ -40,8 +40,8 @@
         {
           "heading": "Google sign-in and account information",
           "paragraphs": [
-            "When you choose Google sign-in, Google and Firebase Authentication process the request. Bounty receives an account identifier, provider identity and available name or email information. Bounty uses the Firebase user identifier to associate account access and subscription status.",
-            "Firebase Authentication processes technical information such as IP addresses and user-agent information for authentication and abuse prevention. Bounty retains a session on the device so you can remain signed in. Android session secrets use Keystore-backed encryption.",
+            "When you choose Google sign-in, Google and Firebase Authentication process the request. Bounty receives an account identifier, provider identity and available name, email and profile-image URL. Bounty uses the Firebase user identifier to associate account access and subscription status. When displaying an available profile image, the app requests it from its HTTPS image host; that host receives ordinary network request information. Initials are shown when no image is available or it cannot load. Profile images are not saved to a persistent image disk cache.",
+            "Firebase Authentication processes technical information such as IP addresses and user-agent information for authentication and abuse prevention. Bounty can remember up to ten accounts on the device so you can switch without repeatedly opening the provider chooser while a saved sign-in remains valid. Android session secrets use Keystore-backed encryption. Signing out removes only the selected account’s saved sign-in and does not automatically select another remembered account. You can remove other saved sign-ins through the account menu. Removing a saved sign-in does not delete that account’s retained Cloud ledger or pending edits; those stay separately scoped on the device.",
             "Accounts are not automatically joined by matching email addresses. Self-service account linking is unavailable; do not assume that signing in to another account transfers records or joins identities."
           ]
         },
@@ -57,6 +57,7 @@
           "heading": "Exports, sharing, support and security",
           "paragraphs": [
             "You control when Bounty opens a file picker, exports records, copies text or invokes the system share sheet. Files or messages you send are handled by the destination you select. An export may include other participants' details, notes and financial records; review it before sharing.",
+            "If you export recorded loan due dates, Bounty creates a calendar file for unpaid dates on active loans in the next 12 months, up to 600 events. The file uses a generic recorded-loan-due label and excludes lender names, amounts and alarms. The file does not update after payments or schedule changes. Opening or importing it in another app is your choice; review old calendar entries yourself. Bounty does not schedule automatic loan notifications.",
             "If you contact support by email, your address, message and attachments are processed to respond to your request. Send only the minimum information needed; do not send passwords, sign-in codes, authentication tokens, full payment-card details or unredacted private ledgers. Support records are restricted to the operator.",
             "Bounty uses encrypted HTTPS connections for its authentication and subscription services. Device and account security also depend on protecting your device and Google account. The public information pages receive ordinary hosting requests, including network information; they have no analytics scripts, external fonts, embedded trackers or submission form."
           ]
@@ -78,19 +79,19 @@
       "id": "TERMS",
       "slug": "terms",
       "title": "Terms of use",
-      "summary": "Using Bounty for Android expense records and optional Pro features.",
+      "summary": "Using Bounty for Android expense and private loan records and optional Pro features.",
       "sections": [
         {
           "heading": "Purpose and availability",
           "paragraphs": [
-            "Bounty for Android is operated by Kunal Das personally. It helps you keep shared-expense records, calculate allocations and record settlements. Recording a settlement does not transfer money. Bounty does not connect a bank account or provide a bank, wallet, lending or money-transfer service.",
+            "Bounty for Android is operated by Kunal Das personally. It helps you keep shared-expense records, calculate allocations, record settlements and track private borrowed or lent loans with supplied dues and actual repayments. Recording a settlement or repayment does not transfer money or verify that a bank payment occurred. Supplied EMI schedules are records you enter, not a calculated interest split or a lender-confirmed balance. Unknown principal or payment components remain unknown. Bounty does not connect a bank account or provide a bank, wallet, lending or money-transfer service.",
             "Local and Demo remain separate; signing in does not automatically upload either workspace. Cloud sharing, invitations and remote receipts are paused. Features depend on supported devices, provider availability and subscription status. Bounty is intended as a general-audience app in Google Play-supported countries."
           ]
         },
         {
           "heading": "Your records and account",
           "paragraphs": [
-            "Review amounts, participants, currencies, shares, receipt text and imported data before relying on them. Keep your own records for payments, taxes or agreements with others. A balance records what users entered; it does not establish that a payment occurred or resolve a dispute between participants.",
+            "Review amounts, participants, currencies, shares, receipt text and imported data before relying on them. Review loan opening balances, schedule coverage, payment classifications and due applications against your own records. An incomplete supplied schedule does not mean nothing else is owed. Calendar exports are snapshots that do not update after payments or schedule changes. Keep your own records for payments, taxes or agreements with others. A balance records what users entered; it does not establish that a payment occurred or resolve a dispute between participants.",
             "Only use or share information you have permission to use. Avoid unnecessary sensitive information about yourself or other people. Protect your device and Google account, and contact support if you believe your Bounty account is being used without authorization.",
             "Keep exports and original receipt files where you can recover them. A ledger backup includes attachment references, not attachment bytes. Device loss, cleared app storage or unsupported storage can affect access to local records."
           ]
@@ -98,7 +99,7 @@
         {
           "heading": "Pro subscriptions",
           "paragraphs": [
-            "Bounty Pro offers optional advanced insights, creation or changes to recurring expense rules, and supported receipt text scanning. Core splitting, recorded settlements, manual itemization and exports do not require Pro. Existing ledger records and recurring rules remain accessible when Pro ends.",
+            "Bounty Pro offers optional advanced insights, creation or changes to recurring expense rules, and supported receipt text scanning. Core splitting, recorded settlements, manual private loan and repayment tracking, supplied loan schedules, calendar exports, manual itemization and ledger exports do not require Pro. Existing ledger records and recurring rules remain accessible when Pro ends.",
             "Where Google Play offers a plan, the app displays its localized price and billing period before purchase. Monthly and yearly are alternative auto-renewing plans. Manage renewal with Google Play; uninstalling Bounty, signing out or deleting an account does not cancel a subscription.",
             "Read Subscription information for restore, availability and account-identity limits. No free trial, lifetime plan or unavailable Cloud benefit is advertised. Refund and cancellation rights follow the purchase provider and applicable requirements."
           ]
@@ -122,7 +123,7 @@
           "heading": "What Bounty Pro includes",
           "paragraphs": [
             "Pro provides advanced insights, creation or changes to recurring expense rules, and optional receipt text scanning on supported Android devices. Cloud sharing is paused and is not a paid benefit.",
-            "Groups, exact and unequal splits, currency-separated ledgers, recorded settlements, manual receipt itemization, attachments and exports remain free. Existing records and recurring rules remain accessible after Pro ends. Demo previews do not create a subscription or grant Pro in another workspace."
+            "Groups, exact and unequal splits, currency-separated ledgers, recorded settlements, manual private loan and repayment tracking, supplied loan schedules, calendar exports, manual receipt itemization, attachments and ledger exports remain free. Existing records and recurring rules remain accessible after Pro ends. Demo previews do not create a subscription or grant Pro in another workspace."
           ]
         },
         {
@@ -167,7 +168,7 @@
         {
           "heading": "Protect a saved ledger",
           "paragraphs": [
-            "Before reinstalling, clearing app data, importing a replacement backup or changing accounts, use Your corner → Your data → Ledger backup. Keep original receipt files separately: backups contain receipt references, not attachment bytes. Exports may contain other people's data; store them privately.",
+            "Before reinstalling, clearing app data, importing a replacement backup or changing accounts, use Your corner → Your data → Ledger backup. It includes the current workspace’s expense and private loan records. Keep original receipt files separately: backups contain receipt references, not attachment bytes. Exports may contain other people’s data; store them privately. Keep lender statements or payment evidence independently. Exported calendar entries do not update automatically after repayments or corrections.",
             "Cloud sharing is paused. Local and Demo remain usable; previously saved Cloud records are read-only and exportable, with pending changes preserved on the device. Signing out does not erase these records or transfer them to another account.",
             "If a saved session used retired email/password sign-in, preserve it and export before signing out. A supported provider must already identify the same account to recover access. Matching email text does not prove account ownership; no automatic account merge is available."
           ]
