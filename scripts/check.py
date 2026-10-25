@@ -37,6 +37,9 @@ class Page(HTMLParser):
         self.json_blocks = []
         self.styles = []
         self.script_sources = []
+        self.canonicals = []
+        self.robots = []
+        self.h1_count = 0
         self._json = None
         self._style = None
         self.feed(path.read_text(encoding="utf-8"))
@@ -44,6 +47,12 @@ class Page(HTMLParser):
 
     def handle_starttag(self, tag, attributes):
         attrs = dict(attributes)
+        if tag == "h1":
+            self.h1_count += 1
+        if tag == "link" and "canonical" in attrs.get("rel", "").split():
+            self.canonicals.append(attrs.get("href"))
+        if tag == "meta" and attrs.get("name", "").lower() == "robots":
+            self.robots.append(attrs.get("content", "").lower())
         if attrs.get("id"):
             self.ids.append(attrs["id"])
         if tag == "a" and attrs.get("name"):
@@ -198,6 +207,32 @@ def check(check_js=False):
         for project in PROJECT_ASSETS:
             if ORIGIN + f"/{project}/" not in sitemap_links:
                 fail(output / "sitemap.xml", f"{project} page is missing")
+        bounty_content = json.loads((ROOT / "content/bounty/content.json").read_text())
+        bounty_routes = ["/bounty/", *(
+            f"/bounty/{document['slug']}/" for document in bounty_content["documents"]
+        )]
+        for route in bounty_routes:
+            path = output / route.lstrip("/") / "index.html"
+            page = pages.get(path)
+            if page is None:
+                fail(path, "Bounty information page is missing")
+                continue
+            url = ORIGIN + route
+            if page.canonicals != [url] or page.h1_count != 1:
+                fail(path, "Bounty page needs one self-canonical and one H1")
+            noindex = any("noindex" in value for value in page.robots)
+            if bounty_content["isDraft"]:
+                if not noindex or url in sitemap_links:
+                    fail(path, "draft Bounty page must be noindex and outside the sitemap")
+            elif noindex or url not in sitemap_links:
+                fail(path, "final Bounty page must be indexable and discoverable in the sitemap")
+        if not bounty_content["isDraft"]:
+            if "/bounty/" not in pages[output / "index.html"].links:
+                fail(output / "index.html", "Bounty product page needs a homepage discovery link")
+            play_url = f"https://play.google.com/store/apps/details?id={bounty_content['appId']}"
+            hub = pages.get(output / "bounty/index.html")
+            if hub is not None and play_url not in hub.links:
+                fail(output / "bounty/index.html", "Bounty product page needs its Google Play link")
         for article in (output / "blog").glob("*/index.html"):
             url = ORIGIN + "/" + article.parent.relative_to(output).as_posix() + "/"
             if url not in feed_links:

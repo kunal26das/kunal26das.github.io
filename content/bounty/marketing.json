@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "updatedOn": "2026-10-25",
+  "title": "Bounty — Split bills and track shared expenses",
+  "description": "Split bills for trips, roommates and meals with Bounty for Android. Track shared expenses, unequal splits and balances, with free core tools and optional Pro.",
+  "playUrl": "https://play.google.com/store/apps/details?id=io.github.kunal26das.bounty",
+  "hero": {
+    "title": "Split bills. Track shared expenses.",
+    "description": "Trips, shared homes, dinner with friends. Keep track of who paid, how to split it and what’s left to settle.",
+    "note": "Start with Local or Demo, without an account. Core expense tools are free; Pro is optional."
+  },
+  "useCases": [
+    {"title": "A trip together", "description": "Keep accommodation, transport and everyone’s smaller purchases in one group. See the balance before heading home."},
+    {"title": "A shared home", "description": "Track rent, groceries and household bills with your roommates. Set a different share for each expense when equal isn’t fair."},
+    {"title": "A meal with friends", "description": "Split the whole bill or itemize it by person. Record a settlement when someone pays you back."}
+  ],
+  "tools": [
+    {"title": "Split it the way you agreed", "description": "Use equal shares, exact amounts, percentages, weights or adjustments. Record each person’s payment separately from what they owe."},
+    {"title": "Keep the details with the expense", "description": "Add notes, attach a receipt or itemize it manually. Keep each currency’s ledger separate and record exchange rates explicitly."},
+    {"title": "Take your records with you", "description": "Export CSV records or a ledger backup. Backups contain receipt references, so keep original receipt images and PDFs separately."}
+  ],
+  "freeFeatures": [
+    "Groups, shared expenses and equal or unequal splits",
+    "Balances and recorded settlements",
+    "Separate currency ledgers and exchange-rate records",
+    "Manual receipt itemization and attachments",
+    "CSV exports and ledger backups"
+  ],
+  "proFeatures": [
+    "Advanced spending insights",
+    "Create or change recurring expense rules",
+    "Receipt text scanning on supported Android devices"
+  ],
+  "faqs": [
+    {"question": "Do I need an account?", "answer": "You can use Local and Demo without signing in. Google sign-in connects your account for subscription access. It does not automatically upload either workspace."},
+    {"question": "Can friends sync a group together?", "answer": "Cloud sharing, invitations and remote receipt transfers are paused. You can keep shared-expense records on your device and export them. Previously saved Cloud ledgers remain viewable and exportable, with pending changes preserved."},
+    {"question": "Does recording a settlement send money?", "answer": "No. Bounty records expenses, balances and settlements you enter. Arrange the actual payment separately, then record it in the app."},
+    {"question": "What happens when Pro ends?", "answer": "Core tools stay free, and existing records and recurring rules remain accessible. Creating or changing recurring rules, advanced insights and supported receipt text scanning require Pro."},
+    {"question": "How do I manage or cancel Pro?", "answer": "Manage the subscription through Google Play. Uninstalling Bounty, signing out or deleting your Bounty account does not cancel renewal.", "link": {"href": "/bounty/subscriptions/", "label": "Read subscription information"}},
+    {"question": "How can I get help or request account deletion?", "answer": "Use Your corner → Request account deletion in the app, or follow the website’s support and account-deletion instructions. Requests are handled manually after ownership verification. Opening an email link does not submit a request or confirm deletion.", "link": {"href": "/bounty/delete-account/", "label": "Account and data deletion"}}
+  ]
+}

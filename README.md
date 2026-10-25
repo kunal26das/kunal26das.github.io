@@ -16,7 +16,7 @@ site/                    Website source, published at the domain root
   assets/                Fonts, font license and project screenshot
   blog/                  Blog index, shared styles/scripts and article pages
   multidex/              Multidex landing page
-  bounty/                Draft Bounty notices, support and deletion information
+  bounty/                Bounty product page, policies, support and deletion information
   feed.xml, sitemap.xml  RSS and search discovery
   .well-known/           Android Digital Asset Links
   app-ads.txt, ads.txt    Publisher verification
@@ -28,8 +28,8 @@ projects/
 scripts/
   build.py               Assemble dist/ without compiling the website
   check.py               Validate the assembled site
-  generate_bounty.py     Render notices from a checked-in canonical snapshot
-content/bounty/          Bounty notice snapshot and source-hash provenance
+  generate_bounty.py     Render Bounty pages and synchronize its sitemap entries
+content/bounty/          Approved notice snapshot/provenance and separate product copy
 doom-dist/              Prebuilt DOOM, updated by its own repository's CI
 ```
 
@@ -113,12 +113,19 @@ use Kotlin independently; do not edit its generated files in this repository.
   and `site/blog/blog.js`; homepage-specific styles and interactions live in `home.css` and
   `home.js`. Preserve keyboard access, mobile layouts and reduced-motion support.
 
-## Bounty notice previews
+## Bounty product page and notices
 
-The six `/bounty/` routes contain draft information for Bounty's current test build.
-The canonical JSON is maintained by the Bounty application project; an exact snapshot
-and its source revision/SHA-256 are checked in under `content/bounty/`. This repository
-builds independently of that checkout. The homepage and project directory are unchanged.
+`/bounty/` introduces the Android shared-expense app and links to its public Google Play
+listing. It describes the free core tools, optional Pro, and the current pause on Cloud
+sharing. The homepage project directory links to it. Product copy lives separately in
+`content/bounty/marketing.json`; it does not replace the approved policies.
+
+The other five routes contain the approved privacy, terms, subscription, support and
+account-deletion notices. Their canonical JSON is maintained by the Bounty application
+project; an exact snapshot and its source revision/SHA-256 are checked in under
+`content/bounty/`. This repository builds independently of that checkout. The generator
+retains the approved headings and paragraphs, with shared site navigation and metadata
+around them.
 
 To explicitly update the snapshot after a coordinated canonical-copy review:
 
@@ -133,13 +140,18 @@ python3 scripts/check.py --check-js
 ```
 
 Use the full commit containing those exact canonical bytes. The import copies bytes
-without reformatting, records their SHA-256 and renders all five documents plus the hub.
+without reformatting, records their SHA-256 and renders all five documents plus the product page.
 To regenerate without updating canonical content, run `python3 scripts/generate_bounty.py`.
-The normal site build checks generated-page parity and provenance before copying files.
+The normal site build checks generated-page parity, provenance and Bounty sitemap state before copying files.
 Edit the generator or supplemental CSS rather than hand-editing generated HTML.
 
-`isDraft: true` keeps visible draft notices and `noindex, follow` on these pages; draft
-routes are deliberately absent from the search sitemap. Publishing a draft preview
+The six final routes have unique canonical, Open Graph and Twitter metadata. Structured
+data describes the app and each page without invented ratings, reviews or prices. The
+generator maintains only the Bounty sitemap entries: the product page uses its marketing
+update date, and the notices use their canonical content review date.
+
+`isDraft: true` keeps visible draft notices and `noindex, follow` on all six pages and
+removes their entries from the search sitemap. Publishing a draft preview
 does not approve final legal terms, attest store declarations, enable cloud cleanup,
 verify a monitored support process or promise account deletion. Email links only open
 the visitor's email app. There are no tracking scripts, external fonts or request forms
