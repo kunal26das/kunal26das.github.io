@@ -339,8 +339,6 @@ def check_page_rule(markup):
 
 
 PROTECTED = [
-    ("0.86.3",  "awaiting production rollout",
-     "without it the upgrade merged for release 8.85.0 reads as shipped work"),
     ("2 weeks", "then grew it",
      "without it, 2 weeks and 28 Gradle modules collide into one claim"),
     ("50,000",  "the attribution behind the campaign",

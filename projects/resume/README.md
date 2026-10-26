@@ -172,7 +172,7 @@ figure can drift between any version of this.
 
 The build enforces that rather than trusting it. It refuses a variant containing a number that
 is not in the source; it refuses to separate a figure from the clause that qualifies it — drop
-"awaiting production rollout" and a merged upgrade starts reading as shipped work; and it
+"over two years" and a measured review total loses its time period; and it
 refuses to let a sentence that counts the document, "the eight I would lead with", go stale
 when filtering changes the count. The renditions are made in the browser now, so the build
 drives them there: a headless run generates all four downloads across five different views,

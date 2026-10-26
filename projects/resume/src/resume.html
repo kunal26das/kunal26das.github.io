@@ -427,6 +427,7 @@ code{font-family:var(--f-mono);font-size:.86em;color:var(--ink);background:var(-
 
   :root:has(.sheet.compact){font-size:10.75px;}
   .sheet.compact .role{padding:4pt 0 5pt;}
+  .sheet.compact .role:not(:has(.group ~ .group,.bullets li ~ li)){break-inside:avoid;}
   .sheet.compact .cap{display:block;padding:1.6pt 0;}
   .sheet.compact .cap dt{display:inline;letter-spacing:.1em;}
   .sheet.compact .cap dt::after{content:"\2002";}
@@ -620,7 +621,7 @@ mark{background:var(--signal-wash);color:var(--ink);border-radius:1px;}
     <div class="hi">
       <h3>The <span class="n-hi">eight</span> I would lead with</h3>
       <ul>
-        <li data-tag="rn build platform"><span class="k">RN</span><span>React&nbsp;Native upgrades at <strong>Licious</strong>: <strong>0.72.3 &rarr; 0.77.3</strong> shipped to production. Authored the follow&#8209;on <strong>0.77.3 &rarr; 0.86.3</strong> upgrade, including React&nbsp;19 and the <strong>New&nbsp;Architecture cutover</strong>; merged for release <strong>8.85.0</strong>, awaiting production rollout.</span></li>
+        <li data-tag="rn build platform"><span class="k">RN</span><span>Shipped React&nbsp;Native <strong>0.72.3 &rarr; 0.86.3</strong> to production at <strong>Licious</strong>, including React&nbsp;19 and the <strong>New&nbsp;Architecture migration</strong> across a hybrid Android and iOS app.</span></li>
         <li data-tag="kmp build ui platform" data-org="wish"><span class="k">2&rarr;1</span><span>Repositories merged into one at <strong>Wish</strong>, then an 8&#8209;module <strong>Kotlin Multiplatform</strong> layer built between them and a <strong>Compose Multiplatform</strong> screen shipped to both stores from one source.</span></li>
         <li data-tag="android build platform" data-org="alle"><span class="k">68%</span><span>Of the 28 Gradle modules in <strong>Alle</strong> are framework&#8209;free JVM libraries with no Android dependency &mdash; the layering enforced by the build graph, not by convention.</span></li>
         <li data-tag="platform reliability android ios rn"><span class="k">3&times;</span><span>Implementations of a single 15&#8209;method observability contract &mdash; Kotlin, Swift, TypeScript &mdash; behind which an entire APM vendor was added and later removed without touching product code.</span></li>
@@ -670,8 +671,8 @@ mark{background:var(--signal-wash);color:var(--ink);border-radius:1px;}
         <div class="group">
           <h4 class="group-head" data-t="3">React Native Platform</h4>
           <ul class="bullets" data-td="3">
-            <li data-tag="rn build" data-t="0">Shipped React&nbsp;Native <span class="n">0.72.3 &rarr; 0.77.3</span> to production, upgrading Gradle, Kotlin and the Android target SDK in the same change.</li>
-            <li data-lead="rn" data-tag="rn build" data-t="1" data-join=" ">Authored the follow&#8209;on <span class="n">0.77.3 &rarr; 0.86.3</span> and React&nbsp;19 upgrade, including the <strong>New Architecture migration</strong><c data-t="3">, native hosting, Android toolchain and iOS QA/Production build schemes</c>. Merged for release <span class="n">8.85.0</span>, awaiting production rollout.</li>
+            <li data-tag="rn build" data-t="0">Shipped React&nbsp;Native <span class="n">0.72.3 &rarr; 0.86.3</span> to production across Android and iOS, including <strong>React&nbsp;19 and the New Architecture migration</strong>.</li>
+            <li data-lead="rn" data-tag="rn build" data-t="1" data-join=" ">Migrated native hosting and modernised Android/iOS builds<c data-t="3">, coordinating Gradle, Kotlin and target SDK changes with iOS QA/Production build schemes</c>.</li>
             <li data-lead="platform" data-tag="platform rn build">Found why the JavaScript bundle broke on both platforms after a routine upgrade: a config file had been overwriting the bundler&rsquo;s defaults instead of adding to them, silently dropping <span class="n">17</span> of them. Harmless for two years, fatal the moment the bundler changed how it resolves packages. One&#8209;line fix, with the two obvious alternatives written up and rejected in the commit.</li>
             <li data-lead="rn" data-tag="rn">Built the hosting layer the entire hybrid app runs on &mdash; the code that lets <span class="n">21</span> React&nbsp;Native screens open from native Android and iOS, receive the data they need, and report back what the user did.</li>
             <li data-tag="rn">Replaced the loosely typed hand&#8209;off between native code and React&nbsp;Native with a checked one, so a misspelled key is now a build error instead of a blank screen. The same <span class="n">200</span>&#8209;function contract, written in Kotlin, Swift and TypeScript, covering 36 areas of app state.</li>
