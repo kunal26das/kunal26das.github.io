@@ -78,13 +78,13 @@ case("nesting: sibling content after a dropped subtree is unaffected",
 
 
 STYLE = "<style>x</style>"
-SOURCE_NUMBERS = {"7", "0.84.1", "2", "8", "418", "5"}
+SOURCE_NUMBERS = {"7", "0.86.3", "2", "8", "418", "5"}
 
 REFUSALS = [
     ("refuses a figure that is not in the source",
      f"{STYLE}<li>shipped 1,999 modules</li>", "1,999"),
-    ("refuses 0.84.1 without 'green on the branch'",
-     f"{STYLE}<li>Authored the 0.84.1 ladder.</li>", "green on the branch"),
+    ("refuses 0.86.3 without 'awaiting production rollout'",
+     f"{STYLE}<li>Authored the 0.86.3 upgrade.</li>", "awaiting production rollout"),
     ("refuses 418 without 'over two years'",
      f"{STYLE}<li>Reviewed 418 pull requests.</li>", "over two years"),
     ("refuses a highlights heading that miscounts its own list",
