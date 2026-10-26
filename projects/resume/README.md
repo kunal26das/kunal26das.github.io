@@ -26,8 +26,10 @@ into their neighbour, re-count the sentences that count themselves. No network c
 
 The opening view is **Full**, the detailed career record. **Two-page** and **One-page**
 provide shorter copies. The default Editorial view (`lay=datasheet`) leads with platform ownership and three
-concrete proof points; the shorter copies use a concise skills summary and describe the
-DOOM port rather than reducing it to a project name and link.
+concrete proof points. The shorter copies use a concise skills summary and lead with Touché;
+the two-page copy also includes Bounty. The full copy adds Yify, Startup, DOOM and Multidex,
+with a dedicated projects page in its eight-page PDF.
+Project descriptions and public links survive the document exports.
 
 The **Customize** button opens a panel of reading and export controls.
 It sits outside the resume — appended to the page, never mounted inside the document

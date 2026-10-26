@@ -135,7 +135,7 @@
 .sheet .cap{grid-template-columns:175px minmax(0,1fr);gap:1.3rem;}
 .sheet .cap dt{letter-spacing:.09em;color:var(--ink-2);}
 .sheet .colophon{
-  grid-template-columns:minmax(0,1.45fr) repeat(2,minmax(0,1fr));
+  grid-template-columns:repeat(2,minmax(0,1fr));
   gap:1.75rem;
   background:none;
   margin-top:2.3rem;
@@ -145,13 +145,14 @@
 .sheet .colophon .projects .t{font-family:var(--f-display);font-size:1rem;}
 .sheet .colophon .projects li{line-height:1.5;}
 .sheet .colophon .projects .s{margin-top:.25rem;overflow-wrap:anywhere;}
-.sheet.compact:not(.solo) .colophon{grid-template-columns:repeat(2,minmax(0,1fr));}
-.sheet.compact:not(.solo) .colophon .projects{grid-column:1/-1;}
-.sheet.compact:not(.solo) .colophon .projects ul{
+.sheet .colophon .projects{grid-column:1/-1;}
+.sheet .colophon .projects ul{
   grid-template-columns:repeat(2,minmax(0,1fr));
   column-gap:1.75rem;
 }
 .sheet.solo .colophon{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);}
+.sheet.solo .colophon .projects{grid-column:auto;}
+.sheet.solo .colophon .projects ul{grid-template-columns:1fr;}
 
 @media screen and (max-width:760px){
   .sheet .masthead{
@@ -171,7 +172,7 @@
   .sheet .colophon,
   .sheet.compact:not(.solo) .colophon,
   .sheet.solo .colophon{grid-template-columns:1fr;}
-  .sheet.compact:not(.solo) .colophon .projects ul{grid-template-columns:1fr;}
+  .sheet .colophon .projects ul{grid-template-columns:1fr;}
 }
 
 @media print{
@@ -213,8 +214,9 @@
   .sheet .cap dd{font-size:9pt;line-height:1.45;}
   .sheet .colophon{
     margin-top:13pt;padding:10pt 0 0;gap:14pt;
-    grid-template-columns:minmax(0,1.5fr) repeat(2,minmax(0,1fr));
+    grid-template-columns:repeat(2,minmax(0,1fr));
   }
+  .sheet:not(.compact) .colophon{break-before:page;}
   .sheet .colophon h3{font-size:7pt;margin-bottom:5pt;padding-bottom:4pt;}
   .sheet .colophon li{font-size:8.2pt;line-height:1.4;}
   .sheet .colophon .s{font-size:7pt;line-height:1.35;letter-spacing:0;}

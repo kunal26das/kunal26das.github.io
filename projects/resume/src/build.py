@@ -72,14 +72,14 @@ FOCUS_LENGTH = "short"
 
 SHOW_ALL = "hide=none&contact=show"
 PDF_JOBS = [
-    (f"{STEM}.pdf",            "len=full", 7),
+    (f"{STEM}.pdf",            "len=full", 8),
     (f"{STEM}-short.pdf",      "len=short", 2),
     (f"{STEM}-ats.pdf",        "len=short&lay=plain", 2),
     (f"{STEM}-one.pdf",        "len=one", 1),
     (f"{STEM}-platform.pdf",   "len=short&lead=platform", 2),
     (f"{STEM}-product.pdf",    "len=short&lead=product", 2),
     (f"{STEM}-android.pdf",    "len=short&lead=android", 2),
-    (f"{STEM}-dark.pdf",       "len=full&theme=dark", 7),
+    (f"{STEM}-dark.pdf",       "len=full&theme=dark", 8),
     (f"{STEM}-short-dark.pdf", "len=short&theme=dark", 2),
 ]
 
