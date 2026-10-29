@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "isDraft": false,
-  "reviewedOn": "26 October 2026",
+  "reviewedOn": "29 October 2026",
   "supportEmail": "kunal26das@gmail.com",
   "appName": "Bounty",
   "appId": "io.github.kunal26das.bounty",
@@ -12,7 +12,7 @@
       "id": "PRIVACY",
       "slug": "privacy",
       "title": "Privacy policy",
-      "summary": "How Bounty for Android handles local expense and loan records, Google sign-in, subscriptions and support requests.",
+      "summary": "How Bounty for Android handles local records, sign-in, subscriptions, crash diagnostics and support requests.",
       "sections": [
         {
           "heading": "Bounty and your choices",
@@ -32,7 +32,7 @@
           "heading": "Ledger and receipt data on your device",
           "paragraphs": [
             "The app stores the information you enter: your profile name, currency and spending targets; group and participant names or optional email addresses; expense amounts, dates, categories, payer contributions and shares; settlements, notes, comments, recurring rules, receipt itemization, exchange-rate records and activity history. Private loan records can include loan and counterparty names, borrowed or lent direction, opening principal and date, supplied dues, repayment amounts and dates, principal/interest/fee classifications, applications to dues, reversals and notes. Selected receipt images or PDFs are stored as attachments in the workspace.",
-            "Local and Demo records stay in app storage unless you export, share or otherwise send them. Private loans are device records in Local or Demo; they do not change group balances or sync to Cloud. A ledger backup contains receipt references, not the attached image or PDF bytes. Keep separate copies of receipt files you need. Bounty does not read your address book or automatically import your other files.",
+            "Bounty does not automatically sync Local or Demo ledgers. Exports and incidental crash-diagnostic data are described below. Private loans are device records in Local or Demo; they do not change group balances or sync to Cloud. A ledger backup contains receipt references, not the attached image or PDF bytes. Keep separate copies of receipt files you need. Bounty does not read your address book or automatically import your other files.",
             "Receipt text scanning runs when you request it. Android uses on-device ML Kit text recognition; review recognized text before saving. This path does not send receipt images to a Bounty OCR server.",
             "Google's bundled ML Kit SDK processes installation identifiers, device and app information, and feature configuration, performance, usage and error information for diagnostics and usage analytics. On-device receipt recognition does not mean that the SDK sends no technical data."
           ]
@@ -50,7 +50,15 @@
           "paragraphs": [
             "Bounty uses RevenueCat and Google Play to obtain subscription options, validate purchases, restore access and check Pro status. RevenueCat receives the Firebase user identifier and purchase or subscription information, including product, transaction and entitlement status, along with SDK and platform information needed to provide its service. RevenueCat also provides purchase analytics. Bounty's billing adapter does not send ledger notes, expense amounts or receipt attachments to RevenueCat. RevenueCat can determine a country from a transaction or, when unavailable, the last-seen network IP address. Its documentation states that it drops the IP address after determining the country.",
             "Google Play handles payment details for Android purchases. Bounty's billing adapter does not receive full payment-card details. Google, Firebase and RevenueCat have their own data-processing practices. Paid Apple and web offerings are unavailable; this Android policy does not promise cross-platform purchase continuity.",
-            "The Android app has no advertising SDK, advertising-identifier collection, cross-app advertising tracking integration or data-sale feature. It does not integrate a separate general-purpose analytics or crash-reporting SDK. This does not remove the account, purchase, support or technical processing described here."
+            "The Android app has no advertising SDK, advertising-identifier collection, cross-app advertising tracking integration or data-sale feature. It does not integrate a separate general-purpose analytics SDK. Crash reporting is described below; account, purchase, support and other technical processing still apply."
+          ]
+        },
+        {
+          "heading": "Crash reporting on Android",
+          "paragraphs": [
+            "Android releases use Firebase Crashlytics to diagnose crashes and app-not-responding problems. Google receives crash traces, exception details, relevant app state, app and device information, and installation and session identifiers and timing for stability metrics. Native crashes can also include crash-memory dumps.",
+            "Bounty does not attach account IDs, email addresses, ledger records, receipt files, chat prompts or authentication secrets as custom Crashlytics data, and does not add Google Analytics or user-action breadcrumbs for this integration. Automatic reports may still contain data present in exception messages or captured native memory; they are not guaranteed anonymous.",
+            "Google states that Crashlytics keeps crash traces, extracted native-crash data and associated identifiers for 90 days before beginning removal from live and backup systems. Raw native minidumps are held temporarily for processing and then discarded. This provider process is separate from the support-record retention periods below. The current Firebase privacy information is available at https://firebase.google.com/support/privacy."
           ]
         },
         {
@@ -70,7 +78,8 @@
             "We delete raw diagnostic support attachments 30 days after a request is closed and retain a minimal ordinary-support summary for 12 months after closure to follow up recurring issues and document the response. An account-deletion request also covers those account-associated support records unless a specific legitimate retention need applies. For verification or deletion handling, we keep a separate minimal record for 90 days after completion to help protect against unauthorized account changes and resolve questions about the handling. A deletion request does not also receive a duplicate 12-month support record. These records contain only the necessary reference, relevant dates, actions and retention reasons, rather than reusable credentials or full private ledgers.",
             "Where an active dispute, security or fraud-prevention need, or a legal obligation requires longer retention, we keep only the necessary records, document the specific reason and review when that need ends. We explain the affected records and applicable retention criteria in the request result. These exceptions do not permit indefinite retention of unrelated personal information.",
             "Google Play may retain transaction records under its own obligations. Firebase, RevenueCat and other service providers have their own security, transaction and backup retention practices. Removing a Bounty account does not delete your Google account or erase independent provider records. We distinguish provider-controlled records from records Bounty can remove and explain any request that remains unfinished.",
-            "You can request account or associated-data deletion from Your corner → Request account deletion, through the Account and data deletion page, or by emailing support. Support independently verifies ownership and confirms the completed and retained data separately. We aim to acknowledge requests within 7 calendar days and handle them within 30 days; we explain additional verification, outstanding steps or delays. These aims do not limit applicable rights or guarantee that every provider finishes deletion within that period. An email composer or submitted request is not itself proof of deletion, and account deletion does not cancel a subscription."
+            "You can request account or associated-data deletion from Your corner → Request account deletion, through the Account and data deletion page, or by emailing support. Support independently verifies ownership and confirms the completed and retained data separately. We aim to acknowledge requests within 7 calendar days and handle them within 30 days; we explain additional verification, outstanding steps or delays. These aims do not limit applicable rights or guarantee that every provider finishes deletion within that period. An email composer or submitted request is not itself proof of deletion, and account deletion does not cancel a subscription.",
+            "Bounty does not add your account identity to Crashlytics reports. Removing a Bounty account does not by itself identify or immediately erase installation-based crash diagnostics held by Google. Support explains any provider-controlled retention or deletion limitation when handling a request."
           ]
         }
       ]
@@ -210,7 +219,8 @@
           "paragraphs": [
             "After verification, support checks the exact Firebase account, RevenueCat customer identifiers and aliases, configured downstream integrations and any pre-existing hosted Bounty account data. We remove records under our control that are associated with the account, subject to specific legitimate retention explained in the result. Firebase account deletion does not delete your Google account.",
             "Deleting a RevenueCat customer does not cancel the Google Play subscription or erase Google Play order records. Provider security, transaction and backup retention is handled separately. We distinguish an accepted removal operation from confirmed completion and do not use temporary account disablement as a substitute for deletion.",
-            "We do not assume that all RevenueCat aliases belong to one person, or that relabelling a participant removes personal information. If historical shared records contain personal text or identifiers, support reviews that data and any specific necessary retention. Unrelated personal information is not retained indefinitely merely to preserve a display name or financial total. The actual scope, reason and duration or retention criteria are explained to the requester."
+            "We do not assume that all RevenueCat aliases belong to one person, or that relabelling a participant removes personal information. If historical shared records contain personal text or identifiers, support reviews that data and any specific necessary retention. Unrelated personal information is not retained indefinitely merely to preserve a display name or financial total. The actual scope, reason and duration or retention criteria are explained to the requester.",
+            "Crashlytics diagnostics use installation and session identifiers; Bounty does not attach your account identity. Account deletion does not by itself identify or immediately erase those reports held by Google. See the privacy policy for Google’s crash-data retention process, and contact support about an applicable data request."
           ]
         },
         {
