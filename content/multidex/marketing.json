@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "updatedOn": "2026-11-07",
+  "title": "Multidex — An offline Pokédex for Android and the web",
+  "description": "Multidex is an unofficial Pokédex for Android and the web. Browse species, moves, types and abilities, keep opened entries offline, and unlock extras with optional Multidex Plus.",
+  "playUrl": "https://play.google.com/store/apps/details?id=io.github.kunal26das.multidex",
+  "webUrl": "https://kunal26das.github.io/multidex/",
+  "hero": {
+    "title": "Your Pokédex, ready offline.",
+    "description": "Species, moves, types and abilities from PokéAPI, in a fast Material You Pokédex. Every entry you open stays on your device.",
+    "note": "Free to browse, with no account needed. Multidex Plus is optional."
+  },
+  "tools": [
+    {
+      "title": "Species and Pokémon",
+      "description": "Browse every species and form with stats, abilities, evolutions and flavor text."
+    },
+    {
+      "title": "Moves, types and abilities",
+      "description": "Look up moves, type matchups and abilities, with search across every list."
+    },
+    {
+      "title": "Offline after first open",
+      "description": "Entries you open are saved on your device and refresh in the background when you're online."
+    },
+    {
+      "title": "Names in your language",
+      "description": "Pokémon names and descriptions in the languages PokéAPI provides."
+    },
+    {
+      "title": "Phone, tablet and web",
+      "description": "Adaptive layouts for phones, tablets and the browser, with colors drawn from each Pokémon's artwork."
+    },
+    {
+      "title": "Accounts when you want them",
+      "description": "Sign in with Google to keep Multidex Plus with your account, and switch between saved accounts."
+    }
+  ],
+  "freeFeatures": [
+    "Species, Pokémon, moves, types and abilities",
+    "Offline entries after the first open",
+    "Names and descriptions in multiple languages",
+    "Optional sign-in and account switching"
+  ],
+  "plusFeatures": [
+    "Shiny artwork, with an encounter rate you control",
+    "Trading cards and Pokémon cries",
+    "Visual themes, search placement and more"
+  ],
+  "faqs": [
+    {
+      "question": "Is Multidex an official Pokémon app?",
+      "answer": "No. Multidex is a fan-made app and isn't affiliated with or endorsed by Nintendo, Creatures, GAME FREAK or The Pokémon Company. Its data comes from PokéAPI."
+    },
+    {
+      "question": "Do I need an account?",
+      "answer": "No. Everything free works without signing in. Sign in with Google when you want Multidex Plus to stay with your account."
+    },
+    {
+      "question": "Does it work offline?",
+      "answer": "Yes, for entries you've already opened. Multidex saves them on your device and refreshes them in the background when you're online."
+    },
+    {
+      "question": "Is Multidex suitable for younger fans?",
+      "answer": "Multidex has no ads and doesn't use the advertising ID. Sign-in and Plus are optional, and younger fans should use them with a parent or guardian.",
+      "link": {"label": "Read the privacy policy", "href": "/multidex-app/privacy/"}
+    },
+    {
+      "question": "How do I cancel Multidex Plus?",
+      "answer": "Cancel it in Google Play's subscriptions. Plus stays active until the end of the period you've paid for.",
+      "link": {"label": "Subscription information", "href": "/multidex-app/subscriptions/"}
+    },
+    {
+      "question": "How do I delete my account?",
+      "answer": "Choose Delete account in the account menu or Settings, or email us if you no longer have the app.",
+      "link": {"label": "Account and data deletion", "href": "/multidex-app/delete-account/"}
+    }
+  ]
+}

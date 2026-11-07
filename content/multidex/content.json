@@ -1,0 +1,237 @@
+{
+  "schemaVersion": 1,
+  "isDraft": false,
+  "reviewedOn": "7 November 2026",
+  "supportEmail": "kunal26das@gmail.com",
+  "appName": "Multidex",
+  "storeTitle": "Multidex – Pokédex & Dex Guide",
+  "appId": "io.github.kunal26das.multidex",
+  "developerName": "Kudos Labs",
+  "operatorName": "Kunal Das",
+  "draftNotice": "",
+  "documents": [
+    {
+      "slug": "privacy",
+      "title": "Privacy policy",
+      "summary": "What Multidex collects, why, who processes it and how long it is kept, for the Android app and the web app.",
+      "sections": [
+        {
+          "heading": "Multidex and your choices",
+          "paragraphs": [
+            "Multidex – Pokédex & Dex Guide (Multidex) is an unofficial Pokédex for Android, also available as a web app at kunal26das.github.io/multidex. It is published on Google Play by Kudos Labs and operated by Kunal Das (we). This policy explains what Multidex collects, why, who processes it and how long it is kept.",
+            "You can browse Multidex without an account. Signing in, Multidex Plus and support requests are optional, and each section below describes the extra information they involve."
+          ]
+        },
+        {
+          "heading": "Audience and children",
+          "paragraphs": [
+            "Multidex is made for Pokémon fans of all ages, including children. It shows no ads, does not use the Android advertising ID and does not sell personal information.",
+            "Browsing needs no personal information. A child who wants to sign in or subscribe should do so with a parent or guardian: sign-in uses the child's Google account, and purchases go through Google Play, where family purchase approvals and parental controls apply. A parent or guardian can contact us to review or delete information associated with a child's Multidex account."
+          ]
+        },
+        {
+          "heading": "Accounts and sign-in",
+          "paragraphs": [
+            "Signing in is optional. Multidex uses Firebase Authentication from Google to sign you in with your Google account on Android and the web. Firebase receives your name, email address, profile photo link and a Firebase user ID from Google. Multidex shows them in the account menu and uses the user ID to identify your account.",
+            "You can keep several accounts on one device and switch between them. The device stores the list of saved account IDs and each account's sign-in session until you log out of that account, delete it or clear the app's data. Logging out removes that account's saved session from the device.",
+            "Multidex never asks for or receives your Google password."
+          ]
+        },
+        {
+          "heading": "Multidex Plus and purchases",
+          "paragraphs": [
+            "Multidex Plus is an optional subscription sold through Google Play. Google Play handles payment; we never receive your card or bank details.",
+            "RevenueCat, our subscription service provider, receives your Firebase user ID as a pseudonymous customer ID, together with purchase records from Google Play such as the plan, purchase and renewal dates, price, currency and transaction identifiers. We use them to confirm whether Plus is active for the signed-in account. Multidex does not send your name or email address to RevenueCat.",
+            "When a purchase completes, the app also records its price and currency as a purchase event in Google Analytics for Firebase, without your account ID."
+          ]
+        },
+        {
+          "heading": "Usage analytics, diagnostics and app security",
+          "paragraphs": [
+            "Multidex uses Google Analytics for Firebase to understand how features are used, for example which feature switches are turned on. Analytics receives app interactions, device model and operating system, app version, an app-instance identifier and an approximate location derived from your IP address. This information is not linked to your Multidex account.",
+            "On Android, Firebase Crashlytics collects crash reports, and Firebase Performance Monitoring collects performance traces such as startup and network timings, with installation identifiers and device information. The web app uses Performance Monitoring too. Firebase Remote Config uses an installation identifier to deliver app settings, and Firebase App Check uses Google Play Integrity to confirm that requests come from a genuine copy of the app.",
+            "Multidex turns off advertising-ID collection and ad-personalization signals in Analytics, and the Android app removes the advertising-ID permission."
+          ]
+        },
+        {
+          "heading": "Pokédex content and processing on your device",
+          "paragraphs": [
+            "Pokémon data comes from PokéAPI (pokeapi.co), artwork from PokéAPI's sprite repository on GitHub and trading-card information from TCGdex. When Multidex fetches content, those services receive your IP address and the requested address, as with any website you visit. They operate independently under their own policies.",
+            "Entries you open are stored on your device so they work offline, together with your app settings and feature choices. The web app keeps the same information in your browser's storage and a service-worker cache.",
+            "On supported Android devices, Multidex can rewrite descriptions with Google ML Kit's on-device AI. The text is processed on your device and is not sent to us."
+          ]
+        },
+        {
+          "heading": "Sharing, security and international processing",
+          "paragraphs": [
+            "We do not sell personal information or share it with other companies for their own purposes. Google (Firebase and Google Play) and RevenueCat process data on our behalf as service providers, under their own security and privacy commitments.",
+            "Data is encrypted in transit. Our service providers may process data in countries other than yours, including the United States."
+          ]
+        },
+        {
+          "heading": "Retention and deletion",
+          "paragraphs": [
+            "Your Multidex account stays until you delete it. Delete it in the app from the account menu or Settings, or by email if you no longer have the app; Account and data deletion explains both. Deleting the account removes the Firebase account and its profile details, signs you out and forgets the account on that device.",
+            "Purchase records are kept by Google Play and RevenueCat for as long as tax, accounting and fraud-prevention obligations require. On request, we delete the RevenueCat customer record of a deleted account unless a specific retention need applies. Google Play keeps its own order records.",
+            "Firebase deletes analytics data within 14 months, crash reports after 90 days and performance data within 60 days. Data on your device stays until you uninstall the app, clear its storage or clear the site's data in your browser. Service providers may keep backups for a limited period under their own policies.",
+            "For support emails, raw attachments are deleted 30 days after a request closes, and a minimal summary is kept for 12 months to follow up recurring issues. A minimal record of a verified deletion request is kept for 90 days after completion."
+          ]
+        },
+        {
+          "heading": "Your rights and contact",
+          "paragraphs": [
+            "Depending on where you live, you may have rights to access, correct, export or delete your personal information and to object to some processing. Contact kunal26das@gmail.com from the email address you use with Multidex. We aim to acknowledge requests within 7 calendar days and handle them within 30 days, and we explain any verification or delay. These aims do not limit your rights.",
+            "We update this policy when Multidex changes and show the review date at the top of each notice."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "terms",
+      "title": "Terms of use",
+      "summary": "Using Multidex, its Pokédex content and the optional Multidex Plus subscription.",
+      "sections": [
+        {
+          "heading": "About Multidex",
+          "paragraphs": [
+            "Multidex is an unofficial Pokédex and reference app for Android and the web, published on Google Play by Kudos Labs and operated by Kunal Das. By using Multidex, you agree to these terms.",
+            "Pokémon and Pokémon character names are trademarks of Nintendo, Creatures Inc., GAME FREAK inc. and The Pokémon Company. Multidex is a fan-made app and is not affiliated with, sponsored by or endorsed by them. Pokémon data comes from PokéAPI and card information from TCGdex; Multidex shows it as provided and cannot guarantee that it is complete or current."
+          ]
+        },
+        {
+          "heading": "Using Multidex",
+          "paragraphs": [
+            "Multidex is free to browse. Use it for personal reference, and don't interfere with its operation or with the services it relies on.",
+            "Signing in is optional. Keep your Google account secure, and log out of or delete accounts you no longer want saved on a shared device.",
+            "We may change, add or remove features, and Multidex or some of its content may sometimes be unavailable."
+          ]
+        },
+        {
+          "heading": "Multidex Plus",
+          "paragraphs": [
+            "Multidex Plus is an optional, automatically renewing monthly or annual subscription sold through Google Play. Prices are shown in the app and confirmed by Google Play before you pay. Subscription information explains renewal, restore and cancellation.",
+            "Google Play's terms and refund policies apply to purchases. Cancelling stops future renewals, and Plus stays active until the end of the period you have paid for. The features included in Plus are shown in the app."
+          ]
+        },
+        {
+          "heading": "Liability and questions",
+          "paragraphs": [
+            "Multidex is provided as is, without warranties, to the extent the law allows. Nothing in these terms limits rights you have under applicable consumer law.",
+            "Questions about these terms: kunal26das@gmail.com."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "subscriptions",
+      "title": "Subscription information",
+      "summary": "What Multidex Plus includes, how Google Play billing and renewal work, and how to restore or cancel.",
+      "sections": [
+        {
+          "heading": "What Multidex Plus includes",
+          "paragraphs": [
+            "Multidex Plus unlocks the app's extras: shiny artwork with an encounter rate you control, trading cards and Pokémon cries, and visual themes, search placement and more. The Plus screen in the app lists everything included.",
+            "Browsing, offline entries and the rest of the Pokédex stay free. Monthly and annual plans include the same features."
+          ]
+        },
+        {
+          "heading": "Price, billing and renewal",
+          "paragraphs": [
+            "Prices are shown in the app in your local currency and confirmed by Google Play before you pay. There is no free trial or introductory price, and annual plans are charged once a year.",
+            "Subscriptions renew automatically until you cancel. To cancel, open Google Play, tap your profile picture, then Payments & subscriptions → Subscriptions → Multidex. Cancelling stops the next renewal; Plus stays active until the end of the current period.",
+            "Google Play handles refunds under its own policies. For help, email us with your Google Play order number, never your card details."
+          ]
+        },
+        {
+          "heading": "Sign-in, restore and changing devices",
+          "paragraphs": [
+            "You need to be signed in to subscribe, so Plus belongs to your Multidex account. Signing in to the same account on another device, or choosing Restore purchases, brings Plus back.",
+            "Restoring also depends on the Google Play account used for the purchase; purchases can't always be moved between different store accounts.",
+            "Switching or logging out of an account removes that account's Plus access on the device until you sign back in."
+          ]
+        },
+        {
+          "heading": "Deleting your account and billing help",
+          "paragraphs": [
+            "Deleting your Multidex account doesn't cancel a Google Play subscription. Cancel it in Google Play first, then delete the account.",
+            "Questions about billing: kunal26das@gmail.com."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "support",
+      "title": "Support",
+      "summary": "Contact Multidex, manage accounts and offline entries, and get help with Plus or account deletion.",
+      "sections": [
+        {
+          "heading": "Contact Multidex",
+          "paragraphs": [
+            "Email kunal26das@gmail.com. Include your device, Android version or browser, what you expected, what happened and the steps to reproduce it. Screenshots are optional.",
+            "Never send passwords, sign-in codes or card details. The support button opens your email app; it does not send anything automatically.",
+            "We aim to acknowledge requests within 7 calendar days and handle them within 30 days. These aims are not guaranteed completion deadlines and do not limit your rights."
+          ]
+        },
+        {
+          "heading": "Accounts and offline entries",
+          "paragraphs": [
+            "Tap your profile picture next to search to sign in, add another account, switch accounts or log out. Swiping the profile picture up or down also switches between saved accounts.",
+            "Entries you have opened stay available offline. Uninstalling the app or clearing its storage removes them, along with saved accounts and settings."
+          ]
+        },
+        {
+          "heading": "Subscriptions and account deletion",
+          "paragraphs": [
+            "To restore Plus, sign in with the account you subscribed with and choose Restore purchases. To change or cancel the subscription, use Manage subscription or Google Play.",
+            "To delete your account, choose Delete account in the account menu or Settings, or follow Account and data deletion."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "delete-account",
+      "title": "Account and data deletion",
+      "summary": "Delete your Multidex account in the app, or request deletion without it, and see what is removed and kept.",
+      "sections": [
+        {
+          "heading": "Delete your account in the app",
+          "paragraphs": [
+            "Open Multidex, tap your profile picture next to search and choose Delete account. You can also open Settings and choose Delete account at the bottom. The same option is in the Multidex web app.",
+            "Confirm with Delete. If Multidex asks, choose the same Google account again to confirm it's you. The account is deleted right away, and you're signed out on that device."
+          ]
+        },
+        {
+          "heading": "Request deletion without the app",
+          "paragraphs": [
+            "Email kunal26das@gmail.com from the email address of your Multidex account, with the subject Multidex account deletion. Say whether you want the whole account deleted or only some of its data.",
+            "We confirm that the request comes from the account owner before deleting anything and may ask for verification. Don't send passwords, sign-in codes or card details.",
+            "We aim to acknowledge within 7 calendar days and complete the deletion within 30 days. We email you the result, including anything we have to keep and why."
+          ]
+        },
+        {
+          "heading": "What deletion removes",
+          "paragraphs": [
+            "Your Firebase account: the name, email address and profile photo link copied from Google, and the user ID that identifies your Multidex account. Deleting a Multidex account doesn't delete your Google account.",
+            "On the device you delete from, the account's saved sign-in session and its entry in the account switcher.",
+            "For email requests, we also delete the account's RevenueCat customer record unless a specific retention need applies. You can ask for this after an in-app deletion too."
+          ]
+        },
+        {
+          "heading": "What's kept, and for how long",
+          "paragraphs": [
+            "Purchase and order records are kept by Google Play and RevenueCat for as long as tax, accounting and fraud-prevention obligations require. They are stored under the account's user ID, not your name or email address.",
+            "Analytics, crash and performance data aren't linked to your account. Firebase deletes them automatically: analytics within 14 months, crash reports after 90 days and performance data within 60 days.",
+            "A minimal record of a verified deletion request is kept for 90 days after completion to protect against unauthorized changes and to answer questions about the request."
+          ]
+        },
+        {
+          "heading": "Subscriptions and data on your device",
+          "paragraphs": [
+            "Deleting your account doesn't cancel a Google Play subscription. Cancel it in Google Play first.",
+            "Pokédex entries and settings on your device stay until you uninstall the app, clear its storage or clear the site's data in your browser."
+          ]
+        }
+      ]
+    }
+  ]
+}
