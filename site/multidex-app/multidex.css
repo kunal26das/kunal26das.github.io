@@ -1,0 +1,159 @@
+/* Multidex extends the portfolio's local typography, theme and reading layout. */
+/* Multidex red, tuned for contrast against each portfolio theme. */
+.multidex-page { --multidex-accent: #ff8f85; }
+:root[data-theme='light'] .multidex-page { --multidex-accent: #b3261e; }
+@media print { .multidex-page, :root[data-theme='light'] .multidex-page { --multidex-accent: #111; } }
+.multidex-eyebrow { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+.multidex-app-brand { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; color: inherit; text-decoration: none; }
+.multidex-app-brand img { display: block; width: 32px; height: 32px; flex: none; }
+.multidex-app-brand:hover span { text-decoration: underline; text-underline-offset: 4px; }
+.multidex-page .article-title { max-width: 17ch; }
+.multidex-page .article-meta { overflow-wrap: anywhere; }
+.multidex-page .article-meta > span { min-width: 0; max-width: 100%; }
+.multidex-title-dot { color: var(--multidex-accent); }
+.multidex-status { padding: 22px 26px; margin: 28px 0 0; border: 1px solid var(--line); border-left: 3px solid var(--multidex-accent); background: var(--surface); }
+.multidex-label { color: var(--multidex-accent); font: 11px/1.6 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
+.multidex-status p { max-width: 85ch; margin: 10px 0 0; font-size: 15px; line-height: 1.75; }
+.multidex-status p + p { color: var(--muted); }
+.multidex-document-nav { display: flex; flex-wrap: wrap; gap: 4px 24px; padding: 20px 0; border-bottom: 1px solid var(--line); }
+.multidex-document-nav a { min-height: 44px; display: inline-flex; align-items: center; color: var(--muted); font-size: 13px; text-underline-offset: 5px; }
+.multidex-document-nav a[aria-current='page'] { color: var(--ink); font-weight: 600; text-decoration-thickness: 2px; }
+.multidex-page .prose > h2:first-child { margin-top: 0; }
+.multidex-contact { margin: 36px 0 0; padding-top: 28px; border-top: 1px solid var(--line); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+.multidex-contact-link { display: inline-flex; align-items: center; gap: 20px; min-height: 48px; font-size: 17px; font-weight: 600; }
+.multidex-contact p { color: var(--muted); font-size: 14px; line-height: 1.75; margin: 10px 0 0; }
+.multidex-documents { margin: 52px 0 0; }
+.multidex-section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 10px 24px; padding: 0 0 16px; border-bottom: 1px solid var(--line); }
+.multidex-section-heading h2 { margin: 0; font-family: var(--font-serif); font-size: 28px; letter-spacing: -.02em; }
+.multidex-section-heading p { margin: 0; color: var(--muted); font-size: 13px; }
+.multidex-card { display: grid; grid-template-columns: 35px minmax(0, 1fr) 25px; gap: 24px; align-items: start; padding: 28px 0; border-bottom: 1px solid var(--line); text-decoration: none; }
+.multidex-card-number { padding-top: 8px; color: var(--multidex-accent); font: 11px/1.6 var(--font-mono); }
+.multidex-card h2 { margin: 0 0 8px; font-family: var(--font-serif); font-size: 28px; letter-spacing: -.02em; }
+.multidex-card p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.75; }
+.multidex-card-arrow { color: var(--multidex-accent); font-size: 23px; }
+.multidex-card:hover h2 { text-decoration: underline; text-underline-offset: 5px; }
+.multidex-current { padding: 6px 0 45px; margin-left: 59px; }
+
+/* Product styles are scoped here; the five notices keep their reading layout. */
+.multidex-landing main { overflow-wrap: break-word; }
+.multidex-hero { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); align-items: center; gap: 72px; padding: 64px 0 72px; }
+.multidex-hero-copy { min-width: 0; }
+.multidex-product-brand { display: flex; align-items: center; gap: 13px; margin: 0 0 28px; font-weight: 600; font-size: 20px; }
+.multidex-product-brand img { display: block; flex: none; }
+.multidex-product-brand small { display: block; color: var(--muted); font-size: 12px; font-weight: 400; margin-top: 1px; }
+.multidex-hero h1 { max-width: 16ch; margin: 0 0 25px; font-size: clamp(42px, 4.9vw, 66px); line-height: 1.12; letter-spacing: -.045em; text-wrap: balance; }
+.multidex-hero-description { max-width: 44ch; margin: 0 0 28px; color: var(--muted); font-size: 19px; line-height: 1.7; }
+.multidex-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 24px; }
+.multidex-play-link { display: inline-flex; align-items: center; justify-content: space-between; gap: 18px; min-height: 52px; padding: 13px 19px; border: 1px solid var(--multidex-accent); background: var(--multidex-accent); color: var(--bg); font-size: 14px; font-weight: 600; text-decoration: none; }
+.multidex-play-link:hover { color: var(--ink); background: var(--surface); }
+.multidex-secondary-link { display: inline-flex; align-items: center; min-height: 44px; color: var(--multidex-accent); font-size: 14px; text-underline-offset: 5px; }
+.multidex-start-note { max-width: 51ch; color: var(--muted); margin: 21px 0 8px; font-size: 13px; line-height: 1.8; }
+.multidex-fan-note { color: var(--muted); margin: 0; font-size: 13px; line-height: 1.8; }
+.multidex-fan-note a { display: inline-block; padding-block: 7px; color: var(--ink); }
+.multidex-example { width: 100%; max-width: 440px; margin: 0; padding: 28px 30px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+.multidex-example figcaption { padding-bottom: 20px; color: var(--muted); font-size: 13px; border-bottom: 1px solid var(--line); }
+.multidex-example-total { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 24px 0; }
+.multidex-example-total > div { min-width: 0; }
+.multidex-example-total span { display: block; color: var(--muted); font-size: 12px; }
+.multidex-example-total strong { display: block; margin: 2px 0 8px; font: 600 clamp(32px, 3.6vw, 44px)/1.3 var(--font-serif); letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.multidex-example-total img { flex: none; width: clamp(52px, 6vw, 72px); height: auto; }
+.multidex-example-table { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+.multidex-example-table th, .multidex-example-table td { padding: 12px 0; border-bottom: 1px solid var(--line); }
+.multidex-example-table thead th { color: var(--muted); font-size: 12px; font-weight: 400; }
+.multidex-example-table th:first-child { text-align: left; font-weight: 400; }
+.multidex-example-table th:not(:first-child), .multidex-example-table td { text-align: right; }
+.multidex-example-balance { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin: 21px 0 8px; font-size: 14px; }
+.multidex-example-balance strong { color: var(--multidex-accent); font: 600 27px/1.4 var(--font-serif); }
+.multidex-example-note { color: var(--muted); font-size: 12px; line-height: 1.85; margin: 0; }
+.multidex-visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.multidex-section { padding: 54px 0 60px; border-top: 1px solid var(--line); scroll-margin-top: 26px; }
+.multidex-section-intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 55px; align-items: baseline; margin-bottom: 34px; }
+.multidex-section h2 { max-width: 22ch; font-size: clamp(29px, 3vw, 38px); line-height: 1.3; letter-spacing: -.03em; margin: 0; }
+.multidex-section-intro > p { max-width: 48ch; color: var(--muted); font-size: 16px; line-height: 1.8; margin: 0; }
+.multidex-use-cases, .multidex-tools { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+.multidex-use-cases h3, .multidex-tools h3 { margin: 0 0 12px; font-size: 23px; line-height: 1.4; letter-spacing: -.02em; }
+.multidex-use-cases p, .multidex-tools p { max-width: 48ch; margin: 0; color: var(--muted); font-size: 15px; line-height: 1.85; }
+.multidex-use-cases > div { padding-left: 20px; border-left: 2px solid var(--line); }
+.multidex-tools > div { padding-top: 22px; border-top: 1px solid var(--line); }
+.multidex-plans { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border: 1px solid var(--line); }
+.multidex-plan { padding: 30px 34px; }
+.multidex-plan h3 { margin: 0 0 10px; font-size: 28px; letter-spacing: -.02em; }
+.multidex-plan > p { max-width: 53ch; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.85; }
+.multidex-plan ul { margin: 24px 0 0; padding-left: 19px; font-size: 15px; line-height: 1.85; }
+.multidex-plan li { padding-left: 6px; margin: 0 0 9px; }
+.multidex-plan li::marker { color: var(--multidex-accent); }
+.multidex-plan-pro { border-left: 1px solid var(--line); background: var(--surface); }
+.multidex-plan .multidex-plan-note { margin-top: 22px; font-size: 13px; }
+.multidex-plan .multidex-secondary-link { margin-top: 12px; }
+.multidex-local-section { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 55px; }
+.multidex-local-section .multidex-section-intro { display: block; margin: 0; }
+.multidex-local-section .multidex-section-intro > p { margin-top: 18px; }
+.multidex-local-copy p { max-width: 59ch; margin-bottom: 18px; color: var(--muted); font-size: 15px; line-height: 1.85; }
+.multidex-local-copy strong { color: var(--ink); font-weight: 600; }
+.multidex-faq { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 55px; }
+.multidex-faq > div { padding: 24px 0; border-top: 1px solid var(--line); }
+.multidex-faq h3 { font-size: 20px; line-height: 1.5; margin: 0 0 12px; }
+.multidex-faq p { max-width: 60ch; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.85; }
+.multidex-faq a { color: var(--ink); }
+.multidex-help { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 55px; }
+.multidex-help > div > p { max-width: 44ch; margin: 18px 0 10px; color: var(--muted); font-size: 15px; line-height: 1.85; }
+.multidex-help > div > .multidex-email-note { margin-top: 6px; font-size: 12px; }
+.multidex-notice-list a { display: flex; justify-content: space-between; align-items: baseline; gap: 20px; min-height: 54px; padding: 13px 0; border-bottom: 1px solid var(--line); font-size: 15px; text-decoration: none; }
+.multidex-notice-list a:first-child { border-top: 1px solid var(--line); }
+.multidex-notice-list a:hover > span:first-child { text-decoration: underline; text-underline-offset: 5px; }
+.multidex-notice-list a > span:last-child { color: var(--multidex-accent); }
+@media (max-width: 1000px) {
+    .multidex-hero { gap: 36px; }
+    .multidex-example { padding: 24px; }
+    .multidex-use-cases, .multidex-tools { gap: 24px; }
+    .multidex-section-intro, .multidex-local-section, .multidex-faq, .multidex-help { column-gap: 36px; }
+    .multidex-plan { padding: 28px; }
+}
+@media (max-width: 860px) {
+    .multidex-hero { grid-template-columns: minmax(0, 1fr); gap: 36px; padding-top: 38px; }
+    .multidex-hero h1 { max-width: 19ch; font-size: clamp(42px, 7vw, 58px); }
+    .multidex-hero-description { max-width: 48ch; }
+    .multidex-example { max-width: 520px; }
+}
+@media (max-width: 760px) {
+    .multidex-status { padding: 18px 20px; margin-top: 22px; }
+    .multidex-document-nav { gap: 0 20px; padding: 12px 0; }
+    .multidex-documents { margin-top: 36px; }
+    .multidex-section-heading { display: block; }
+    .multidex-section-heading p { margin-top: 9px; }
+    .multidex-card { grid-template-columns: 25px minmax(0, 1fr) 18px; gap: 12px; padding: 24px 0; }
+    .multidex-card h2 { font-size: 24px; }
+    .multidex-current { margin-left: 0; padding-bottom: 25px; }
+    .multidex-hero { padding-bottom: 40px; }
+    .multidex-product-brand { margin-bottom: 24px; }
+    .multidex-hero-description { font-size: 17px; }
+    .multidex-section { padding: 34px 0 38px; }
+    .multidex-section-intro, .multidex-local-section, .multidex-help { display: block; }
+    .multidex-section-intro { margin-bottom: 25px; }
+    .multidex-section-intro > p { margin-top: 16px; font-size: 15px; }
+    .multidex-use-cases, .multidex-tools, .multidex-faq, .multidex-plans { grid-template-columns: minmax(0, 1fr); }
+    .multidex-use-cases, .multidex-tools { gap: 26px; }
+    .multidex-use-cases h3, .multidex-tools h3 { font-size: 22px; margin-bottom: 8px; }
+    .multidex-tools > div { padding-top: 19px; }
+    .multidex-plan { padding: 24px; }
+    .multidex-plan-pro { border-left: 0; border-top: 1px solid var(--line); }
+    .multidex-local-copy { margin-top: 25px; }
+    .multidex-faq > div { padding-block: 22px; }
+    .multidex-notice-list { margin-top: 27px; }
+}
+@media (max-width: 400px) {
+    .multidex-hero h1 { font-size: 40px; }
+    .multidex-example { padding: 22px 20px; }
+    .multidex-play-link { gap: 12px; padding-inline: 15px; }
+    .multidex-plan { padding: 22px 20px; }
+}
+@media print {
+    .multidex-hero, .multidex-section-intro, .multidex-use-cases, .multidex-tools, .multidex-local-section, .multidex-faq, .multidex-help { display: block; }
+    .multidex-hero { padding-block: 10px 25px; }
+    .multidex-hero h1 { max-width: none; font-size: 32pt; }
+    .multidex-example { margin-top: 25px; break-inside: avoid; }
+    .multidex-section { padding-block: 25px; }
+    .multidex-section-intro > p, .multidex-use-cases > div, .multidex-tools > div { margin-top: 18px; }
+    .multidex-section h2 { max-width: none; font-size: 22pt; }
+    .multidex-plan { padding: 20px; }
+}

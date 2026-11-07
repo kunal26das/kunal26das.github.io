@@ -233,6 +233,32 @@ def check(check_js=False):
             hub = pages.get(output / "bounty/index.html")
             if hub is not None and play_url not in hub.links:
                 fail(output / "bounty/index.html", "Bounty product page needs its Google Play link")
+        multidex_content = json.loads((ROOT / "content/multidex/content.json").read_text())
+        multidex_routes = ["/multidex-app/", *(
+            f"/multidex-app/{document['slug']}/" for document in multidex_content["documents"]
+        )]
+        for route in multidex_routes:
+            path = output / route.lstrip("/") / "index.html"
+            page = pages.get(path)
+            if page is None:
+                fail(path, "Multidex information page is missing")
+                continue
+            url = ORIGIN + route
+            if page.canonicals != [url] or page.h1_count != 1:
+                fail(path, "Multidex page needs one self-canonical and one H1")
+            noindex = any("noindex" in value for value in page.robots)
+            if multidex_content["isDraft"]:
+                if not noindex or url in sitemap_links:
+                    fail(path, "draft Multidex page must be noindex and outside the sitemap")
+            elif noindex or url not in sitemap_links:
+                fail(path, "final Multidex page must be indexable and discoverable in the sitemap")
+        if not multidex_content["isDraft"]:
+            if "/multidex-app/" not in pages[output / "index.html"].links:
+                fail(output / "index.html", "Multidex information page needs a homepage discovery link")
+            play_url = f"https://play.google.com/store/apps/details?id={multidex_content['appId']}"
+            hub = pages.get(output / "multidex-app/index.html")
+            if hub is not None and play_url not in hub.links:
+                fail(output / "multidex-app/index.html", "Multidex product page needs its Google Play link")
         for article in (output / "blog").glob("*/index.html"):
             url = ORIGIN + "/" + article.parent.relative_to(output).as_posix() + "/"
             if url not in feed_links:

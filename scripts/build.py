@@ -11,6 +11,7 @@ from pathlib import Path
 import shutil
 
 from generate_bounty import check as check_bounty
+from generate_multidex import check as check_multidex
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -52,6 +53,7 @@ def project_files():
 
 def build():
     check_bounty()
+    check_multidex()
     source = ROOT / "site"
     doom = ROOT / "doom-dist"
     output = ROOT / "dist"
